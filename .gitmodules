@@ -1,0 +1,3 @@
+[submodule "Assets/Editor/UnityProjectAssistant"]
+	path = Assets/Editor/UnityProjectAssistant
+	url = https://github.com/geoffrey-dev/UnityProjectAssistant.git
