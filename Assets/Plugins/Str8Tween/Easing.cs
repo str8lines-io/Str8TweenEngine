@@ -248,7 +248,7 @@ namespace Str8lines.Tweening
         /// </example>
         public static Vector3 ease(EaseType easeType, float t, Vector3 v, Vector3 c, float d)
         {
-            Vector3 newVector = new Vector3();
+            Vector3 newVector;
             switch (easeType)
             {
                 case EaseType.Linear:
@@ -374,6 +374,10 @@ namespace Str8lines.Tweening
                 case EaseType.InOutBounce:
                     newVector = new Vector3(_inOutBounce(t, v.x, c.x, d), _inOutBounce(t, v.y, c.y, d), _inOutBounce(t, v.z, c.z, d));
                     break;
+
+                default:
+                    newVector = new Vector3();
+                    break;
             }
             return newVector;
         }
@@ -404,7 +408,7 @@ namespace Str8lines.Tweening
         /// </example>
         public static float ease(EaseType easeType, float t, float f, float c, float d)
         {
-            float newValue = f;
+            float newValue;
             switch (easeType)
             {
                 case EaseType.Linear:
@@ -529,6 +533,10 @@ namespace Str8lines.Tweening
 
                 case EaseType.InOutBounce:
                     newValue = _inOutBounce(t, f, c, d);
+                    break;
+
+                default:
+                    newValue= f;
                     break;
             }
             return newValue;

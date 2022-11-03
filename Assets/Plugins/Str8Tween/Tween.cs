@@ -28,14 +28,16 @@ namespace Str8lines.Tweening
         public float duration { get;private set; }
         /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see>.</value>
         public bool isAlive { get;private set; }
+        /// <value>If <c>true</c> the tween is currently playing.</value>
+        public bool isRunning { get;private set; }
+        /// <value>If <c>true</c> the tween finished playing.</value>
+        public bool isCompleted { get;private set; }
         #endregion
 
         #region Private variables
         private string[] _authorizedMethods = {"move", "fade", "scale", "rotate"};
         private bool _killOnEnd;
-        private bool _isRunning;
         private bool _isDelayOver;
-        private bool _isCompleted;
         private string _methodName;
         private float _elapsed;
         private float _lifeTime;
@@ -139,12 +141,13 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = rectTransform.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToVector = toVector;
             _toVector = toVector;
 
@@ -196,11 +199,12 @@ namespace Str8lines.Tweening
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             
-            _init(methodName, killOnEnd);
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = canvasRenderer.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -239,12 +243,13 @@ namespace Str8lines.Tweening
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = spriteRenderer.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -283,12 +288,13 @@ namespace Str8lines.Tweening
         {
             if(rawImage == null) throw new ArgumentNullException("rawImage", "rawImage can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = rawImage.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -327,12 +333,13 @@ namespace Str8lines.Tweening
         {
             if(image == null) throw new ArgumentNullException("image", "image can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = image.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -371,12 +378,13 @@ namespace Str8lines.Tweening
         {
             if(text == null) throw new ArgumentNullException("text", "text can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = text.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -415,12 +423,13 @@ namespace Str8lines.Tweening
         {
             if(toggle == null) throw new ArgumentNullException("toggle", "toggle can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = toggle.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -459,12 +468,13 @@ namespace Str8lines.Tweening
         {
             if(slider == null) throw new ArgumentNullException("slider", "slider can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
 
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = slider.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -503,12 +513,13 @@ namespace Str8lines.Tweening
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            _init(methodName, killOnEnd);
             
-            id = Guid.NewGuid().ToString();
+            this.id = Guid.NewGuid().ToString();
             this.target = graphic.gameObject;
             this.easeType = easeType;
             this.duration = duration;
+            
+            _init(methodName, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -547,9 +558,30 @@ namespace Str8lines.Tweening
             return this;
         }
 
+        /// <returns>The delay before the <see cref="Tween">tween</see> starts (in seconds).</returns>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using Str8lines.Tweening;
+        /// 
+        /// public class MyClass : MonoBehaviour
+        /// {
+        ///     public RectTransform rectTransform;
+        /// 
+        ///     private void Start()
+        ///     {
+        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Debug.Log(t.delay());
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public float delay() { return _delay; }
+
         /// <summary>Makes the <see cref="Tween">tween</see> loop.</summary>
-        /// <param name="loopsCount">(Optional) Number of loops to do before. Default value is -1.</param>
-        /// <param name="loopType">(Optional) Type of loop. Default value is <see cref="LoopType.Restart">LoopType.Restart</see>.</param>
+        /// <param name="loopsCount">(Optional) Number of loops to do. Default value is -1.</param>
+        /// <param name="loopType">(Optional) <see cref="LoopType">Type of loop</see>. Default value is <see cref="LoopType.Restart">LoopType.Restart</see>.</param>
         /// <returns>The <see cref="Tween">tween</see> which loops.</returns>
         /// <remarks>Default <paramref name="loopsCount"/>'s value is -1 which is equivalent to infinite loops.</remarks>
         /// <example>
@@ -577,9 +609,53 @@ namespace Str8lines.Tweening
             _loopType = loopType;
             _loopsCount = loopsCount;
             if(_loopsCount <= 0) _loopsCount = -1; //Fix loops count value
-            _lifeTime = duration * _loopsCount;
+            _lifeTime = this.duration * _loopsCount;
             return this;
         }
+
+        /// <returns>The number of loops to do.</returns>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using Str8lines.Tweening;
+        /// 
+        /// public class MyClass : MonoBehaviour
+        /// {
+        ///     public RectTransform rectTransform;
+        /// 
+        ///     private void Start()
+        ///     {
+        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t.loop(5, LoopType.Oscillate);
+        ///         Debug.Log(t.loopsCount());
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public int loopsCount() { return _loopsCount; }
+
+        /// <returns>The <see cref="LoopType">type of loop</see> to do.</returns>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using Str8lines.Tweening;
+        /// 
+        /// public class MyClass : MonoBehaviour
+        /// {
+        ///     public RectTransform rectTransform;
+        /// 
+        ///     private void Start()
+        ///     {
+        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t.loop(5, LoopType.Oscillate);
+        ///         Debug.Log(t.loopType());
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public LoopType loopType() { return _loopType; }
 
         /// <summary>Registers to <see cref="Tween">tween</see>'s start event.</summary>
         /// <param name="onStart">Callback function to trigger.</param>
@@ -718,18 +794,19 @@ namespace Str8lines.Tweening
         /// </example>
         public void update(float t)
         {
-            if(isAlive)
+            if(this.isAlive)
             {
-                if(!_isCompleted)
+                if(!this.isCompleted)
                 {
-                    if(_isRunning)
+                    if(this.isRunning)
                     {
                         if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
                         else _elapsed += t;
+
                         if(_elapsed >= _delay) //Delay is over, the tween can start
                         {
                             float time = 0f; //Time used for calculations
-
+                            
                             if(!_isDelayOver){
                                 //The first frame when the tween plays is the starting frame
                                 _isDelayOver = true;
@@ -745,7 +822,7 @@ namespace Str8lines.Tweening
                                         case LoopType.Restart :
                                         case LoopType.WithOffset:
                                             _loopTime += t; //These two loop types are always played forward
-                                            if(_loopTime > duration){
+                                            if(_loopTime > this.duration){
                                                 _loopTime = 0;
                                                 _completeLoop();
                                             }
@@ -754,8 +831,8 @@ namespace Str8lines.Tweening
                                         case LoopType.Oscillate :
                                             if(_isIncrementing){
                                                 _loopTime += t; //Plays the tween forward
-                                                if(_loopTime >= duration){
-                                                    _loopTime = duration;
+                                                if(_loopTime >= this.duration){
+                                                    _loopTime = this.duration;
                                                     _isIncrementing = !_isIncrementing;
                                                     _completeLoop();
                                                 }
@@ -820,8 +897,8 @@ namespace Str8lines.Tweening
             _passedLoopsCount = 0;
             _isIncrementing = true;
             _isDelayOver = false;
-            _isCompleted = false;
-            _isRunning = playOnReset;
+            this.isCompleted = false;
+            this.isRunning = playOnReset;
             _isFirstUpdate = true;
             _elapsed = 0f;
             _playTime = 0f;
@@ -907,7 +984,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void play()
         {
-            _isRunning = true;
+            this.isRunning = true;
         }
 
         /// <summary>Pauses the <see cref="Tween">tween</see>.</summary>
@@ -941,7 +1018,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void pause()
         {
-            _isRunning = false;
+            this.isRunning = false;
         }
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
@@ -977,11 +1054,11 @@ namespace Str8lines.Tweening
         /// </example>
         public void complete()
         {
-            _isCompleted = true;
-            _isRunning = false;
+            this.isCompleted = true;
+            this.isRunning = false;
             RectTransform rectTransform = null;
             if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
-            if(duration != 0f)
+            if(this.duration != 0f)
             {
                 switch(_methodName)
                 {
@@ -1067,8 +1144,8 @@ namespace Str8lines.Tweening
         /// </example>
         public void cancel()
         {
-            _isCompleted = true;
-            _isRunning = false;
+            this.isCompleted = true;
+            this.isRunning = false;
             RectTransform rectTransform = null;
             if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
             switch(_methodName)
@@ -1153,12 +1230,12 @@ namespace Str8lines.Tweening
         /// </example>
         public void stop()
         {
-            _isCompleted = true;
-            _isRunning = false;
+            this.isCompleted = true;
+            this.isRunning = false;
             if(_killOnEnd == true) kill();
         }
 
-        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets isAlive to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets this.isAlive to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to kill.
@@ -1189,7 +1266,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void kill()
         {
-            isAlive = false;
+            this.isAlive = false;
             _start -= _callbackOnStart;
             _loop -= _callbackOnLoop;
             _complete -= _callbackOnComplete;
@@ -1200,7 +1277,9 @@ namespace Str8lines.Tweening
         private void _init(string methodName, bool killOnEnd)
         {
             if(!Array.Exists(_authorizedMethods, name => name == methodName)) throw new ArgumentException("methodName is not allowed", "methodName");
-            isAlive = true;
+            this.isAlive = true;
+            this.isCompleted = false;
+            this.isRunning = true;
             _methodName = methodName;
             _delay = 0f;
             _isLoop = false;
@@ -1209,12 +1288,10 @@ namespace Str8lines.Tweening
             _loopType = LoopType.Restart;
             _isIncrementing = true;
             _isDelayOver = false;
-            _isCompleted = false;
-            _isRunning = true;
             _isFirstUpdate = true;
             _elapsed = 0f;
             _loopTime = 0f;
-            _lifeTime = duration;
+            _lifeTime = this.duration;
             _playTime = 0f;
             _killOnEnd = killOnEnd;
         }
@@ -1227,49 +1304,49 @@ namespace Str8lines.Tweening
             {
                 case "move":
                     if(rectTransform != null){
-                        Vector3 newPosition = Easing.ease(easeType, playtime, _fromVector, _vectorChange, duration);
+                        Vector3 newPosition = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                         rectTransform.anchoredPosition3D = new Vector3(newPosition.x, newPosition.y, newPosition.z);
                     }
                     break;
 
                 case "scale":
-                    Vector3 newScale = Easing.ease(easeType, playtime, _fromVector, _vectorChange, duration);
+                    Vector3 newScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                     if(rectTransform != null) rectTransform.localScale = new Vector3(newScale.x, newScale.y, newScale.z);
                     break;
 
                 case "rotate":
-                    Vector3 newEulerAngles = Easing.ease(easeType, playtime, _fromVector, _vectorChange, duration);
+                    Vector3 newEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                     if(rectTransform != null) rectTransform.localEulerAngles = new Vector3(newEulerAngles.x, newEulerAngles.y, newEulerAngles.z);
                     break;
 
                 case "fade":
-                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(Easing.ease(easeType, playtime, _fromCanvasRendererAlpha, _canvasRendererAlphaChange, duration));
+                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromCanvasRendererAlpha, _canvasRendererAlphaChange, this.duration));
                     if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, duration));
+                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, this.duration));
                         spriteRenderer.color = newSpriteRendererColor;
                     }
                     if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
-                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, Easing.ease(easeType, playtime, _fromRawImageAlpha, _rawImageAlphaChange, duration));
+                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, Easing.ease(this.easeType, playtime, _fromRawImageAlpha, _rawImageAlphaChange, this.duration));
                         rawImage.color = newRawImageColor;
                     }
                     if(_image != null && target.TryGetComponent(out Image image)){
-                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, Easing.ease(easeType, playtime, _fromImageAlpha, _imageAlphaChange, duration));
+                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, Easing.ease(this.easeType, playtime, _fromImageAlpha, _imageAlphaChange, this.duration));
                         image.color = newImageColor;
                     }
                     if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
-                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, Easing.ease(easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, duration));
+                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration));
                         toggle.graphic.color = newToggleColor;
                     }
                     if(_slider != null && target.TryGetComponent(out Slider slider)){
-                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, Easing.ease(easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, duration));
+                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, Easing.ease(this.easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, this.duration));
                         slider.image.color = newSliderColor;
                     }
                     if(_text != null && target.TryGetComponent(out Text text)){
-                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, Easing.ease(easeType, playtime, _fromTextAlpha, _textAlphaChange, duration));
+                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, Easing.ease(this.easeType, playtime, _fromTextAlpha, _textAlphaChange, this.duration));
                         text.color = newTextColor;
                     }
                     if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
-                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, duration));
+                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, this.duration));
                         graphic.color = newGraphicColor;
                     }
                     break;

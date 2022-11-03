@@ -6,20 +6,31 @@ using UnityEngine.TestTools;
 
 public class Str8TweenTest
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void Str8TweenTestSimplePasses()
-    {
-        // Use the Assert class to test conditions
-    }
+    /**
+        - Tween methods : 
+            * move
+            * fade (8x)
+            * scale
+            * rotate
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator Str8TweenTestWithEnumeratorPasses()
-    {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
-    }
+        - Engine methods :
+            * getTween(id)
+            * getTweens()
+            * getTweens(target)
+            * Update()
+            * _init()
+    */
+
+    // [Test]
+    // public void TweenRectTransformMoveDelayed()
+    // {
+    //     go.AddComponent<RectTransform>();
+    //     RectTransform rect = go.GetComponent<RectTransform>();
+    //     Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+    //     t.delay(1f);
+    //     Vector3 initialValue = t.target.transform.position;
+    //     Assert.That(
+    //         t.target.transform.position, Is.EqualTo(initialValue).After(1)
+    //     );
+    // }
 }
