@@ -12,7 +12,6 @@ public class TweenTest
 {
     /**
         - Tween methods :
-            * update()
             * _completeLoop()
             * onStart()
             * onLoop()
@@ -845,9 +844,7 @@ public class TweenTest
 
 #endregion
 
-#region methods
-
-    #region delay
+#region delay
     [Test]
     public void TweenRectTransformMoveDelayedOneSecond()
     {
@@ -880,7 +877,7 @@ public class TweenTest
     }
     #endregion
 
-    #region loops
+#region loops
     [Test]
     public void TweenRectTransformMoveDefaultLoops()
     {
@@ -982,8 +979,8 @@ public class TweenTest
     }
     #endregion
 
-    #region update
-    // MOVE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#region update
+    #region move
     [Test]
     public void TweenRectTransformMoveUpdateWithTimeEqualZero()
     {
@@ -1029,8 +1026,9 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+    #endregion
 
-    // SCALE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #region scale
     [Test]
     public void TweenRectTransformScaleUpdateWithTimeEqualZero()
     {
@@ -1076,8 +1074,9 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+    #endregion
 
-    // ROTATE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #region rotate
     [Test]
     public void TweenRectTransformRotateUpdateWithTimeEqualZero()
     {
@@ -1123,8 +1122,9 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+    #endregion
 
-    // FADE CANVAS RENDERER //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #region fade canvasRenderer
     [Test]
     public void TweenCanvasRendererFadeUpdateWithTimeEqualZero()
     {
@@ -1137,7 +1137,44 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE SPRITE RENDERER //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenCanvasRendererFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != canvasRenderer.GetAlpha() && toFloatValue != canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenCanvasRendererFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenCanvasRendererFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade spriteRenderer
     [Test]
     public void TweenSpriteRendererFadeUpdateWithTimeEqualZero()
     {
@@ -1150,7 +1187,44 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE RAW IMAGE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenSpriteRendererFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != spriteRenderer.color.a && toFloatValue != spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenSpriteRendererFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenSpriteRendererFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade rawImage
     [Test]
     public void TweenRawImageFadeUpdateWithTimeEqualZero()
     {
@@ -1163,7 +1237,44 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE IMAGE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenRawImageFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != rawImage.color.a && toFloatValue != rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenRawImageFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenRawImageFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade image
     [Test]
     public void TweenImageFadeUpdateWithTimeEqualZero()
     {
@@ -1176,7 +1287,44 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE TEXT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenImageFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != image.color.a && toFloatValue != image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenImageFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenImageFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade text
     [Test]
     public void TweenTextFadeUpdateWithTimeEqualZero()
     {
@@ -1189,7 +1337,44 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE TOGGLE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenTextFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != text.color.a && toFloatValue != text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenTextFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenTextFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade toggle
     [Test]
     public void TweenToggleFadeUpdateWithTimeEqualZero()
     {
@@ -1207,7 +1392,59 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE SLIDER //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenToggleFadeUpdateWithTimeBelowDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(0);
+        Toggle toggle = target.GetComponent<Toggle>();
+
+        // Test
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != toggle.graphic.color.a && toFloatValue != toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenToggleFadeUpdateWithTimeEqualDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(0);
+        Toggle toggle = target.GetComponent<Toggle>();
+
+        // Test
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == toggle.graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenToggleFadeUpdateWithTimeHigherThanDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(0);
+        Toggle toggle = target.GetComponent<Toggle>();
+
+        // Test
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == toggle.graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade slider
     [Test]
     public void TweenSliderFadeUpdateWithTimeEqualZero()
     {
@@ -1225,7 +1462,59 @@ public class TweenTest
         Assert.IsTrue(initialAlpha == slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
 
-    // FADE GRAPHIC //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Test]
+    public void TweenSliderFadeUpdateWithTimeBelowDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(1);
+        Slider slider = target.GetComponent<Slider>();
+
+        // Test
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != slider.image.color.a && toFloatValue != slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenSliderFadeUpdateWithTimeEqualDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(1);
+        Slider slider = target.GetComponent<Slider>();
+
+        // Test
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == slider.image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenSliderFadeUpdateWithTimeHigherThanDuration()
+    {
+        //Prepare
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        Transform target = canvas.transform.GetChild(1);
+        Slider slider = target.GetComponent<Slider>();
+
+        // Test
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == slider.image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+
+    #region fade graphic
     [Test]
     public void TweenGraphicFadeUpdateWithTimeEqualZero()
     {
@@ -1237,12 +1526,52 @@ public class TweenTest
         t.update(0f);
         Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
     }
-    #endregion
 
-    #region events
+    [Test]
+    public void TweenGraphicFadeUpdateWithTimeBelowDuration()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2f);
+        Assert.IsTrue(initialAlpha != graphic.color.a && toFloatValue != graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
+    [Test]
+    public void TweenGraphicFadeUpdateWithTimeEqualDuration()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenGraphicFadeUpdateWithTimeHigherThanDuration()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration + 0.5f);
+        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+    #endregion
+#endregion
+
+#region events
     // Créer un tween pour chaque type de Tween (move, scale, rotate et tous les fade)    
     // Ajouter les events de start, loop, end
     // Assert que les events sont bien triggered
-    #endregion
+#endregion
+
+#region lifecycle
+
 #endregion
 }
