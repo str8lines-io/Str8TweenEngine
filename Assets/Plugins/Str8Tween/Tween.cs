@@ -722,8 +722,10 @@ namespace Str8lines.Tweening
         /// </example>
         public Tween onLoop(TweenLoopDelegate onLoop)
         {
-            _callbackOnLoop = onLoop;
-            _loop += _callbackOnLoop;
+            if(onLoop != null){
+                _callbackOnLoop = onLoop;
+                _loop += _callbackOnLoop;
+            }
             return this;
         }
 
@@ -806,56 +808,52 @@ namespace Str8lines.Tweening
                         if(_elapsed >= _delay) //Delay is over, the tween can start
                         {
                             float time = 0f; //Time used for calculations
-                            
                             if(!_isDelayOver){
                                 //The first frame when the tween plays is the starting frame
                                 _isDelayOver = true;
                                 _start?.Invoke();
-                            }else{
-                                _playTime += t;
-                                time = _playTime;
+                                t = _elapsed - _delay; // Fixing time for the first animation frame
+                            }
+                            
+                            _playTime += t;
+                            time = _playTime;
 
-                                if(_isLoop)
+                            if(_isLoop)
+                            {
+                                switch(_loopType)
                                 {
-                                    switch(_loopType)
-                                    {
-                                        case LoopType.Restart :
-                                        case LoopType.WithOffset:
-                                            _loopTime += t; //These two loop types are always played forward
-                                            if(_loopTime > this.duration){
-                                                _loopTime = 0;
+                                    case LoopType.Restart :
+                                    case LoopType.WithOffset :
+                                        _loopTime += t; //These two loop types are always played forward
+                                        if(_loopTime >= this.duration){
+                                            _loopTime = 0;
+                                            _completeLoop();
+                                        }
+                                        break;
+
+                                    case LoopType.Oscillate :
+                                        if(_isIncrementing){
+                                            _loopTime += t; //Plays the tween forward
+                                            if(_loopTime >= this.duration){
+                                                _loopTime = this.duration;
+                                                _isIncrementing = !_isIncrementing;
                                                 _completeLoop();
                                             }
-                                            break;
-
-                                        case LoopType.Oscillate :
-                                            if(_isIncrementing){
-                                                _loopTime += t; //Plays the tween forward
-                                                if(_loopTime >= this.duration){
-                                                    _loopTime = this.duration;
-                                                    _isIncrementing = !_isIncrementing;
-                                                    _completeLoop();
-                                                }
-                                            }else{
-                                                _loopTime -= t; //Plays the tween backward
-                                                if(_loopTime <= 0f){
-                                                    _loopTime = 0f;
-                                                    _isIncrementing = !_isIncrementing;
-                                                    _completeLoop();
-                                                }
+                                        }else{
+                                            _loopTime -= t; //Plays the tween backward
+                                            if(_loopTime <= 0f){
+                                                _loopTime = 0f;
+                                                _isIncrementing = !_isIncrementing;
+                                                _completeLoop();
                                             }
-                                            break;
-                                    }
-                                    time = _loopTime;
-                                    if(_playTime >= _lifeTime && _loopsCount >= 0){
-                                        _completeLoop();
-                                        complete();
-                                    }else if(_playTime != 0f) _setCalculatedValue(time);
-                                }else{
-                                    if(_playTime >= _lifeTime) complete();
-                                    else if(_playTime != 0f) _setCalculatedValue(time);
+                                        }
+                                        break;
                                 }
+                                time = _loopTime;
                             }
+                            
+                            if(_playTime >= _lifeTime) complete();
+                            else _setCalculatedValue(time);
                         }
                     }
                 }

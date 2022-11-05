@@ -10,24 +10,11 @@ using UnityEngine.EventSystems;
 
 public class TweenTest
 {
-    /**
-        - Tween methods :
-            * _completeLoop()
-            * onStart()
-            * onLoop()
-            * onComplete()
-            
-            * pause()
-            * play()
-            * stop()
-            * kill()
-            * reset() => test values of isCompleted and isRunning + check reset of vector and float
-            * complete() => test values of isCompleted and isRunning + check final values of vector and float + invoke event + killonend
-            * cancel() => test values of isCompleted and isRunning + check reset of vector and float + killonend
-            * Kept alive with killOnEnd false
-    */
-
     GameObject go;
+    GameObject canvasGo;
+    GameObject eventSystemGo;
+    GameObject toggleGo;
+    GameObject sliderGo;
     Vector3 toVectorValue;
     float toFloatValue;
     Easing.EaseType easeType;
@@ -37,6 +24,13 @@ public class TweenTest
     public void Setup()
     {
         go = new GameObject();
+        GameObject canvas = Resources.Load<GameObject>("Canvas");
+        canvasGo = UnityEngine.Object.Instantiate(canvas);
+        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
+        eventSystemGo = UnityEngine.Object.Instantiate(eventSystem);
+        toggleGo = canvasGo.transform.GetChild(0).gameObject;
+        sliderGo = canvasGo.transform.GetChild(1).gameObject;
+
         toVectorValue = new Vector3(2f, 2f, 2f);
         toFloatValue = 0.5f;
         easeType = Easing.EaseType.Linear;
@@ -47,10 +41,11 @@ public class TweenTest
     public void Teardown()
     {
         UnityEngine.Object.Destroy(go);
+        UnityEngine.Object.Destroy(canvasGo);
+        UnityEngine.Object.Destroy(eventSystemGo);
     }
 
 #region constructors
-
     [Test]
     public void TweenRectTransformInvalidMethod()
     {
@@ -582,43 +577,25 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeDefaultKill()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
     public void TweenToggleFadeKillOnEnd()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration, true);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
     public void TweenToggleFadeDontKillOnEnd()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration, false);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -633,11 +610,7 @@ public class TweenTest
     [Test]
     public void TweenToggleInvalidMethod()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         
         // Test
         Assert.Throws<ArgumentException>(()=>{
@@ -648,11 +621,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeZeroDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         
         // Test
         Assert.Throws<ArgumentException>(()=>{
@@ -663,11 +632,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeNegativeDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         
         // Test
         Assert.Throws<ArgumentException>(()=>{
@@ -680,43 +645,25 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeDefaultKill()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
     public void TweenSliderFadeKillOnEnd()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration, true);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
     public void TweenSliderFadeDontKillOnEnd()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration, false);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == target.gameObject) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -731,13 +678,8 @@ public class TweenTest
     [Test]
     public void TweenSliderInvalidMethod()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-        
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
+    
         Assert.Throws<ArgumentException>(()=>{
             Tween t = new Tween(String.Empty, slider, toFloatValue, easeType, duration);
         });
@@ -746,13 +688,8 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeZeroDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-        
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
+    
         Assert.Throws<ArgumentException>(()=>{
             Tween t = new Tween("fade", slider, toFloatValue, easeType, 0f);
         });
@@ -761,13 +698,8 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeNegativeDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-        
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
+    
         Assert.Throws<ArgumentException>(()=>{
             Tween t = new Tween("fade", slider, toFloatValue, easeType, -1f);
         });
@@ -845,6 +777,8 @@ public class TweenTest
 #endregion
 
 #region delay
+    // Delay affect every tween the same way
+    // We don't need to test every combination of tween.
     [Test]
     public void TweenRectTransformMoveDelayedOneSecond()
     {
@@ -878,6 +812,8 @@ public class TweenTest
     #endregion
 
 #region loops
+    // Loops affect every tween the same way
+    // We don't need to test every combination of tween.
     [Test]
     public void TweenRectTransformMoveDefaultLoops()
     {
@@ -980,6 +916,13 @@ public class TweenTest
     #endregion
 
 #region update
+    // Tester la première frame seule
+    // Tester les loops
+        // Checker les valeurs à différents moments d'une loop
+        // Checker l'évolution des valeurs en fonction du looptype
+
+    // Update method needs to be tested for every type of tween.
+    // We have to check if values are properly updated in the _setCalculatedValue() method.
     #region move
     [Test]
     public void TweenRectTransformMoveUpdateWithTimeEqualZero()
@@ -1378,13 +1321,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeUpdateWithTimeEqualZero()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
         float initialAlpha = toggle.graphic.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1395,13 +1332,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeUpdateWithTimeBelowDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
         float initialAlpha = toggle.graphic.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1412,13 +1343,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeUpdateWithTimeEqualDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
         float initialAlpha = toggle.graphic.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1429,13 +1354,7 @@ public class TweenTest
     [Test]
     public void TweenToggleFadeUpdateWithTimeHigherThanDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(0);
-        Toggle toggle = target.GetComponent<Toggle>();
-
-        // Test
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
         Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
         float initialAlpha = toggle.graphic.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1448,13 +1367,7 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeUpdateWithTimeEqualZero()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
         float initialAlpha = slider.image.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1465,13 +1378,7 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeUpdateWithTimeBelowDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
         float initialAlpha = slider.image.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1482,13 +1389,7 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeUpdateWithTimeEqualDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
         float initialAlpha = slider.image.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1499,13 +1400,7 @@ public class TweenTest
     [Test]
     public void TweenSliderFadeUpdateWithTimeHigherThanDuration()
     {
-        //Prepare
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        Transform target = canvas.transform.GetChild(1);
-        Slider slider = target.GetComponent<Slider>();
-
-        // Test
+        Slider slider = sliderGo.GetComponent<Slider>();
         Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
         float initialAlpha = slider.image.color.a;
         t.update(0f); //First frame is not taken in count
@@ -1566,12 +1461,79 @@ public class TweenTest
 #endregion
 
 #region events
-    // Créer un tween pour chaque type de Tween (move, scale, rotate et tous les fade)    
-    // Ajouter les events de start, loop, end
-    // Assert que les events sont bien triggered
+    // Events are triggered regardless of the type of tween.
+    // We don't need to test every combination of tween.
+    [Test]
+    public void TweenRectTransformMoveStart()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        bool triggered = false;
+        t.onStart(()=>{ triggered = true; }).update(0f);
+        Assert.IsTrue(triggered);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopSingle()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        int triggered = 0;
+        t.loop(1).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(triggered == 1);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopEven()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        int triggered = 0;
+        t.loop(2).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        t.update(duration);
+        Assert.IsTrue(triggered == 2);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopOdd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        int triggered = 0;
+        t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        t.update(duration);
+        t.update(duration);
+        Assert.IsTrue(triggered == 3);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveComplete()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        bool triggered = false;
+        t.onComplete(()=>{ triggered = true; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Assert.IsTrue(triggered);
+    }
 #endregion
 
 #region lifecycle
-
+    // * pause()
+    // * play()
+    // * stop()
+    // * kill()
+    // * reset() => test values of isCompleted and isRunning + check reset of vector and float
+    // * complete() => test values of isCompleted and isRunning + check final values of vector and float + invoke event + killonend
+    // * cancel() => test values of isCompleted and isRunning + check reset of vector and float + killonend
+    // * Kept alive with killOnEnd false
 #endregion
 }
