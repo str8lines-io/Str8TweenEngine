@@ -913,17 +913,53 @@ public class TweenTest
         t.loop(10000, Tween.LoopType.Oscillate);
         Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.Oscillate);
     }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsBelowMinusOneAndWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        t.loop(-2, Tween.LoopType.WithOffset);
+        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.WithOffset);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsZeroAndWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        t.loop(0, Tween.LoopType.WithOffset);
+        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.WithOffset);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsMultipleAndWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        t.loop(10000, Tween.LoopType.WithOffset);
+        Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.WithOffset);
+    }
     #endregion
 
 #region update
-    // Tester la première frame seule
-    // Tester les loops
-        // Checker les valeurs à différents moments d'une loop
-        // Checker l'évolution des valeurs en fonction du looptype
-
     // Update method needs to be tested for every type of tween.
     // We have to check if values are properly updated in the _setCalculatedValue() method.
     #region move
+    [Test]
+    public void TweenRectTransformMoveUpdateFirstFrame()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.update(0f);
+        Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenRectTransformMoveUpdateWithTimeEqualZero()
     {
@@ -969,9 +1005,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsRestart()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        Vector3 firstLoopEndValues = rect.anchoredPosition3D;
+        t.update(duration * 0.000001f);
+        Vector3 secondLoopStartValues = rect.anchoredPosition3D;
+        t.update(duration * 0.999999f);
+        Vector3 secondLoopEndValues = rect.anchoredPosition3D;
+        t.update(duration * 0.000001f);
+        Vector3 thirdLoopStartValues = rect.anchoredPosition3D;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopStartValues == initialPosition && secondLoopEndValues == toVectorValue && thirdLoopStartValues == initialPosition);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.anchoredPosition3D;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.anchoredPosition3D;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues != initialPosition && secondLoopEndValues != firstLoopEndValues);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillate()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.anchoredPosition3D;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.anchoredPosition3D;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues == initialPosition);
+    }
     #endregion
 
     #region scale
+    [Test]
+    public void TweenRectTransformScaleUpdateFirstFrame()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialScale = rect.localScale;
+        t.update(0f);
+        Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenRectTransformScaleUpdateWithTimeEqualZero()
     {
@@ -1017,9 +1116,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenRectTransformScaleLoopsRestart()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localScale;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        Vector3 firstLoopEndValues = rect.localScale;
+        t.update(duration * 0.000001f);
+        Vector3 secondLoopStartValues = rect.localScale;
+        t.update(duration * 0.999999f);
+        Vector3 secondLoopEndValues = rect.localScale;
+        t.update(duration * 0.000001f);
+        Vector3 thirdLoopStartValues = rect.localScale;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopStartValues == initialPosition && secondLoopEndValues == toVectorValue && thirdLoopStartValues == initialPosition);
+    }
+
+    [Test]
+    public void TweenRectTransformScaleLoopsWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localScale;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.localScale;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.localScale;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues != initialPosition && secondLoopEndValues != firstLoopEndValues);
+    }
+
+    [Test]
+    public void TweenRectTransformScaleLoopsOscillate()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localScale;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.localScale;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.localScale;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues == initialPosition);
+    }
     #endregion
 
     #region rotate
+    [Test]
+    public void TweenRectTransformRotateUpdateFirstFrame()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialRotation = rect.localEulerAngles;
+        t.update(0f);
+        Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenRectTransformRotateUpdateWithTimeEqualZero()
     {
@@ -1065,9 +1227,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenRectTransformRotateLoopsRestart()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localEulerAngles;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        Vector3 firstLoopEndValues = rect.localEulerAngles;
+        t.update(duration * 0.000001f);
+        Vector3 secondLoopStartValues = rect.localEulerAngles;
+        t.update(duration * 0.999999f);
+        Vector3 secondLoopEndValues = rect.localEulerAngles;
+        t.update(duration * 0.000001f);
+        Vector3 thirdLoopStartValues = rect.localEulerAngles;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopStartValues == initialPosition && secondLoopEndValues == toVectorValue && thirdLoopStartValues == initialPosition);
+    }
+
+    [Test]
+    public void TweenRectTransformRotateLoopsWithOffset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localEulerAngles;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.localEulerAngles;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.localEulerAngles;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues != initialPosition && secondLoopEndValues != firstLoopEndValues);
+    }
+
+    [Test]
+    public void TweenRectTransformRotateLoopsOscillate()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.localEulerAngles;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        Vector3 firstLoopEndValues = rect.localEulerAngles;
+        t.update(duration);
+        Vector3 secondLoopEndValues = rect.localEulerAngles;
+        Assert.IsTrue(firstLoopEndValues == toVectorValue && secondLoopEndValues == initialPosition);
+    }
     #endregion
 
     #region fade canvasRenderer
+    [Test]
+    public void TweenCanvasRendererFadeUpdateFirstFrame()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenCanvasRendererFadeUpdateWithTimeEqualZero()
     {
@@ -1115,9 +1340,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenCanvasRendererFadeLoopsRestart()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = canvasRenderer.GetAlpha();
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = canvasRenderer.GetAlpha();
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = canvasRenderer.GetAlpha();
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = canvasRenderer.GetAlpha();
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenCanvasRendererFadeLoopsWithOffset()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = canvasRenderer.GetAlpha();
+        t.update(duration);
+        float secondLoopEndAlpha = canvasRenderer.GetAlpha();
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenCanvasRendererFadeLoopsOscillate()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = canvasRenderer.GetAlpha();
+        t.update(duration);
+        float secondLoopEndAlpha = canvasRenderer.GetAlpha();
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade spriteRenderer
+    [Test]
+    public void TweenSpriteRendererFadeUpdateFirstFrame()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenSpriteRendererFadeUpdateWithTimeEqualZero()
     {
@@ -1165,9 +1453,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenSpriteRendererFadeLoopsRestart()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = spriteRenderer.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = spriteRenderer.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = spriteRenderer.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = spriteRenderer.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenSpriteRendererFadeLoopsWithOffset()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = spriteRenderer.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = spriteRenderer.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenSpriteRendererFadeLoopsOscillate()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = spriteRenderer.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = spriteRenderer.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade rawImage
+    [Test]
+    public void TweenRawImageFadeUpdateFirstFrame()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenRawImageFadeUpdateWithTimeEqualZero()
     {
@@ -1215,9 +1566,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenRawImageFadeLoopsRestart()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = rawImage.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = rawImage.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = rawImage.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = rawImage.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenRawImageFadeLoopsWithOffset()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = rawImage.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = rawImage.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenRawImageFadeLoopsOscillate()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = rawImage.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = rawImage.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade image
+    [Test]
+    public void TweenImageFadeUpdateFirstFrame()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenImageFadeUpdateWithTimeEqualZero()
     {
@@ -1265,9 +1679,72 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenImageFadeLoopsRestart()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = image.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = image.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = image.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = image.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenImageFadeLoopsWithOffset()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = image.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = image.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenImageFadeLoopsOscillate()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = image.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = image.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade text
+    [Test]
+    public void TweenTextFadeUpdateFirstFrame()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenTextFadeUpdateWithTimeEqualZero()
     {
@@ -1315,9 +1792,71 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenTextFadeLoopsRestart()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = text.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = text.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = text.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = text.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenTextFadeLoopsWithOffset()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = text.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = text.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenTextFadeLoopsOscillate()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = text.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = text.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade toggle
+    [Test]
+    public void TweenToggleFadeUpdateFirstFrame()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenToggleFadeUpdateWithTimeEqualZero()
     {
@@ -1361,9 +1900,65 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == toggle.graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenToggleFadeLoopsRestart()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = toggle.graphic.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = toggle.graphic.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = toggle.graphic.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = toggle.graphic.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenToggleFadeLoopsWithOffset()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = toggle.graphic.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = toggle.graphic.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenToggleFadeLoopsOscillate()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = toggle.graphic.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = toggle.graphic.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade slider
+    [Test]
+    public void TweenSliderFadeUpdateFirstFrame()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenSliderFadeUpdateWithTimeEqualZero()
     {
@@ -1407,9 +2002,66 @@ public class TweenTest
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == slider.image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
     }
+
+    [Test]
+    public void TweenSliderFadeLoopsRestart()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = slider.image.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = slider.image.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = slider.image.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = slider.image.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenSliderFadeLoopsWithOffset()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = slider.image.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = slider.image.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenSliderFadeLoopsOscillate()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = slider.image.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = slider.image.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
+    }
     #endregion
 
     #region fade graphic
+    [Test]
+    public void TweenGraphicFadeUpdateFirstFrame()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.update(0f);
+        Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+    }
+
     [Test]
     public void TweenGraphicFadeUpdateWithTimeEqualZero()
     {
@@ -1456,6 +2108,55 @@ public class TweenTest
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
         Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenGraphicFadeLoopsRestart()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.update(duration * 0.999999f);
+        float firstLoopEndAlpha = graphic.color.a;
+        t.update(duration * 0.000001f);
+        float secondLoopStartAlpha = graphic.color.a;
+        t.update(duration * 0.999999f);
+        float secondLoopEndAlpha = graphic.color.a;
+        t.update(duration * 0.000001f);
+        float thirdLoopStartAlpha = graphic.color.a;
+        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
+    }
+
+    [Test]
+    public void TweenGraphicFadeLoopsWithOffset()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = graphic.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = graphic.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
+    }
+
+    [Test]
+    public void TweenGraphicFadeLoopsOscillate()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.update(duration);
+        float firstLoopEndAlpha = graphic.color.a;
+        t.update(duration);
+        float secondLoopEndAlpha = graphic.color.a;
+        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
     }
     #endregion
 #endregion
