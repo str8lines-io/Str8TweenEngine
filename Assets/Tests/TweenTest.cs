@@ -2228,13 +2228,138 @@ public class TweenTest
 #endregion
 
 #region lifecycle
-    // * pause()
-    // * play()
-    // * stop()
-    // * kill()
-    // * reset() => test values of isCompleted and isRunning + check reset of vector and float
-    // * complete() => test values of isCompleted and isRunning + check final values of vector and float + invoke event + killonend
+
+    [Test]
+    public void TweenRectTransformMovePause()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        bool isRunning = t.isRunning;
+        t.pause();
+        Assert.IsTrue(isRunning && !t.isRunning);
+    }
+
+    [Test]
+    public void TweenRectTransformMovePlay()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        t.pause();
+        bool isRunning = t.isRunning;
+        t.play();
+        Assert.IsTrue(!isRunning && t.isRunning);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveStopDefault()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.stop();
+        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && !t.isAlive);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveStopDontKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.stop();
+        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && t.isAlive);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveStopKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.stop();
+        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && !t.isAlive);
+    }
+
+    [Test]
+    public void TweenRectTransformMoveKill()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        bool isAlive = t.isAlive;
+        t.kill();
+        Assert.IsTrue(isAlive && !t.isAlive);
+    }
+    
+    #region complete move
+
+    [Test]
+    public void TweenRectTransformMoveCompleteDefault()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.complete();
+        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCompleteDontKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.complete();
+        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCompleteKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.complete();
+        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCompleteEvent()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        bool triggered = false;
+        t.onComplete(()=>{ triggered = true; }).complete();
+        Assert.IsTrue(triggered);
+    }
+    #endregion
+
     // * cancel() => test values of isCompleted and isRunning + check reset of vector and float + killonend
+    // * reset() => test values of isCompleted and isRunning + check reset of vector and float
     // * Kept alive with killOnEnd false
 #endregion
 }
