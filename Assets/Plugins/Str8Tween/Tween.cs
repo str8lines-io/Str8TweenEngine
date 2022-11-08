@@ -9,19 +9,12 @@ namespace Str8lines.Tweening
     /// <summary>Representation of a <see cref="Tween">Tween</see>. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
     public class Tween
     {
-        #region Variables
+    #region Variables
         #region Public variables
         /// <value>UUID given on creation.</value>
         public string id { get;private set; }
         /// <value><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> on which the tween will be applied.</value>
         public GameObject target { get;private set; }
-        /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
-        public enum LoopType
-        {
-            Restart,
-            Oscillate,
-            WithOffset
-        }
         /// <value>Defines easing functions used internally and provides methods to calculate <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> and <c>float</c> values.</value>
         public Easing.EaseType easeType { get;private set; }
         /// <value>Duration of a tween loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
@@ -86,6 +79,8 @@ namespace Str8lines.Tweening
         #endregion
 
         #region Loop specific
+        /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
+        public enum LoopType { Restart, Oscillate, WithOffset }
         private bool _isLoop;
         private bool _isIncrementing;
         private int _loopsCount;
@@ -108,9 +103,9 @@ namespace Str8lines.Tweening
         private event TweenLoopDelegate _loop;
         private TweenLoopDelegate _callbackOnLoop;
         #endregion
-        #endregion
+    #endregion
 
-        #region Constructors
+    #region Constructors
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
         /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> on which changes will be applied.</param>
@@ -764,9 +759,9 @@ namespace Str8lines.Tweening
             }
             return this;
         }
-        #endregion
+    #endregion
 
-        #region Public methods
+    #region Public methods
         /// <summary>Determines new values from the time <paramref name="t"/> elapsed since the last frame and applies it to the <see cref="Tween.target"/>. Also triggers callbacks when required.</summary>
         /// <param name="t">The time elapsed since the last frame (in seconds).</param>
         /// <returns><c>void</c></returns>
@@ -901,54 +896,7 @@ namespace Str8lines.Tweening
             _elapsed = 0f;
             _playTime = 0f;
             _loopTime = 0f;
-            RectTransform rectTransform = null;
-            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
-            switch(_methodName)
-            {
-                case "move":
-                    if(rectTransform != null) rectTransform.anchoredPosition3D = _initialFromVector;
-                    break;
-
-                case "scale":
-                    if(rectTransform != null) rectTransform.localScale = _initialFromVector;
-                    break;
-
-                case "rotate":
-                    if(rectTransform != null) rectTransform.localEulerAngles = _initialFromVector;
-                    break;
-
-                case "fade":
-                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(_initialFromCanvasRendererAlpha);
-                    if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, _initialFromSpriteRendererAlpha);
-                        spriteRenderer.color = newSpriteRendererColor;
-                    }
-                    if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
-                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, _initialFromRawImageAlpha);
-                        rawImage.color = newRawImageColor;
-                    }
-                    if(_image != null && target.TryGetComponent(out Image image)){
-                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, _initialFromImageAlpha);
-                        image.color = newImageColor;
-                    }
-                    if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
-                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, _initialFromToggleAlpha);
-                        toggle.graphic.color = newToggleColor;
-                    }
-                    if(_slider != null && target.TryGetComponent(out Slider slider)){
-                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, _initialFromSliderAlpha);
-                        slider.image.color = newSliderColor;
-                    }
-                    if(_text != null && target.TryGetComponent(out Text text)){
-                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, _initialFromTextAlpha);
-                        text.color = newTextColor;
-                    }
-                    if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
-                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, _initialFromGraphicAlpha);
-                        graphic.color = newGraphicColor;
-                    }
-                    break;
-            }
+            _setInitialValue();
         }
 
         /// <summary>Plays the <see cref="Tween">tween</see>.</summary>
@@ -1054,57 +1002,7 @@ namespace Str8lines.Tweening
         {
             this.isCompleted = true;
             this.isRunning = false;
-            RectTransform rectTransform = null;
-            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
-            if(this.duration != 0f)
-            {
-                switch(_methodName)
-                {
-                    case "move":
-                        if(rectTransform != null) rectTransform.anchoredPosition3D = _initialToVector;
-                        break;
-
-                    case "scale":
-                        if(rectTransform != null) rectTransform.localScale = _initialToVector;
-                        break;
-
-                    case "rotate":
-                        if(rectTransform != null) rectTransform.localEulerAngles = _initialToVector;
-                        break;
-
-                    case "fade":
-                        if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(_initialToValue);
-                        if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                            Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, _initialToValue);
-                            spriteRenderer.color = newSpriteRendererColor;
-                        }
-                        if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
-                            Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, _initialToValue);
-                            rawImage.color = newRawImageColor;
-                        }
-                        if(_image != null && target.TryGetComponent(out Image image)){
-                            Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, _initialToValue);
-                            image.color = newImageColor;
-                        }
-                        if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
-                            Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, _initialToValue);
-                            toggle.graphic.color = newToggleColor;
-                        }
-                        if(_slider != null && target.TryGetComponent(out Slider slider)){
-                            Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, _initialToValue);
-                            slider.image.color = newSliderColor;
-                        }
-                        if(_text != null && target.TryGetComponent(out Text text)){
-                            Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, _initialToValue);
-                            text.color = newTextColor;
-                        }
-                        if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
-                            Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, _initialToValue);
-                            graphic.color = newGraphicColor;
-                        }
-                        break;
-                }
-            }
+            _setInitialValue(true);
             _complete?.Invoke();
             if(_killOnEnd == true) kill();
         }
@@ -1144,54 +1042,7 @@ namespace Str8lines.Tweening
         {
             this.isCompleted = true;
             this.isRunning = false;
-            RectTransform rectTransform = null;
-            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
-            switch(_methodName)
-            {
-                case "move":
-                    if(rectTransform != null) rectTransform.anchoredPosition3D = _initialFromVector;
-                    break;
-
-                case "scale":
-                    if(rectTransform != null) rectTransform.localScale = _initialFromVector;
-                    break;
-
-                case "rotate":
-                    if(rectTransform != null) rectTransform.localEulerAngles = _initialFromVector;
-                    break;
-
-                case "fade":
-                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(_initialFromCanvasRendererAlpha);
-                    if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, _initialFromSpriteRendererAlpha);
-                        spriteRenderer.color = newSpriteRendererColor;
-                    }
-                    if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
-                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, _initialFromRawImageAlpha);
-                        rawImage.color = newRawImageColor;
-                    }
-                    if(_image != null && target.TryGetComponent(out Image image)){
-                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, _initialFromImageAlpha);
-                        image.color = newImageColor;
-                    }
-                    if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
-                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, _initialFromToggleAlpha);
-                        toggle.graphic.color = newToggleColor;
-                    }
-                    if(_slider != null && target.TryGetComponent(out Slider slider)){
-                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, _initialFromSliderAlpha);
-                        slider.image.color = newSliderColor;
-                    }
-                    if(_text != null && target.TryGetComponent(out Text text)){
-                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, _initialFromTextAlpha);
-                        text.color = newTextColor;
-                    }
-                    if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
-                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, _initialFromGraphicAlpha);
-                        graphic.color = newGraphicColor;
-                    }
-                    break;
-            }
+            _setInitialValue();
             if(_killOnEnd == true) kill();
         }
 
@@ -1269,9 +1120,9 @@ namespace Str8lines.Tweening
             _loop -= _callbackOnLoop;
             _complete -= _callbackOnComplete;
         }
-        #endregion
+    #endregion
 
-        #region Private methods
+    #region Private methods
         private void _init(string methodName, bool killOnEnd)
         {
             if(!Array.Exists(_authorizedMethods, name => name == methodName)) throw new ArgumentException("methodName is not allowed", "methodName");
@@ -1415,6 +1266,69 @@ namespace Str8lines.Tweening
             _passedLoopsCount++;
             _loop?.Invoke(_passedLoopsCount);
         }
-        #endregion
+
+        //Go to initial "to values" or to initial "from values"
+        private void _setInitialValue(bool useToValues = false){
+            RectTransform rectTransform = null;
+            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
+            switch(_methodName)
+            {
+                case "move":
+                    if(rectTransform != null) rectTransform.anchoredPosition3D = useToValues ? _initialToVector : _initialFromVector;
+                    break;
+
+                case "scale":
+                    if(rectTransform != null) rectTransform.localScale = useToValues ? _initialToVector : _initialFromVector;
+                    break;
+
+                case "rotate":
+                    if(rectTransform != null) rectTransform.localEulerAngles = useToValues ? _initialToVector : _initialFromVector;
+                    break;
+
+                case "fade":
+                    float initialValue;
+                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)){
+                        initialValue = useToValues ? _initialToValue : _initialFromCanvasRendererAlpha;
+                        canvasRenderer.SetAlpha(initialValue);
+                    }
+                    if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
+                        initialValue = useToValues ? _initialToValue : _initialFromSpriteRendererAlpha;
+                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
+                        spriteRenderer.color = newSpriteRendererColor;
+                    }
+                    if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
+                        initialValue = useToValues ? _initialToValue : _initialFromRawImageAlpha;
+                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, initialValue);
+                        rawImage.color = newRawImageColor;
+                    }
+                    if(_image != null && target.TryGetComponent(out Image image)){
+                        initialValue = useToValues ? _initialToValue : _initialFromImageAlpha;
+                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, initialValue);
+                        image.color = newImageColor;
+                    }
+                    if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
+                        initialValue = useToValues ? _initialToValue : _initialFromToggleAlpha;
+                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
+                        toggle.graphic.color = newToggleColor;
+                    }
+                    if(_slider != null && target.TryGetComponent(out Slider slider)){
+                        initialValue = useToValues ? _initialToValue : _initialFromSliderAlpha;
+                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
+                        slider.image.color = newSliderColor;
+                    }
+                    if(_text != null && target.TryGetComponent(out Text text)){
+                        initialValue = useToValues ? _initialToValue : _initialFromTextAlpha;
+                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, initialValue);
+                        text.color = newTextColor;
+                    }
+                    if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
+                        initialValue = useToValues ? _initialToValue : _initialFromGraphicAlpha;
+                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, initialValue);
+                        graphic.color = newGraphicColor;
+                    }
+                    break;
+            }
+        }
+    #endregion
     }
 }

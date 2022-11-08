@@ -2215,7 +2215,7 @@ public class TweenTest
     }
 
     [Test]
-    public void TweenRectTransformMoveComplete()
+    public void TweenRectTransformMoveCompleteOnUpdate()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -2228,7 +2228,7 @@ public class TweenTest
 #endregion
 
 #region lifecycle
-
+    #region pause
     [Test]
     public void TweenRectTransformMovePause()
     {
@@ -2251,7 +2251,9 @@ public class TweenTest
         t.play();
         Assert.IsTrue(!isRunning && t.isRunning);
     }
+    #endregion
 
+    #region stop
     [Test]
     public void TweenRectTransformMoveStopDefault()
     {
@@ -2290,7 +2292,9 @@ public class TweenTest
         t.stop();
         Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && !t.isAlive);
     }
+    #endregion
 
+    #region kill
     [Test]
     public void TweenRectTransformMoveKill()
     {
@@ -2301,16 +2305,15 @@ public class TweenTest
         t.kill();
         Assert.IsTrue(isAlive && !t.isAlive);
     }
+    #endregion
     
-    #region complete move
-
+    #region complete
     [Test]
-    public void TweenRectTransformMoveCompleteDefault()
+    public void TweenRectTransformMoveComplete()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
         bool isCompleted = t.isCompleted;
         bool isRunning = t.isRunning;
@@ -2324,7 +2327,6 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
-        Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
         bool isCompleted = t.isCompleted;
         bool isRunning = t.isRunning;
@@ -2338,7 +2340,6 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
-        Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
         bool isCompleted = t.isCompleted;
         bool isRunning = t.isRunning;
@@ -2356,10 +2357,497 @@ public class TweenTest
         t.onComplete(()=>{ triggered = true; }).complete();
         Assert.IsTrue(triggered);
     }
+    
+    [Test]
+    public void TweenRectTransformScaleComplete()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(rect.localScale, toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformRotateComplete()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(rect.localEulerAngles, toVectorValue);
+    }
+    
+    [Test]
+    public void TweenCanvasRendererFadeComplete()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(canvasRenderer.GetAlpha(), toFloatValue);
+    }
+    
+    [Test]
+    public void TweenSpriteRendererFadeComplete()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(spriteRenderer.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenRawImageFadeComplete()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(rawImage.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenImageFadeComplete()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(image.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenTextFadeComplete()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(text.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenToggleFadeComplete()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(toggle.graphic.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenSliderFadeComplete()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(slider.image.color.a, toFloatValue);
+    }
+    
+    [Test]
+    public void TweenGraphicFadeComplete()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        t.complete();
+        Assert.AreEqual(graphic.color.a, toFloatValue);
+    }
+    #endregion
+    
+    #region cancel
+    [Test]
+    public void TweenRectTransformMoveCancel()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.cancel();
+        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCancelDontKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.cancel();
+        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCancelKillOnEnd()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.cancel();
+        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveCancelEvent()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        bool triggered = false;
+        t.onComplete(()=>{ triggered = true; }).cancel();
+        Assert.IsTrue(!triggered);
+    }
+
+    [Test]
+    public void TweenRectTransformScaleCancel()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialScale = rect.localScale;
+        t.cancel();
+        Assert.AreEqual(rect.localScale, initialScale);
+    }
+
+    [Test]
+    public void TweenRectTransformRotateCancel()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialRotation = rect.localEulerAngles;
+        t.cancel();
+        Assert.AreEqual(rect.localEulerAngles, initialRotation);
+    }
+    
+    [Test]
+    public void TweenCanvasRendererFadeCancel()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.cancel();
+        Assert.AreEqual(canvasRenderer.GetAlpha(), initialAlpha);
+    }
+
+    [Test]
+    public void TweenSpriteRendererFadeCancel()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.cancel();
+        Assert.AreEqual(spriteRenderer.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenRawImageFadeCancel()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.cancel();
+        Assert.AreEqual(rawImage.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenImageFadeCancel()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.cancel();
+        Assert.AreEqual(image.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenTextFadeCancel()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.cancel();
+        Assert.AreEqual(text.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenToggleFadeCancel()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.cancel();
+        Assert.AreEqual(toggle.graphic.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenSliderFadeCancel()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.cancel();
+        Assert.AreEqual(slider.image.color.a, initialAlpha);
+    }
+
+    [Test]
+    public void TweenGraphicFadeCancel()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.cancel();
+        Assert.AreEqual(graphic.color.a, initialAlpha);
+    }
     #endregion
 
-    // * cancel() => test values of isCompleted and isRunning + check reset of vector and float + killonend
-    // * reset() => test values of isCompleted and isRunning + check reset of vector and float
-    // * Kept alive with killOnEnd false
+    #region reset
+    [Test]
+    public void TweenRectTransformMoveReset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        Vector3 positionBeforeReset = rect.anchoredPosition3D;
+        t.reset();
+        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && !t.isRunning 
+            && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveResetDontPlayOnReset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        Vector3 positionBeforeReset = rect.anchoredPosition3D;
+        t.reset(false);
+        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && !t.isRunning 
+            && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveResetPlayOnReset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        bool isAlive = t.isAlive;
+        bool isCompleted = t.isCompleted;
+        bool isRunning = t.isRunning;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        Vector3 positionBeforeReset = rect.anchoredPosition3D;
+        t.reset(true);
+        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && t.isRunning 
+            && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveResetLoopCountWhenRunning()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        int triggered = 0;
+        t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        t.update(duration);
+        int loopsBeforeReset = triggered;
+        t.reset();
+        triggered = 0;
+        t.update(0f); //First frame update is also reset 
+        t.update(duration);
+        Assert.IsTrue(loopsBeforeReset == 2 && triggered == 0);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveResetLoopCountWhenNotRunning()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        int triggered = 0;
+        t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
+        t.update(duration);
+        t.update(duration);
+        int loopsBeforeReset = triggered;
+        t.reset(true);
+        triggered = 0;
+        t.update(0f); //First frame update is also reset 
+        t.update(duration);
+        Assert.IsTrue(loopsBeforeReset == 2 && triggered == 1);
+    }
+    
+    [Test]
+    public void TweenRectTransformScaleReset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
+        Vector3 initialScale = rect.localScale;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        Vector3 scaleBeforeReset = rect.localScale;
+        t.reset();
+        Assert.IsTrue(scaleBeforeReset != initialScale && rect.localScale == initialScale && rect.localScale != scaleBeforeReset);
+    }
+
+    [Test]
+    public void TweenRectTransformRotateReset()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
+        Vector3 initialRotation = rect.localEulerAngles;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        Vector3 rotationBeforeReset = rect.localEulerAngles;
+        t.reset();
+        Assert.IsTrue(rotationBeforeReset != initialRotation && rect.localEulerAngles == initialRotation && rect.localEulerAngles != rotationBeforeReset);
+    }
+    
+    [Test]
+    public void TweenCanvasRendererFadeReset()
+    {
+        go.AddComponent<CanvasRenderer>();
+        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
+        Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = canvasRenderer.GetAlpha();
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = canvasRenderer.GetAlpha();
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && canvasRenderer.GetAlpha() == initialAlpha && canvasRenderer.GetAlpha() != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenSpriteRendererFadeReset()
+    {
+        go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+        Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
+        float initialAlpha = spriteRenderer.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = spriteRenderer.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && spriteRenderer.color.a == initialAlpha && spriteRenderer.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenRawImageFadeReset()
+    {
+        go.AddComponent<RawImage>();
+        RawImage rawImage = go.GetComponent<RawImage>();
+        Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
+        float initialAlpha = rawImage.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = rawImage.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && rawImage.color.a == initialAlpha && rawImage.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenImageFadeReset()
+    {
+        go.AddComponent<Image>();
+        Image image = go.GetComponent<Image>();
+        Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
+        float initialAlpha = image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = image.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && image.color.a == initialAlpha && image.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenTextFadeReset()
+    {
+        go.AddComponent<Text>();
+        Text text = go.GetComponent<Text>();
+        Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
+        float initialAlpha = text.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = text.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && text.color.a == initialAlpha && text.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenToggleFadeReset()
+    {
+        Toggle toggle = toggleGo.GetComponent<Toggle>();
+        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
+        float initialAlpha = toggle.graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = toggle.graphic.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && toggle.graphic.color.a == initialAlpha && toggle.graphic.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenSliderFadeReset()
+    {
+        Slider slider = sliderGo.GetComponent<Slider>();
+        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
+        float initialAlpha = slider.image.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = slider.image.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && slider.image.color.a == initialAlpha && slider.image.color.a != alphaBeforeReset);
+    }
+    
+    [Test]
+    public void TweenGraphicFadeReset()
+    {
+        go.AddComponent<Image>();
+        Graphic graphic = go.GetComponent<Graphic>();
+        Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
+        float initialAlpha = graphic.color.a;
+        t.update(0f); //First frame is not taken in count
+        t.update(duration/2);
+        float alphaBeforeReset = graphic.color.a;
+        t.reset();
+        Assert.IsTrue(alphaBeforeReset != initialAlpha && graphic.color.a == initialAlpha && graphic.color.a != alphaBeforeReset);
+    }
+    #endregion
 #endregion
 }
