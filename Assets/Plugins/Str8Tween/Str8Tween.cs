@@ -1125,7 +1125,7 @@ namespace Str8lines.Tweening
             if(Application.isPlaying) DontDestroyOnLoad(_tweenerGameObject);
 #else
             _tweenerGameObject.hideFlags = HideFlags.HideAndDontSave;
-            DontDestroyOnLoad( _tweenerGameObject );
+            DontDestroyOnLoad(_tweenerGameObject);
 #endif
         }
 
@@ -1133,11 +1133,11 @@ namespace Str8lines.Tweening
         {
             _deadTweenIDs.Clear(); //Remove dead tweens
             _deadTweenIDs.TrimExcess(); //Remove empty entries
-
+            
             for(int i = 0; i < tweens.Count; i++) //Working with foreach loops to iterate through a dictionnary while manipulating it triggers errors
             {
                 KeyValuePair<string, Tween> entry = tweens.ElementAt(i);
-                if(entry.Value.isAlive) entry.Value.update(Time.deltaTime);
+                if(entry.Value.target != null && entry.Value.isAlive) entry.Value.update(Time.deltaTime);
                 else _deadTweenIDs.Add(entry.Key);
             }
 

@@ -791,7 +791,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void update(float t)
         {
-            if(this.isAlive)
+            if(this.isAlive && this.target != null)
             {
                 if(!this.isCompleted)
                 {
@@ -1148,7 +1148,7 @@ namespace Str8lines.Tweening
         private void _setCalculatedValue(float playtime)
         {
             RectTransform rectTransform = null;
-            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
+            if(this.target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
             switch(_methodName)
             {
                 case "move":
@@ -1169,32 +1169,32 @@ namespace Str8lines.Tweening
                     break;
 
                 case "fade":
-                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromCanvasRendererAlpha, _canvasRendererAlphaChange, this.duration));
-                    if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
+                    if(_canvasRenderer != null && this.target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromCanvasRendererAlpha, _canvasRendererAlphaChange, this.duration));
+                    if(_spriteRenderer != null && this.target.TryGetComponent(out SpriteRenderer spriteRenderer)){
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, this.duration));
                         spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
+                    if(_rawImage != null && this.target.TryGetComponent(out RawImage rawImage)){
                         Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, Easing.ease(this.easeType, playtime, _fromRawImageAlpha, _rawImageAlphaChange, this.duration));
                         rawImage.color = newRawImageColor;
                     }
-                    if(_image != null && target.TryGetComponent(out Image image)){
+                    if(_image != null && this.target.TryGetComponent(out Image image)){
                         Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, Easing.ease(this.easeType, playtime, _fromImageAlpha, _imageAlphaChange, this.duration));
                         image.color = newImageColor;
                     }
-                    if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
+                    if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
                         Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration));
                         toggle.graphic.color = newToggleColor;
                     }
-                    if(_slider != null && target.TryGetComponent(out Slider slider)){
+                    if(_slider != null && this.target.TryGetComponent(out Slider slider)){
                         Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, Easing.ease(this.easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, this.duration));
                         slider.image.color = newSliderColor;
                     }
-                    if(_text != null && target.TryGetComponent(out Text text)){
+                    if(_text != null && this.target.TryGetComponent(out Text text)){
                         Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, Easing.ease(this.easeType, playtime, _fromTextAlpha, _textAlphaChange, this.duration));
                         text.color = newTextColor;
                     }
-                    if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
+                    if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, this.duration));
                         graphic.color = newGraphicColor;
                     }
@@ -1270,7 +1270,7 @@ namespace Str8lines.Tweening
         //Go to initial "to values" or to initial "from values"
         private void _setInitialValue(bool useToValues = false){
             RectTransform rectTransform = null;
-            if(target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
+            if(this.target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
             switch(_methodName)
             {
                 case "move":
@@ -1287,41 +1287,41 @@ namespace Str8lines.Tweening
 
                 case "fade":
                     float initialValue;
-                    if(_canvasRenderer != null && target.TryGetComponent(out CanvasRenderer canvasRenderer)){
+                    if(_canvasRenderer != null && this.target.TryGetComponent(out CanvasRenderer canvasRenderer)){
                         initialValue = useToValues ? _initialToValue : _initialFromCanvasRendererAlpha;
                         canvasRenderer.SetAlpha(initialValue);
                     }
-                    if(_spriteRenderer != null && target.TryGetComponent(out SpriteRenderer spriteRenderer)){
+                    if(_spriteRenderer != null && this.target.TryGetComponent(out SpriteRenderer spriteRenderer)){
                         initialValue = useToValues ? _initialToValue : _initialFromSpriteRendererAlpha;
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
                         spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_rawImage != null && target.TryGetComponent(out RawImage rawImage)){
+                    if(_rawImage != null && this.target.TryGetComponent(out RawImage rawImage)){
                         initialValue = useToValues ? _initialToValue : _initialFromRawImageAlpha;
                         Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, initialValue);
                         rawImage.color = newRawImageColor;
                     }
-                    if(_image != null && target.TryGetComponent(out Image image)){
+                    if(_image != null && this.target.TryGetComponent(out Image image)){
                         initialValue = useToValues ? _initialToValue : _initialFromImageAlpha;
                         Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, initialValue);
                         image.color = newImageColor;
                     }
-                    if(_toggle != null && target.TryGetComponent(out Toggle toggle)){
+                    if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
                         initialValue = useToValues ? _initialToValue : _initialFromToggleAlpha;
                         Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
                         toggle.graphic.color = newToggleColor;
                     }
-                    if(_slider != null && target.TryGetComponent(out Slider slider)){
+                    if(_slider != null && this.target.TryGetComponent(out Slider slider)){
                         initialValue = useToValues ? _initialToValue : _initialFromSliderAlpha;
                         Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
                         slider.image.color = newSliderColor;
                     }
-                    if(_text != null && target.TryGetComponent(out Text text)){
+                    if(_text != null && this.target.TryGetComponent(out Text text)){
                         initialValue = useToValues ? _initialToValue : _initialFromTextAlpha;
                         Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, initialValue);
                         text.color = newTextColor;
                     }
-                    if(_graphic != null && target.TryGetComponent(out Graphic graphic)){
+                    if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         initialValue = useToValues ? _initialToValue : _initialFromGraphicAlpha;
                         Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, initialValue);
                         graphic.color = newGraphicColor;

@@ -30,11 +30,7 @@ public class Str8TweenTest
         eventSystemGo = UnityEngine.Object.Instantiate(eventSystem);
         toggleGo = canvasGo.transform.GetChild(0).gameObject;
         sliderGo = canvasGo.transform.GetChild(1).gameObject;
-
-        toVectorValue = new Vector2(2f, 2f);
-        toFloatValue = 0.5f;
-        easeType = Easing.EaseType.Linear;
-        duration = 1f;
+        _setInitialValues();
     }
 
     [TearDown]
@@ -43,6 +39,27 @@ public class Str8TweenTest
         UnityEngine.Object.Destroy(go);
         UnityEngine.Object.Destroy(canvasGo);
         UnityEngine.Object.Destroy(eventSystemGo);
+    }
+
+    [UnitySetUp]
+    public void SetUp()
+    {
+        go = new GameObject();
+        _setInitialValues();
+    }
+
+    [UnityTearDown]
+    public void TearDown()
+    {
+        UnityEngine.Object.Destroy(go);
+    }
+
+    private void _setInitialValues()
+    {
+        toVectorValue = new Vector2(2f, 2f);
+        toFloatValue = 0.5f;
+        easeType = Easing.EaseType.Linear;
+        duration = 1f;
     }
 
 #region Tween methods
@@ -596,26 +613,26 @@ public class Str8TweenTest
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
 
-    // [Test]
-    // public void TweenUpdated()
-    // {
-    //     go.AddComponent<RectTransform>();
-    //     RectTransform rect = go.GetComponent<RectTransform>();
-    //     Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
-    //     Assert.That(
-    //         rect.anchoredPosition3D, Is.EqualTo(toVectorValue).After(1000)
-    //     );
-    // }
+    [UnityTest]
+    public IEnumerator TweenUpdated()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        yield return new WaitForSeconds(duration + 0.1f);
+        Assert.IsTrue(rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == toVectorValue);
+    }
 
-    // [Test]
-    // public void TweenRemainingAfterUpdate()
-    // {
-    //     go.AddComponent<RectTransform>();
-    //     RectTransform rect = go.GetComponent<RectTransform>();
-    //     Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
-    //     Assert.That(
-    //         Str8Tween.getTween(t.id), Is.EqualTo(t).After(2000)
-    //     );
-    // }
+    [UnityTest]
+    public IEnumerator TweenRemainingAfterUpdate()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
+        yield return new WaitForSeconds(duration + 0.1f);
+        Tween result = Str8Tween.getTween(t.id);
+        Assert.AreEqual(result, t);
+    }
 #endregion
 }
