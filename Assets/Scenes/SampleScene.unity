@@ -314,9 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   id: 
-  duration: 0
-  delay: 0
-  easeType: 0
+  duration: 5
+  delay: 2
   isLoop: 0
   loopType: 0
   loopsCount: 0
