@@ -15,7 +15,11 @@ public class EndUserTests : MonoBehaviour
     public bool isLoop;
     public Tween.LoopType loopType;
     public int loopsCount;
-    
+
+    [HideInInspector]
+    public GameObject canvasGo;
+    private int panelIndex;
+
     /*
         * Tester tous les ease types
         * Tester les différents Tweens (move, scale, rotate, fade)
@@ -250,53 +254,10 @@ public class EndUserTests : MonoBehaviour
         _fadeSpriteRenderer(fadeSpriteRendererPanel, 30, Easing.EaseType.InOutBounce, 0.2f);
         #endregion
     #endregion
-    
-    #region FadeRawImage
-        #region In
-        Transform fadeRawImagePanel = fadePanel.GetChild(2);
-        _fadeRawImage(fadeRawImagePanel, 0, Easing.EaseType.Linear, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 1, Easing.EaseType.InSine, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 2, Easing.EaseType.InQuad, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 3, Easing.EaseType.InCubic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 4, Easing.EaseType.InQuart, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 5, Easing.EaseType.InQuint, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 6, Easing.EaseType.InExpo, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 7, Easing.EaseType.InCirc, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 8, Easing.EaseType.InBack, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 9, Easing.EaseType.InElastic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 10, Easing.EaseType.InBounce, 0.2f);
-        #endregion
-
-        #region Out
-        _fadeRawImage(fadeRawImagePanel, 11, Easing.EaseType.OutSine, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 12, Easing.EaseType.OutQuad, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 13, Easing.EaseType.OutCubic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 14, Easing.EaseType.OutQuart, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 15, Easing.EaseType.OutQuint, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 16, Easing.EaseType.OutExpo, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 17, Easing.EaseType.OutCirc, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 18, Easing.EaseType.OutBack, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 19, Easing.EaseType.OutElastic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 20, Easing.EaseType.OutBounce, 0.2f);
-        #endregion
-
-        #region InOut
-        _fadeRawImage(fadeRawImagePanel, 21, Easing.EaseType.InOutSine, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 22, Easing.EaseType.InOutQuad, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 23, Easing.EaseType.InOutCubic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 24, Easing.EaseType.InOutQuart, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 25, Easing.EaseType.InOutQuint, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 26, Easing.EaseType.InOutExpo, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 27, Easing.EaseType.InOutCirc, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 28, Easing.EaseType.InOutBack, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 29, Easing.EaseType.InOutElastic, 0.2f);
-        _fadeRawImage(fadeRawImagePanel, 30, Easing.EaseType.InOutBounce, 0.2f);
-        #endregion
-    #endregion
 
     #region FadeImage
         #region In
-        Transform fadeImagePanel = fadePanel.GetChild(3);
+        Transform fadeImagePanel = fadePanel.GetChild(2);
         _fadeImage(fadeImagePanel, 0, Easing.EaseType.Linear, 0.2f);
         _fadeImage(fadeImagePanel, 1, Easing.EaseType.InSine, 0.2f);
         _fadeImage(fadeImagePanel, 2, Easing.EaseType.InQuad, 0.2f);
@@ -334,6 +295,49 @@ public class EndUserTests : MonoBehaviour
         _fadeImage(fadeImagePanel, 28, Easing.EaseType.InOutBack, 0.2f);
         _fadeImage(fadeImagePanel, 29, Easing.EaseType.InOutElastic, 0.2f);
         _fadeImage(fadeImagePanel, 30, Easing.EaseType.InOutBounce, 0.2f);
+        #endregion
+    #endregion
+    
+    #region FadeRawImage
+        #region In
+        Transform fadeRawImagePanel = fadePanel.GetChild(3);
+        _fadeRawImage(fadeRawImagePanel, 0, Easing.EaseType.Linear, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 1, Easing.EaseType.InSine, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 2, Easing.EaseType.InQuad, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 3, Easing.EaseType.InCubic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 4, Easing.EaseType.InQuart, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 5, Easing.EaseType.InQuint, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 6, Easing.EaseType.InExpo, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 7, Easing.EaseType.InCirc, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 8, Easing.EaseType.InBack, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 9, Easing.EaseType.InElastic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 10, Easing.EaseType.InBounce, 0.2f);
+        #endregion
+
+        #region Out
+        _fadeRawImage(fadeRawImagePanel, 11, Easing.EaseType.OutSine, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 12, Easing.EaseType.OutQuad, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 13, Easing.EaseType.OutCubic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 14, Easing.EaseType.OutQuart, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 15, Easing.EaseType.OutQuint, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 16, Easing.EaseType.OutExpo, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 17, Easing.EaseType.OutCirc, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 18, Easing.EaseType.OutBack, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 19, Easing.EaseType.OutElastic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 20, Easing.EaseType.OutBounce, 0.2f);
+        #endregion
+
+        #region InOut
+        _fadeRawImage(fadeRawImagePanel, 21, Easing.EaseType.InOutSine, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 22, Easing.EaseType.InOutQuad, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 23, Easing.EaseType.InOutCubic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 24, Easing.EaseType.InOutQuart, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 25, Easing.EaseType.InOutQuint, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 26, Easing.EaseType.InOutExpo, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 27, Easing.EaseType.InOutCirc, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 28, Easing.EaseType.InOutBack, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 29, Easing.EaseType.InOutElastic, 0.2f);
+        _fadeRawImage(fadeRawImagePanel, 30, Easing.EaseType.InOutBounce, 0.2f);
         #endregion
     #endregion
 
@@ -582,10 +586,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeText(Transform fadeTextPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeTextGo = fadeTextPanel.GetChild(childIndex).gameObject;
         Text txt = fadeTextGo.GetComponent<Text>();
-        Text text = fadeTextGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(txt, x, easeType, duration);
         t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        txt.text = easeType.ToString() + "\n" + t.id;
     }
 
     private void _fadeToggle(Transform fadeTogglePanel, int childIndex, Easing.EaseType easeType, float x){

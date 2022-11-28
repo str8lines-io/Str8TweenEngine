@@ -418,6 +418,7 @@ namespace Str8lines.Tweening
         {
             if(toggle == null) throw new ArgumentNullException("toggle", "toggle can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
+            if(toggle.graphic == null && toggle.targetGraphic == null) throw new Exception("Toggle has no graphic to fade");
 
             this.id = Guid.NewGuid().ToString();
             this.target = toggle.gameObject;
@@ -429,7 +430,8 @@ namespace Str8lines.Tweening
             _toValue = toValue;
 
             _toggle = toggle;
-            _initialFromToggleAlpha = _toggle.graphic.color.a;
+            if(_toggle.targetGraphic == null) _initialFromToggleAlpha = _toggle.targetGraphic.color.a;
+            if(_toggle.graphic == null) _initialFromToggleAlpha = _toggle.graphic.color.a;
             _fromToggleAlpha = _initialFromToggleAlpha;
             _toggleAlphaChange = _toValue - _fromToggleAlpha;
         }
@@ -463,6 +465,7 @@ namespace Str8lines.Tweening
         {
             if(slider == null) throw new ArgumentNullException("slider", "slider can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
+            if(slider.image == null && slider.fillRect == null && slider.handleRect == null) throw new Exception("Slider has no graphic to fade");
 
             this.id = Guid.NewGuid().ToString();
             this.target = slider.gameObject;
@@ -474,7 +477,9 @@ namespace Str8lines.Tweening
             _toValue = toValue;
 
             _slider = slider;
-            _initialFromSliderAlpha = _slider.image.color.a;
+            if(_slider.fillRect != null && _slider.fillRect.gameObject.TryGetComponent(out Image fill)) _initialFromSliderAlpha = fill.color.a;
+            if(_slider.handleRect != null && _slider.handleRect.gameObject.TryGetComponent(out Image handle)) _initialFromSliderAlpha = handle.color.a;
+            if(_slider.image != null) _initialFromSliderAlpha = _slider.image.color.a;
             _fromSliderAlpha = _initialFromSliderAlpha;
             _sliderAlphaChange = _toValue - _fromSliderAlpha;
         }
@@ -1183,12 +1188,15 @@ namespace Str8lines.Tweening
                         image.color = newImageColor;
                     }
                     if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
-                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration));
-                        toggle.graphic.color = newToggleColor;
+                        float newAlpha = Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration);
+                        if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, newAlpha);
+                        if(toggle.targetGraphic != null) toggle.targetGraphic.color = new Color(_toggle.targetGraphic.color.r, _toggle.targetGraphic.color.g, _toggle.targetGraphic.color.b, newAlpha);
                     }
                     if(_slider != null && this.target.TryGetComponent(out Slider slider)){
-                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, Easing.ease(this.easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, this.duration));
-                        slider.image.color = newSliderColor;
+                        float newAlpha = Easing.ease(this.easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, this.duration);
+                        if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, newAlpha);
+                        if(slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, newAlpha); }
+                        if(slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, newAlpha); }
                     }
                     if(_text != null && this.target.TryGetComponent(out Text text)){
                         Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, Easing.ease(this.easeType, playtime, _fromTextAlpha, _textAlphaChange, this.duration));
@@ -1308,13 +1316,14 @@ namespace Str8lines.Tweening
                     }
                     if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
                         initialValue = useToValues ? _initialToValue : _initialFromToggleAlpha;
-                        Color newToggleColor = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
-                        toggle.graphic.color = newToggleColor;
+                        if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
+                        if(toggle.targetGraphic != null) toggle.targetGraphic.color = new Color(_toggle.targetGraphic.color.r, _toggle.targetGraphic.color.g, _toggle.targetGraphic.color.b, initialValue);
                     }
                     if(_slider != null && this.target.TryGetComponent(out Slider slider)){
                         initialValue = useToValues ? _initialToValue : _initialFromSliderAlpha;
-                        Color newSliderColor = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
-                        slider.image.color = newSliderColor;
+                        if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
+                        if(slider.fillRect != null && slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, initialValue); }
+                        if(slider.handleRect != null && slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, initialValue); }
                     }
                     if(_text != null && this.target.TryGetComponent(out Text text)){
                         initialValue = useToValues ? _initialToValue : _initialFromTextAlpha;
