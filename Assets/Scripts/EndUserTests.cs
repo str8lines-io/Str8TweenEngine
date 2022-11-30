@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using Str8lines.Tweening;
 
 public class EndUserTests : MonoBehaviour 
@@ -21,21 +18,38 @@ public class EndUserTests : MonoBehaviour
     private GameObject activePanel;
     private Transform panelsContainer;
     private Transform header;
+    private Transform monitor;
     private int panelIndex;
     private int fadeSetIndex;
-
-    /*
-        - On va aussi bourrer le nb de trucs à check par test (delay, events)
-    */
 
     void Start()
     {
         panelIndex = 0;
         fadeSetIndex = 0;
         header = this.gameObject.transform.GetChild(0);
+        monitor = header.GetChild(2);
         panelsContainer = this.gameObject.transform.GetChild(1);
         for(int i = 0; i < panelsContainer.childCount - 1; i++) panelsContainer.GetChild(i).gameObject.SetActive(false);
         _updatePanel();
+    }
+
+    private void Update() {
+        Tween[] tweens = Str8Tween.getTweens();
+        int running = 0;
+        int completed = 0;
+        int paused = 0;
+        foreach(Tween t in tweens){
+            if(!t.isAlive) continue;
+            if(t.isCompleted) completed++;
+            else{
+                if(t.isRunning) running++;
+                else paused++;
+            }
+        }
+        monitor.GetChild(0).GetComponent<Text>().text = "Total = " + tweens.Length;
+        monitor.GetChild(1).GetComponent<Text>().text = "Running = " + running;
+        monitor.GetChild(2).GetComponent<Text>().text = "Completed = " + completed;
+        monitor.GetChild(3).GetComponent<Text>().text = "Paused = " + paused;
     }
 
     #region public
@@ -59,7 +73,7 @@ public class EndUserTests : MonoBehaviour
         activePanel.SetActive(true);
     }
 
-    public void PlayTweens(){
+    public void StartTweens(){
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
         switch(panelIndex){
             case 0:
@@ -206,29 +220,67 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
+    public void PlayTweens(){
+        if(controlAll) Str8Tween.playTweens();
+        else{
+            if(target != null) Str8Tween.playTweens(target);
+            else if(id != String.Empty) Str8Tween.playTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.playTweens(activePanel.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void PauseTweens(){
+        if(controlAll) Str8Tween.pauseTweens();
+        else{
+            if(target != null) Str8Tween.pauseTweens(target);
+            else if(id != String.Empty) Str8Tween.pauseTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.pauseTweens(activePanel.transform.GetChild(i).gameObject);
+        }
+    }
+
     public void StopTweens(){
         if(controlAll) Str8Tween.stopTweens();
-        else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.stopTweens(activePanel.transform.GetChild(i).gameObject);
+        else{
+            if(target != null) Str8Tween.stopTweens(target);
+            else if(id != String.Empty) Str8Tween.stopTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.stopTweens(activePanel.transform.GetChild(i).gameObject);
+        }
     }
 
     public void CompleteTweens(){
         if(controlAll) Str8Tween.completeTweens();
-        else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.completeTweens(activePanel.transform.GetChild(i).gameObject);
+        else{
+            if(target != null) Str8Tween.completeTweens(target);
+            else if(id != String.Empty) Str8Tween.completeTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.completeTweens(activePanel.transform.GetChild(i).gameObject);
+        }
     }
 
     public void ResetTweens(){
         if(controlAll) Str8Tween.resetTweens(playOnReset);
-        else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.resetTweens(activePanel.transform.GetChild(i).gameObject, playOnReset);
+        else{
+            if(target != null) Str8Tween.resetTweens(target);
+            else if(id != String.Empty) Str8Tween.resetTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.resetTweens(activePanel.transform.GetChild(i).gameObject, playOnReset);
+        }
     }
 
     public void CancelTweens(){
         if(controlAll) Str8Tween.cancelTweens();
-        else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.cancelTweens(activePanel.transform.GetChild(i).gameObject);
+        else{
+            if(target != null) Str8Tween.cancelTweens(target);
+            else if(id != String.Empty) Str8Tween.cancelTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.cancelTweens(activePanel.transform.GetChild(i).gameObject);
+        }
     }
 
     public void KillTweens(){
         if(controlAll) Str8Tween.killTweens();
-        else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.killTweens(activePanel.transform.GetChild(i).gameObject);
+        else{
+            if(target != null) Str8Tween.killTweens(target);
+            else if(id != String.Empty) Str8Tween.killTween(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.killTweens(activePanel.transform.GetChild(i).gameObject);
+        }
     }
     #endregion
 
@@ -311,7 +363,8 @@ public class EndUserTests : MonoBehaviour
         activePanel = panelsContainer.GetChild(panelIndex).gameObject;
         activePanel.SetActive(true);
         header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        header.GetChild(1).gameObject.SetActive(false);
+        if(panelIndex == 3) header.GetChild(1).gameObject.SetActive(true);
+        else header.GetChild(1).gameObject.SetActive(false);
     }
 
     private void _handleTweenUpdates(GameObject go, Tween t, Easing.EaseType easeType){

@@ -1048,7 +1048,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void kill(string id)
+        public static void killTween(string id)
         {
             getTween(id)?.kill();
         }
