@@ -9,7 +9,7 @@ using Str8lines.Tweening;
 public class EndUserTests : MonoBehaviour 
 {    
     public bool controlAll;
-    public GameObject target;
+    public GameObject target; //Still useful ?
     public string id;
     public float duration;
     public float delay;
@@ -32,34 +32,23 @@ public class EndUserTests : MonoBehaviour
     {
         panelIndex = 0;
         fadeSetIndex = 0;
+        header = this.gameObject.transform.GetChild(0);
         panelsContainer = this.gameObject.transform.GetChild(1);
         for(int i = 0; i < panelsContainer.childCount - 1; i++) panelsContainer.GetChild(i).gameObject.SetActive(false);
-        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
-        activePanel.SetActive(true);
-        header = this.gameObject.transform.GetChild(0);
-        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        header.GetChild(1).gameObject.SetActive(false);
+        _updatePanel();
     }
 
     #region public
     public void Next(){
         panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
         if(panelIndex < 3) panelIndex++;
-        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
-        activePanel.SetActive(true);
-        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        if(panelIndex == 3) header.GetChild(1).gameObject.SetActive(true);
-        else header.GetChild(1).gameObject.SetActive(false);
+        _updatePanel();
     }
 
     public void Previous(){
         panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
         if(panelIndex > 0) panelIndex--;
-        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
-        activePanel.SetActive(true);
-        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        if(panelIndex == 3) header.GetChild(1).gameObject.SetActive(true);
-        else header.GetChild(1).gameObject.SetActive(false);
+        _updatePanel();
     }
 
     public void ChangeFadeTarget(Dropdown change){
@@ -246,96 +235,92 @@ public class EndUserTests : MonoBehaviour
     #region private
     private void _move(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
-        Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.move(rect, new Vector3(x, rect.anchoredPosition.y, 0f), easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(go, t, easeType);
     }
 
     private void _scale(GameObject go, Easing.EaseType easeType){
         RectTransform rect = go.GetComponent<RectTransform>();
-        Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.scale(rect, Vector3.one * 1.5f, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(go, t, easeType);
     }
 
     private void _rotate(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
-        Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.rotate(rect, new Vector3(rect.eulerAngles.x, rect.eulerAngles.y, rect.eulerAngles.z + x), easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(go, t, easeType);
     }
 
     private void _fadeCanvasRenderer(Transform fadeCanvasRendererPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeCanvasRendererGo = fadeCanvasRendererPanel.GetChild(childIndex).gameObject;
         CanvasRenderer canvasRenderer = fadeCanvasRendererGo.GetComponent<CanvasRenderer>();
-        Text text = fadeCanvasRendererGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(canvasRenderer, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeCanvasRendererGo, t, easeType);
     }
 
     private void _fadeSpriteRenderer(Transform fadeSpriteRendererPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeSpriteRendererGo = fadeSpriteRendererPanel.GetChild(childIndex).gameObject;
         SpriteRenderer spriteRenderer = fadeSpriteRendererGo.GetComponent<SpriteRenderer>();
-        Text text = fadeSpriteRendererGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(spriteRenderer, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeSpriteRendererGo, t, easeType);
     }
 
     private void _fadeRawImage(Transform fadeRawImagePanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeRawImageGo = fadeRawImagePanel.GetChild(childIndex).gameObject;
         RawImage rawImage = fadeRawImageGo.GetComponent<RawImage>();
-        Text text = fadeRawImageGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(rawImage, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeRawImageGo, t, easeType);
     }
 
     private void _fadeImage(Transform fadeImagePanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeImageGo = fadeImagePanel.GetChild(childIndex).gameObject;
         Image image = fadeImageGo.GetComponent<Image>();
-        Text text = fadeImageGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(image, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeImageGo, t, easeType);
     }
 
     private void _fadeText(Transform fadeTextPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeTextGo = fadeTextPanel.GetChild(childIndex).gameObject;
         Text txt = fadeTextGo.GetComponent<Text>();
         Tween t = Str8Tween.fade(txt, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        txt.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeTextGo, t, easeType);
     }
 
     private void _fadeToggle(Transform fadeTogglePanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeToggleGo = fadeTogglePanel.GetChild(childIndex).gameObject;
         Toggle toggle = fadeToggleGo.GetComponent<Toggle>();
-        Text text = fadeToggleGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(toggle, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeToggleGo, t, easeType);
     }
 
     private void _fadeSlider(Transform fadeSliderPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeSliderGo = fadeSliderPanel.GetChild(childIndex).gameObject;
         Slider slider = fadeSliderGo.GetComponent<Slider>();
-        Text text = fadeSliderGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(slider, x, easeType, duration, killOnEnd);
-        t.delay(delay);
-        text.text = easeType.ToString() + "\n" + t.id;
+        _handleTweenUpdates(fadeSliderGo, t, easeType);
     }
 
     private void _fadeGraphic(Transform fadeGraphicPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeGraphicGo = fadeGraphicPanel.GetChild(childIndex).gameObject;
         Graphic graphic = fadeGraphicGo.GetComponent<Image>();
-        Text text = fadeGraphicGo.transform.GetChild(0).gameObject.GetComponent<Text>();
         Tween t = Str8Tween.fade(graphic, x, easeType, duration, killOnEnd);
+        _handleTweenUpdates(fadeGraphicGo, t, easeType);
+    }
+
+    private void _updatePanel(){
+        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
+        activePanel.SetActive(true);
+        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
+        header.GetChild(1).gameObject.SetActive(false);
+    }
+
+    private void _handleTweenUpdates(GameObject go, Tween t, Easing.EaseType easeType){
         t.delay(delay);
+        if(isLoop) t.loop(loopsCount, loopType);
+        string logRoot = easeType.ToString() + " (" + t.id + ") ";
+        t.onStart(() => Debug.Log(logRoot + "Started")).onComplete(()=> Debug.Log(logRoot + "Completed"));
+        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+        Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         text.text = easeType.ToString() + "\n" + t.id;
     }
     #endregion

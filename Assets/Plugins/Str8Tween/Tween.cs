@@ -852,7 +852,7 @@ namespace Str8lines.Tweening
                                 time = _loopTime;
                             }
                             
-                            if(_playTime >= _lifeTime) complete();
+                            if(_lifeTime > 0 && _playTime >= _lifeTime) complete();
                             else _setCalculatedValue(time);
                         }
                     }
@@ -1157,10 +1157,8 @@ namespace Str8lines.Tweening
             switch(_methodName)
             {
                 case "move":
-                    if(rectTransform != null){
-                        Vector3 newPosition = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
-                        rectTransform.anchoredPosition3D = new Vector3(newPosition.x, newPosition.y, newPosition.z);
-                    }
+                    Vector3 newPosition = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
+                    if(rectTransform != null) rectTransform.anchoredPosition3D = new Vector3(newPosition.x, newPosition.y, newPosition.z);
                     break;
 
                 case "scale":
