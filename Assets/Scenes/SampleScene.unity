@@ -309,14 +309,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e33f05aa8232dbd4fbd2d2f8cae6f393, type: 3}
+  m_Script: {fileID: 11500000, guid: 54621f9c78946654280a22fe4fef0ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  id: 
-  duration: 5
-  delay: 2
-  isLoop: 0
-  loopType: 0
-  loopsCount: 0
-  isFrom: 0

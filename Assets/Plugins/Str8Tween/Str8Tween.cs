@@ -988,7 +988,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void stopTween()
+        public static void stopTweens()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.stop();
