@@ -6,7 +6,7 @@ using Str8lines.Tweening;
 public class EndUserTests : MonoBehaviour 
 {    
     public bool controlAll;
-    public GameObject target; //Still useful ?
+    public GameObject target;
     public string id;
     public float duration;
     public float delay;
@@ -34,7 +34,7 @@ public class EndUserTests : MonoBehaviour
     }
 
     private void Update() {
-        Tween[] tweens = Str8Tween.getTweens();
+        Tween[] tweens = Str8Tween.get();
         int running = 0;
         int completed = 0;
         int paused = 0;
@@ -221,65 +221,65 @@ public class EndUserTests : MonoBehaviour
     }
 
     public void PlayTweens(){
-        if(controlAll) Str8Tween.playTweens();
+        if(controlAll) Str8Tween.play();
         else{
-            if(target != null) Str8Tween.playTweens(target);
-            else if(id != String.Empty) Str8Tween.playTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.playTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.play(target);
+            else if(id != String.Empty) Str8Tween.play(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.play(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
     public void PauseTweens(){
-        if(controlAll) Str8Tween.pauseTweens();
+        if(controlAll) Str8Tween.pause();
         else{
-            if(target != null) Str8Tween.pauseTweens(target);
-            else if(id != String.Empty) Str8Tween.pauseTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.pauseTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.pause(target);
+            else if(id != String.Empty) Str8Tween.pause(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.pause(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
     public void StopTweens(){
-        if(controlAll) Str8Tween.stopTweens();
+        if(controlAll) Str8Tween.stop();
         else{
-            if(target != null) Str8Tween.stopTweens(target);
-            else if(id != String.Empty) Str8Tween.stopTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.stopTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.stop(target);
+            else if(id != String.Empty) Str8Tween.stop(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.stop(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
     public void CompleteTweens(){
-        if(controlAll) Str8Tween.completeTweens();
+        if(controlAll) Str8Tween.complete();
         else{
-            if(target != null) Str8Tween.completeTweens(target);
-            else if(id != String.Empty) Str8Tween.completeTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.completeTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.complete(target);
+            else if(id != String.Empty) Str8Tween.complete(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.complete(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
     public void ResetTweens(){
-        if(controlAll) Str8Tween.resetTweens(playOnReset);
+        if(controlAll) Str8Tween.reset(playOnReset);
         else{
-            if(target != null) Str8Tween.resetTweens(target);
-            else if(id != String.Empty) Str8Tween.resetTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.resetTweens(activePanel.transform.GetChild(i).gameObject, playOnReset);
+            if(target != null) Str8Tween.reset(target);
+            else if(id != String.Empty) Str8Tween.reset(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.reset(activePanel.transform.GetChild(i).gameObject, playOnReset);
         }
     }
 
     public void CancelTweens(){
-        if(controlAll) Str8Tween.cancelTweens();
+        if(controlAll) Str8Tween.cancel();
         else{
-            if(target != null) Str8Tween.cancelTweens(target);
-            else if(id != String.Empty) Str8Tween.cancelTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.cancelTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.cancel(target);
+            else if(id != String.Empty) Str8Tween.cancel(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.cancel(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
     public void KillTweens(){
-        if(controlAll) Str8Tween.killTweens();
+        if(controlAll) Str8Tween.kill();
         else{
-            if(target != null) Str8Tween.killTweens(target);
-            else if(id != String.Empty) Str8Tween.killTween(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.killTweens(activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.kill(target);
+            else if(id != String.Empty) Str8Tween.kill(id);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.kill(activePanel.transform.GetChild(i).gameObject);
         }
     }
     #endregion

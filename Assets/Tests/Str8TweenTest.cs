@@ -575,14 +575,14 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween result = Str8Tween.getTween(t.id);
+        Tween result = Str8Tween.get(t.id);
         Assert.IsTrue(result != null && result == t);
     }
     
     [Test]
     public void GetTweenByIdNull()
     {
-        Assert.AreEqual(Str8Tween.getTween("randomID"), null);
+        Assert.AreEqual(Str8Tween.get("randomID"), null);
     }
     
     [Test]
@@ -591,7 +591,7 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween[] result = Str8Tween.getTweens();
+        Tween[] result = Str8Tween.get();
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
     
@@ -599,7 +599,8 @@ public class Str8TweenTest
     public void GetTweensNullTarget()
     {      
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween[] result = Str8Tween.getTweens(null);
+            GameObject go = null;
+            Tween[] result = Str8Tween.get(go);
         });
     }
     
@@ -609,7 +610,7 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween[] result = Str8Tween.getTweens(go);
+        Tween[] result = Str8Tween.get(go);
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
 
@@ -631,7 +632,7 @@ public class Str8TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
         yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.getTween(t.id);
+        Tween result = Str8Tween.get(t.id);
         Assert.AreEqual(result, t);
     }
 #endregion

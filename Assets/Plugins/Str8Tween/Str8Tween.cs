@@ -439,12 +439,12 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Start()
         ///     {
-        ///         Tween t = Str8Tween.getTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///         Tween t = Str8Tween.get("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween getTween(string id)
+        public static Tween get(string id)
         {
             if(id != "" && tweens.ContainsKey(id)) return tweens[id];
             else return null;
@@ -462,7 +462,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Start()
         ///     {
-        ///         Tween[] tweens = Str8Tween.getTweens();
+        ///         Tween[] tweens = Str8Tween.get();
         ///         if(tweens.Length > 0){
         ///             foreach(Tween t in tweens){
         ///                 UnityEngine.Debug.Log(t.id)
@@ -472,7 +472,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static Tween[] getTweens()
+        public static Tween[] get()
         {
             List<Tween> t = new List<Tween>();
             foreach(Tween tween in tweens.Values) t.Add(tween);
@@ -494,7 +494,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Tween[] tweens = Str8Tween.getTweens(target);
+        ///         Tween[] tweens = Str8Tween.get(target);
         ///         if(tweens.Length > 0){
         ///             foreach(Tween t in tweens){
         ///                 UnityEngine.Debug.Log(t.id)
@@ -504,7 +504,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static Tween[] getTweens(GameObject target)
+        public static Tween[] get(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             List<Tween> tweensFound = new List<Tween>();
@@ -529,15 +529,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.playTween("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
+        ///             Str8Tween.play("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void playTween(string id)
+        public static void play(string id)
         {
-            getTween(id)?.play();
+            get(id)?.play();
         }
 
         /// <summary>Plays every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.play()"/></summary>
@@ -554,13 +554,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.playTweens(); 
+        ///             Str8Tween.play(); 
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void playTweens()
+        public static void play()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.play();
@@ -584,16 +584,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.playTweens(target); 
+        ///             Str8Tween.play(target); 
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void playTweens(GameObject target)
+        public static void play(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.play();
             }
@@ -614,15 +614,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.pauseTween("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
+        ///             Str8Tween.pause("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void pauseTween(string id)
+        public static void pause(string id)
         {
-            getTween(id)?.pause();
+            get(id)?.pause();
         }
 
         /// <summary>Pauses every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.pause()"/></summary>
@@ -639,13 +639,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.pauseTweens(); 
+        ///             Str8Tween.pause(); 
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void pauseTweens()
+        public static void pause()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.pause();
@@ -669,16 +669,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.pauseTweens(target);
+        ///             Str8Tween.pause(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void pauseTweens(GameObject target)
+        public static void pause(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.pause();
             }
@@ -700,15 +700,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.resetTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///             Str8Tween.reset("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void resetTween(string id, bool playOnReset = false)
+        public static void reset(string id, bool playOnReset = false)
         {
-            getTween(id)?.reset(playOnReset);
+            get(id)?.reset(playOnReset);
         }
 
         /// <summary>Reset every <see cref="Tween">tween</see> alive.</summary>
@@ -726,13 +726,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.resetTweens();
+        ///             Str8Tween.reset();
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void resetTweens(bool playOnReset = false)
+        public static void reset(bool playOnReset = false)
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.reset(playOnReset);
@@ -757,16 +757,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.resetTweens(target);
+        ///             Str8Tween.reset(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void resetTweens(GameObject target, bool playOnReset = false)
+        public static void reset(GameObject target, bool playOnReset = false)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.reset(playOnReset);
             }
@@ -787,15 +787,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.completeTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///             Str8Tween.complete("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void completeTween(string id)
+        public static void complete(string id)
         {
-            getTween(id)?.complete();
+            get(id)?.complete();
         }
 
         /// <summary>Complete every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete()"/></summary>
@@ -812,13 +812,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.completeTweens();
+        ///             Str8Tween.complete();
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void completeTweens()
+        public static void complete()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.complete();
@@ -842,16 +842,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.completeTweens(target);
+        ///             Str8Tween.complete(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void completeTweens(GameObject target)
+        public static void complete(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.complete();
             }
@@ -872,15 +872,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.cancelTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///             Str8Tween.cancel("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void cancelTween(string id)
+        public static void cancel(string id)
         {
-            getTween(id)?.cancel();
+            get(id)?.cancel();
         }
 
         /// <summary>Cancel every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.cancel()"/></summary>
@@ -897,13 +897,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.cancelTweens();
+        ///             Str8Tween.cancel();
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void cancelTweens()
+        public static void cancel()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.cancel();
@@ -927,16 +927,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.cancelTweens(target);
+        ///             Str8Tween.cancel(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void cancelTweens(GameObject target)
+        public static void cancel(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.cancel();
             }
@@ -957,15 +957,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.stopTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///             Str8Tween.stop("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void stopTween(string id)
+        public static void stop(string id)
         {
-            getTween(id)?.stop();
+            get(id)?.stop();
         }
 
         /// <summary>Stop every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.stop()"/></summary>
@@ -982,13 +982,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.stopTweens();
+        ///             Str8Tween.stop();
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void stopTweens()
+        public static void stop()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.stop();
@@ -1012,16 +1012,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.stopTweens(target);
+        ///             Str8Tween.stop(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void stopTweens(GameObject target)
+        public static void stop(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.stop();
             }
@@ -1042,15 +1042,15 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.killTween("7aac6207-107f-4ddc-8761-122f669d3e3b");
+        ///             Str8Tween.kill("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void killTween(string id)
+        public static void kill(string id)
         {
-            getTween(id)?.kill();
+            get(id)?.kill();
         }
 
         /// <summary>Kill every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.kill()"/></summary>
@@ -1067,13 +1067,13 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.killTweens();
+        ///             Str8Tween.kill();
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void killTweens()
+        public static void kill()
         {
             if(tweens.Count > 0){
                 foreach(Tween t in tweens.Values) t.kill();
@@ -1097,16 +1097,16 @@ namespace Str8lines.Tweening
         ///     {
         ///         if (Input.GetKeyDown(KeyCode.Space))
         ///         {
-        ///             Str8Tween.killTweens(target);
+        ///             Str8Tween.kill(target);
         ///         }
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static void killTweens(GameObject target)
+        public static void kill(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
-            Tween[] tweensFound = getTweens(target);
+            Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.kill();
             }
