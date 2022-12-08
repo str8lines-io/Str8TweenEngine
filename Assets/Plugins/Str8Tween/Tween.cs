@@ -44,36 +44,24 @@ namespace Str8lines.Tweening
         private Vector3 _vectorChange;
         private SpriteRenderer _spriteRenderer;
         private CanvasRenderer _canvasRenderer;
-        private RawImage _rawImage;
-        private Image _image;
+        private Graphic _graphic;
         private Toggle _toggle;
         private Slider _slider;
-        private Graphic _graphic;
-        private Text _text;
         private float _initialFromSpriteRendererAlpha;
         private float _fromSpriteRendererAlpha;
         private float _spriteRendererAlphaChange;
         private float _initialFromCanvasRendererAlpha;
         private float _fromCanvasRendererAlpha;
         private float _canvasRendererAlphaChange;
-        private float _initialFromRawImageAlpha;
-        private float _fromRawImageAlpha;
-        private float _rawImageAlphaChange;
-        private float _initialFromImageAlpha;
-        private float _fromImageAlpha;
-        private float _imageAlphaChange;
+        private float _initialFromGraphicAlpha;
+        private float _fromGraphicAlpha;
+        private float _graphicAlphaChange;
         private float _initialFromToggleAlpha;
         private float _fromToggleAlpha;
         private float _toggleAlphaChange;
         private float _initialFromSliderAlpha;
         private float _fromSliderAlpha;
         private float _sliderAlphaChange;
-        private float _initialFromTextAlpha;
-        private float _fromTextAlpha;
-        private float _textAlphaChange;
-        private float _initialFromGraphicAlpha;
-        private float _fromGraphicAlpha;
-        private float _graphicAlphaChange;
         private float _initialToValue;
         private float _toValue;
         #endregion
@@ -135,14 +123,7 @@ namespace Str8lines.Tweening
         public Tween(string methodName, RectTransform rectTransform, Vector3 toVector, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = rectTransform.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, rectTransform.gameObject, easeType, duration, killOnEnd);
             _initialToVector = toVector;
             _toVector = toVector;
 
@@ -192,17 +173,9 @@ namespace Str8lines.Tweening
         public Tween(string methodName, CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            
-            this.id = Guid.NewGuid().ToString();
-            this.target = canvasRenderer.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, canvasRenderer.gameObject, easeType, duration, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
-
             _canvasRenderer = canvasRenderer;
             _initialFromCanvasRendererAlpha = _canvasRenderer.GetAlpha();
             _fromCanvasRendererAlpha = _initialFromCanvasRendererAlpha;
@@ -237,156 +210,13 @@ namespace Str8lines.Tweening
         public Tween(string methodName, SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = spriteRenderer.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, spriteRenderer.gameObject, easeType, duration, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
-
             _spriteRenderer = spriteRenderer;
             _initialFromSpriteRendererAlpha = _spriteRenderer.color.a;
             _fromSpriteRendererAlpha = _initialFromSpriteRendererAlpha;
             _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <param name="rawImage">The <see href="https://docs.unity3d.com/ScriptReference/RawImage.html">RawImage</see> on which changes will be applied.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="rawImage"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
-        /// <example>
-        /// Create new tween that changes RawImage's alpha :
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public RawImage rawImage;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Tween t = new Tween("fade", rawImage, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public Tween(string methodName, RawImage rawImage, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(rawImage == null) throw new ArgumentNullException("rawImage", "rawImage can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = rawImage.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
-
-            _rawImage = rawImage;
-            _initialFromRawImageAlpha = _rawImage.color.a;
-            _fromRawImageAlpha = _initialFromRawImageAlpha;
-            _rawImageAlphaChange = _toValue - _fromRawImageAlpha;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <param name="image">The <see href="https://docs.unity3d.com/ScriptReference/Image.html">Image</see> on which changes will be applied.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="image"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
-        /// <example>
-        /// Create new tween that changes Image's alpha :
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Image image;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Tween t = new Tween("fade", image, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public Tween(string methodName, Image image, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(image == null) throw new ArgumentNullException("image", "image can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = image.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
-
-            _image = image;
-            _initialFromImageAlpha = _image.color.a;
-            _fromImageAlpha = _initialFromImageAlpha;
-            _imageAlphaChange = _toValue - _fromImageAlpha;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <param name="text">The <see href="https://docs.unity3d.com/ScriptReference/Text.html">Text</see> on which changes will be applied.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="text"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
-        /// <example>
-        /// Create new tween that changes Text's alpha :
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Text text;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Tween t = new Tween("fade", text, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public Tween(string methodName, Text text, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(text == null) throw new ArgumentNullException("text", "text can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = text.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
-
-            _text = text;
-            _initialFromTextAlpha = _text.color.a;
-            _fromTextAlpha = _initialFromTextAlpha;
-            _textAlphaChange = _toValue - _fromTextAlpha;
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
@@ -417,15 +247,8 @@ namespace Str8lines.Tweening
         public Tween(string methodName, Toggle toggle, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(toggle == null) throw new ArgumentNullException("toggle", "toggle can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toggle.graphic == null && toggle.targetGraphic == null) throw new Exception("Toggle has no graphic to fade");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = toggle.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, toggle.gameObject, easeType, duration, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -464,15 +287,8 @@ namespace Str8lines.Tweening
         public Tween(string methodName, Slider slider, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(slider == null) throw new ArgumentNullException("slider", "slider can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(slider.image == null && slider.fillRect == null && slider.handleRect == null) throw new Exception("Slider has no graphic to fade");
-
-            this.id = Guid.NewGuid().ToString();
-            this.target = slider.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, slider.gameObject, easeType, duration, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
 
@@ -512,17 +328,9 @@ namespace Str8lines.Tweening
         public Tween(string methodName, Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            
-            this.id = Guid.NewGuid().ToString();
-            this.target = graphic.gameObject;
-            this.easeType = easeType;
-            this.duration = duration;
-            
-            _init(methodName, killOnEnd);
+            _init(methodName, graphic.gameObject, easeType, duration, killOnEnd);
             _initialToValue = toValue;
             _toValue = toValue;
-
             _graphic = graphic;
             _initialFromGraphicAlpha = _graphic.color.a;
             _fromGraphicAlpha = _initialFromGraphicAlpha;
@@ -796,68 +604,60 @@ namespace Str8lines.Tweening
         /// </example>
         public void update(float t)
         {
-            if(this.isAlive && this.target != null)
-            {
-                if(!this.isCompleted)
-                {
-                    if(this.isRunning)
-                    {
-                        if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
-                        else _elapsed += t;
+            if(!this.isAlive || this.target == null || this.isCompleted || !this.isRunning) return;
 
-                        if(_elapsed >= _delay) //Delay is over, the tween can start
-                        {
-                            float time = 0f; //Time used for calculations
-                            if(!_isDelayOver){
-                                //The first frame when the tween plays is the starting frame
-                                _isDelayOver = true;
-                                _start?.Invoke();
-                                t = _elapsed - _delay; // Fixing time for the first animation frame
-                            }
-                            
-                            _playTime += t;
-                            time = _playTime;
+            if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
+            else _elapsed += t;
 
-                            if(_isLoop)
-                            {
-                                switch(_loopType)
-                                {
-                                    case LoopType.Restart :
-                                    case LoopType.WithOffset :
-                                        _loopTime += t; //These two loop types are always played forward
-                                        if(_loopTime >= this.duration){
-                                            _loopTime = 0;
-                                            _completeLoop();
-                                        }
-                                        break;
-
-                                    case LoopType.Oscillate :
-                                        if(_isIncrementing){
-                                            _loopTime += t; //Plays the tween forward
-                                            if(_loopTime >= this.duration){
-                                                _loopTime = this.duration;
-                                                _isIncrementing = !_isIncrementing;
-                                                _completeLoop();
-                                            }
-                                        }else{
-                                            _loopTime -= t; //Plays the tween backward
-                                            if(_loopTime <= 0f){
-                                                _loopTime = 0f;
-                                                _isIncrementing = !_isIncrementing;
-                                                _completeLoop();
-                                            }
-                                        }
-                                        break;
-                                }
-                                time = _loopTime;
-                            }
-                            
-                            if(_lifeTime > 0 && _playTime >= _lifeTime) complete();
-                            else _setCalculatedValue(time);
-                        }
-                    }
-                }
+            if(_elapsed < _delay) return; //Delay is not over, the tween can not start
+            
+            float time = 0f; //Time used for calculations
+            if(!_isDelayOver){
+                //The first frame when the tween plays is the starting frame
+                _isDelayOver = true;
+                _start?.Invoke();
+                t = _elapsed - _delay; // Fixing time for the first animation frame
             }
+            
+            _playTime += t;
+            time = _playTime;
+
+            if(_isLoop)
+            {
+                switch(_loopType)
+                {
+                    case LoopType.Restart :
+                    case LoopType.WithOffset :
+                        _loopTime += t; //These two loop types are always played forward
+                        if(_loopTime >= this.duration){
+                            _loopTime = 0;
+                            _completeLoop();
+                        }
+                        break;
+
+                    case LoopType.Oscillate :
+                        if(_isIncrementing){
+                            _loopTime += t; //Plays the tween forward
+                            if(_loopTime >= this.duration){
+                                _loopTime = this.duration;
+                                _isIncrementing = !_isIncrementing;
+                                _completeLoop();
+                            }
+                        }else{
+                            _loopTime -= t; //Plays the tween backward
+                            if(_loopTime <= 0f){
+                                _loopTime = 0f;
+                                _isIncrementing = !_isIncrementing;
+                                _completeLoop();
+                            }
+                        }
+                        break;
+                }
+                time = _loopTime;
+            }
+            
+            if(_lifeTime > 0 && _playTime >= _lifeTime) complete();
+            else _setCalculatedValue(time);
         }
 
         /// <summary>Resets the <see cref="Tween">tween</see> values.</summary>
@@ -1128,12 +928,19 @@ namespace Str8lines.Tweening
     #endregion
 
     #region Private methods
-        private void _init(string methodName, bool killOnEnd)
+        private void _init(string methodName, GameObject target, Easing.EaseType easeType, float duration, bool killOnEnd)
         {
+            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(!Array.Exists(_authorizedMethods, name => name == methodName)) throw new ArgumentException("methodName is not allowed", "methodName");
+
+            this.id = Guid.NewGuid().ToString();
+            this.target = target;
+            this.easeType = easeType;
+            this.duration = duration;
             this.isAlive = true;
             this.isCompleted = false;
             this.isRunning = true;
+            
             _methodName = methodName;
             _delay = 0f;
             _isLoop = false;
@@ -1177,14 +984,6 @@ namespace Str8lines.Tweening
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, this.duration));
                         spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_rawImage != null && this.target.TryGetComponent(out RawImage rawImage)){
-                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, Easing.ease(this.easeType, playtime, _fromRawImageAlpha, _rawImageAlphaChange, this.duration));
-                        rawImage.color = newRawImageColor;
-                    }
-                    if(_image != null && this.target.TryGetComponent(out Image image)){
-                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, Easing.ease(this.easeType, playtime, _fromImageAlpha, _imageAlphaChange, this.duration));
-                        image.color = newImageColor;
-                    }
                     if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
                         float newAlpha = Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration);
                         if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, newAlpha);
@@ -1195,10 +994,6 @@ namespace Str8lines.Tweening
                         if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, newAlpha);
                         if(slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, newAlpha); }
                         if(slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, newAlpha); }
-                    }
-                    if(_text != null && this.target.TryGetComponent(out Text text)){
-                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, Easing.ease(this.easeType, playtime, _fromTextAlpha, _textAlphaChange, this.duration));
-                        text.color = newTextColor;
                     }
                     if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, this.duration));
@@ -1225,16 +1020,6 @@ namespace Str8lines.Tweening
                     _toValue += _spriteRendererAlphaChange;
                 }
 
-                if(_rawImage != null){
-                    _fromRawImageAlpha = _toValue;
-                    _toValue += _rawImageAlphaChange;
-                }
-
-                if(_image != null){
-                    _fromImageAlpha = _toValue;
-                    _toValue += _imageAlphaChange;
-                }
-
                 if(_toggle != null){
                     _fromToggleAlpha = _toValue;
                     _toValue += _toggleAlphaChange;
@@ -1243,11 +1028,6 @@ namespace Str8lines.Tweening
                 if(_slider != null){
                     _fromSliderAlpha = _toValue;
                     _toValue += _sliderAlphaChange;
-                }
-
-                if(_text != null){
-                    _fromTextAlpha = _toValue;
-                    _toValue += _textAlphaChange;
                 }
 
                 if(_graphic != null){
@@ -1260,11 +1040,8 @@ namespace Str8lines.Tweening
                     _toValue = 1; //Clamps alpha max value
                     if(_canvasRenderer != null) _canvasRendererAlphaChange = _toValue - _fromCanvasRendererAlpha;
                     if(_spriteRenderer != null) _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
-                    if(_rawImage != null) _rawImageAlphaChange = _toValue - _fromRawImageAlpha;
-                    if(_image != null) _imageAlphaChange = _toValue - _fromImageAlpha;
                     if(_toggle != null) _toggleAlphaChange = _toValue - _fromToggleAlpha;
                     if(_slider != null) _sliderAlphaChange = _toValue - _fromSliderAlpha;
-                    if(_text != null) _textAlphaChange = _toValue - _fromTextAlpha;
                     if(_graphic != null) _graphicAlphaChange = _toValue - _fromGraphicAlpha;
                 }
                 if(_toValue < 0) _toValue = 0; //Clamps alpha min value
@@ -1302,16 +1079,6 @@ namespace Str8lines.Tweening
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
                         spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_rawImage != null && this.target.TryGetComponent(out RawImage rawImage)){
-                        initialValue = useToValues ? _initialToValue : _initialFromRawImageAlpha;
-                        Color newRawImageColor = new Color(_rawImage.color.r, _rawImage.color.g, _rawImage.color.b, initialValue);
-                        rawImage.color = newRawImageColor;
-                    }
-                    if(_image != null && this.target.TryGetComponent(out Image image)){
-                        initialValue = useToValues ? _initialToValue : _initialFromImageAlpha;
-                        Color newImageColor = new Color(_image.color.r, _image.color.g, _image.color.b, initialValue);
-                        image.color = newImageColor;
-                    }
                     if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
                         initialValue = useToValues ? _initialToValue : _initialFromToggleAlpha;
                         if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
@@ -1322,11 +1089,6 @@ namespace Str8lines.Tweening
                         if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
                         if(slider.fillRect != null && slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, initialValue); }
                         if(slider.handleRect != null && slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, initialValue); }
-                    }
-                    if(_text != null && this.target.TryGetComponent(out Text text)){
-                        initialValue = useToValues ? _initialToValue : _initialFromTextAlpha;
-                        Color newTextColor = new Color(_text.color.r, _text.color.g, _text.color.b, initialValue);
-                        text.color = newTextColor;
                     }
                     if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         initialValue = useToValues ? _initialToValue : _initialFromGraphicAlpha;

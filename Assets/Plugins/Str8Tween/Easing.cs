@@ -18,118 +18,96 @@ namespace Str8lines.Tweening
         //b = begin value
         //c = change in value
         //d = duration
-        private static float _linear(float t, float b, float c, float d)
-        {
+        private static float _linear(float t, float b, float c, float d){
             return c * t / d + b;
         }
 
-        private static float _inSine(float t, float b, float c, float d)
-        {
+        private static float _inSine(float t, float b, float c, float d){
             return c * (1 - Mathf.Cos(t / d * (Mathf.PI / 2))) + b;
         }
 
-        private static float _outSine(float t, float b, float c, float d)
-        {
+        private static float _outSine(float t, float b, float c, float d){
             return c * Mathf.Sin(t / d * (Mathf.PI / 2)) + b;
         }
 
-        private static float _inOutSine(float t, float b, float c, float d)
-        {
+        private static float _inOutSine(float t, float b, float c, float d){
             return c / 2 * (1 - Mathf.Cos(Mathf.PI * t / d)) + b;
         }
 
-        private static float _inQuad(float t, float b, float c, float d)
-        {
+        private static float _inQuad(float t, float b, float c, float d){
             return c * (t /= d) * t + b;
         }
 
-        private static float _outQuad(float t, float b, float c, float d)
-        {
+        private static float _outQuad(float t, float b, float c, float d){
             return -c * (t /= d) * (t - 2) + b;
         }
 
-        private static float _inOutQuad(float t, float b, float c, float d)
-        {
+        private static float _inOutQuad(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * t * t + b;
             return -c / 2 * ((--t) * (t - 2) - 1) + b;
         }
 
-        private static float _inCubic(float t, float b, float c, float d)
-        {
+        private static float _inCubic(float t, float b, float c, float d){
             return c * Mathf.Pow(t / d, 3) + b;
         }
 
-        private static float _outCubic(float t, float b, float c, float d)
-        {
+        private static float _outCubic(float t, float b, float c, float d){
             return c * (Mathf.Pow(t / d - 1, 3) + 1) + b;
         }
 
-        private static float _inOutCubic(float t, float b, float c, float d)
-        {
+        private static float _inOutCubic(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * Mathf.Pow(t, 3) + b;
             return c / 2 * (Mathf.Pow(t - 2, 3) + 2) + b;
         }
 
-        private static float _inQuart(float t, float b, float c, float d)
-        {
+        private static float _inQuart(float t, float b, float c, float d){
             return c * Mathf.Pow(t / d, 4) + b;
         }
 
-        private static float _outQuart(float t, float b, float c, float d)
-        {
+        private static float _outQuart(float t, float b, float c, float d){
             return -c * (Mathf.Pow(t / d - 1, 4) - 1) + b;
         }
 
-        private static float _inOutQuart(float t, float b, float c, float d)
-        {
+        private static float _inOutQuart(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * Mathf.Pow(t, 4) + b;
             return -c / 2 * (Mathf.Pow(t - 2, 4) - 2) + b;
         }
 
-        private static float _inQuint(float t, float b, float c, float d)
-        {
+        private static float _inQuint(float t, float b, float c, float d){
             return c * Mathf.Pow(t / d, 5) + b;
         }
 
-        private static float _outQuint(float t, float b, float c, float d)
-        {
+        private static float _outQuint(float t, float b, float c, float d){
             return c * (Mathf.Pow(t / d - 1, 5) + 1) + b;
         }
 
-        private static float _inOutQuint(float t, float b, float c, float d)
-        {
+        private static float _inOutQuint(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * Mathf.Pow(t, 5) + b;
             return c / 2 * (Mathf.Pow(t - 2, 5) + 2) + b;
         }
 
-        private static float _inExpo(float t, float b, float c, float d)
-        {
+        private static float _inExpo(float t, float b, float c, float d){
             return c * Mathf.Pow(2, 10 * (t / d - 1)) + b;
         }
 
-        private static float _outExpo(float t, float b, float c, float d)
-        {
+        private static float _outExpo(float t, float b, float c, float d){
             return c * (-Mathf.Pow(2, -10 * t / d) + 1) + b;
         }
 
-        private static float _inOutExpo(float t, float b, float c, float d)
-        {
+        private static float _inOutExpo(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * Mathf.Pow(2, 10 * (t - 1)) + b;
             return c / 2 * (-Mathf.Pow(2, -10 * --t) + 2) + b;
         }
 
-        private static float _inCirc(float t, float b, float c, float d)
-        {
+        private static float _inCirc(float t, float b, float c, float d){
             return c * (1 - Mathf.Sqrt(1 - (t /= d) * t)) + b;
         }
 
-        private static float _outCirc(float t, float b, float c, float d)
-        {
+        private static float _outCirc(float t, float b, float c, float d){
             return c * Mathf.Sqrt(1 - (t = t / d - 1) * t) + b;
         }
 
-        private static float _inOutCirc(float t, float b, float c, float d)
-        {
+        private static float _inOutCirc(float t, float b, float c, float d){
             if ((t /= d / 2) < 1) return c / 2 * (1 - Mathf.Sqrt(1 - t * t)) + b;
             return c / 2 * (Mathf.Sqrt(1 - (t -= 2) * t) + 1) + b;
 
@@ -184,37 +162,31 @@ namespace Str8lines.Tweening
             return a * Mathf.Pow(2, -10 * (t -= 1)) * Mathf.Sin((t * d - s) * (2 * Mathf.PI) / p) * 0.5f + c + b;
         }
 
-        private static float _inBack(float t, float b, float c, float d, float s = 1.70158f)
-        {
+        private static float _inBack(float t, float b, float c, float d, float s = 1.70158f){
             return c * (t /= d) * t * ((s + 1) * t - s) + b;
         }
 
-        private static float _outBack(float t, float b, float c, float d, float s = 1.70158f)
-        {
+        private static float _outBack(float t, float b, float c, float d, float s = 1.70158f){
             return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
         }
 
-        private static float _inOutBack(float t, float b, float c, float d, float s = 1.70158f)
-        {
+        private static float _inOutBack(float t, float b, float c, float d, float s = 1.70158f){
             if ((t /= d / 2) < 1) return c / 2 * (t * t * (((s *= (1.525f)) + 1) * t - s)) + b;
             return c / 2 * ((t -= 2) * t * (((s *= (1.525f)) + 1) * t + s) + 2) + b;
         }
 
-        private static float _inBounce(float t, float b, float c, float d)
-        {
+        private static float _inBounce(float t, float b, float c, float d){
             return c - _outBounce(d - t, 0, c, d) + b;
         }
 
-        private static float _outBounce(float t, float b, float c, float d)
-        {
+        private static float _outBounce(float t, float b, float c, float d){
             if ((t /= d) < (1 / 2.75f)) return c * (7.5625f * t * t) + b;
             else if (t < (2 / 2.75f)) return c * (7.5625f * (t -= (1.5f / 2.75f)) * t + 0.75f) + b;
             else if (t < (2.5f / 2.75f)) return c * (7.5625f * (t -= (2.25f / 2.75f)) * t + 0.9375f) + b;
             else return c * (7.5625f * (t -= (2.625f / 2.75f)) * t + 0.984375f) + b;
         }
 
-        private static float _inOutBounce(float t, float b, float c, float d)
-        {
+        private static float _inOutBounce(float t, float b, float c, float d){
             if (t < d / 2) return _inBounce(t * 2, 0, c, d) * 0.5f + b;
             return _outBounce(t * 2 - d, 0, c, d) * 0.5f + c * 0.5f + b;
         }

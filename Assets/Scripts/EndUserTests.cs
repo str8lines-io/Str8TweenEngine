@@ -335,7 +335,12 @@ public class EndUserTests : MonoBehaviour
         GameObject fadeTextGo = fadeTextPanel.GetChild(childIndex).gameObject;
         Text txt = fadeTextGo.GetComponent<Text>();
         Tween t = Str8Tween.fade(txt, x, easeType, duration, killOnEnd);
-        _handleTweenUpdates(fadeTextGo, t, easeType);
+        t.delay(delay);
+        if(isLoop) t.loop(loopsCount, loopType);
+        string logRoot = easeType.ToString() + " (" + t.id + ") ";
+        t.onStart(() => Debug.Log(logRoot + "Started")).onComplete(()=> Debug.Log(logRoot + "Completed"));
+        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+        txt.text = easeType.ToString() + "\n" + t.id;
     }
 
     private void _fadeToggle(Transform fadeTogglePanel, int childIndex, Easing.EaseType easeType, float x){
