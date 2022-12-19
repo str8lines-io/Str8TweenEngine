@@ -67,7 +67,7 @@ public class EndUserTests : MonoBehaviour
 
     public void ChangeFadeTarget(Dropdown change){
         Transform fadePanel = panelsContainer.GetChild(3);
-        for(int i = 0; i < fadePanel.childCount - 2; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
+        for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
         fadeSetIndex = change.value;
         activePanel = fadePanel.GetChild(fadeSetIndex).gameObject;
         activePanel.SetActive(true);
@@ -178,34 +178,10 @@ public class EndUserTests : MonoBehaviour
                         }
                     #endregion
                         break;
-
+                        
                     case 5:
-                    #region FadeToggle
-                        Transform fadeTogglePanel = fadePanel.GetChild(5);
-                        for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeToggle(fadeTogglePanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeToggle(fadeTogglePanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeToggle(fadeTogglePanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeToggle(fadeTogglePanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
-                        }
-                    #endregion
-                        break;
-                        
-                    case 6:
-                    #region FadeSlider
-                        Transform fadeSliderPanel = fadePanel.GetChild(6);
-                        for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeSlider(fadeSliderPanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeSlider(fadeSliderPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeSlider(fadeSliderPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeSlider(fadeSliderPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
-                        }
-                    #endregion
-                        break;
-                        
-                    case 7:
                     #region FadeGraphic
-                        Transform fadeGraphicPanel = fadePanel.GetChild(7);
+                        Transform fadeGraphicPanel = fadePanel.GetChild(5);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -257,11 +233,11 @@ public class EndUserTests : MonoBehaviour
     }
 
     public void ResetTweens(){
-        if(controlAll) Str8Tween.reset(playOnReset);
+        if(controlAll) Str8Tween.reset();
         else{
             if(target != null) Str8Tween.reset(target);
             else if(id != String.Empty) Str8Tween.reset(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.reset(activePanel.transform.GetChild(i).gameObject, playOnReset);
+            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.reset(activePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -341,20 +317,6 @@ public class EndUserTests : MonoBehaviour
         t.onStart(() => Debug.Log(logRoot + "Started")).onComplete(()=> Debug.Log(logRoot + "Completed"));
         if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
         txt.text = easeType.ToString() + "\n" + t.id;
-    }
-
-    private void _fadeToggle(Transform fadeTogglePanel, int childIndex, Easing.EaseType easeType, float x){
-        GameObject fadeToggleGo = fadeTogglePanel.GetChild(childIndex).gameObject;
-        Toggle toggle = fadeToggleGo.GetComponent<Toggle>();
-        Tween t = Str8Tween.fade(toggle, x, easeType, duration, killOnEnd);
-        _handleTweenUpdates(fadeToggleGo, t, easeType);
-    }
-
-    private void _fadeSlider(Transform fadeSliderPanel, int childIndex, Easing.EaseType easeType, float x){
-        GameObject fadeSliderGo = fadeSliderPanel.GetChild(childIndex).gameObject;
-        Slider slider = fadeSliderGo.GetComponent<Slider>();
-        Tween t = Str8Tween.fade(slider, x, easeType, duration, killOnEnd);
-        _handleTweenUpdates(fadeSliderGo, t, easeType);
     }
 
     private void _fadeGraphic(Transform fadeGraphicPanel, int childIndex, Easing.EaseType easeType, float x){

@@ -11,10 +11,6 @@ using UnityEngine.EventSystems;
 public class Str8TweenTest
 {
     GameObject go;
-    GameObject canvasGo;
-    GameObject eventSystemGo;
-    GameObject toggleGo;
-    GameObject sliderGo;
     Vector3 toVectorValue;
     float toFloatValue;
     Easing.EaseType easeType;
@@ -24,12 +20,6 @@ public class Str8TweenTest
     public void Setup()
     {
         go = new GameObject();
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        canvasGo = UnityEngine.Object.Instantiate(canvas);
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        eventSystemGo = UnityEngine.Object.Instantiate(eventSystem);
-        toggleGo = canvasGo.transform.GetChild(0).gameObject;
-        sliderGo = canvasGo.transform.GetChild(1).gameObject;
         _setInitialValues();
     }
 
@@ -37,8 +27,6 @@ public class Str8TweenTest
     public void Teardown()
     {
         UnityEngine.Object.Destroy(go);
-        UnityEngine.Object.Destroy(canvasGo);
-        UnityEngine.Object.Destroy(eventSystemGo);
     }
 
     [UnitySetUp]
@@ -426,97 +414,7 @@ public class Str8TweenTest
         Assert.AreNotEqual(Str8Tween.fade(text, toFloatValue, easeType, duration), null);
     }
     #endregion
-    
-    #region fade toggle
-    [Test]
-    public void FadeToggleDurationException()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(toggle, toFloatValue, easeType, 0f);
-        });
-    }
 
-    [Test]
-    public void FadeToggleNegativeToValueException()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(toggle, -0.1f, easeType, duration);
-        });
-    }
-
-    [Test]
-    public void FadeToggleToValueHigherThanOneException()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(toggle, 1.1f, easeType, duration);
-        });
-    }
-    
-    [Test]
-    public void FadeToggleEngineInstantiation()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Str8Tween.fade(toggle, toFloatValue, easeType, duration);
-        GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
-    }
-
-    [Test]
-    public void FadeToggleResult()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Assert.AreNotEqual(Str8Tween.fade(toggle, toFloatValue, easeType, duration), null);
-    }
-    #endregion
-    
-    #region fade slider
-    [Test]
-    public void FadeSliderDurationException()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(slider, toFloatValue, easeType, 0f);
-        });
-    }
-
-    [Test]
-    public void FadeSliderNegativeToValueException()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(slider, -0.1f, easeType, duration);
-        });
-    }
-
-    [Test]
-    public void FadeSliderToValueHigherThanOneException()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(slider, 1.1f, easeType, duration);
-        });
-    }
-    
-    [Test]
-    public void FadeSliderEngineInstantiation()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Str8Tween.fade(slider, toFloatValue, easeType, duration);
-        GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
-    }
-
-    [Test]
-    public void FadeSliderResult()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Assert.AreNotEqual(Str8Tween.fade(slider, toFloatValue, easeType, duration), null);
-    }
-    #endregion
-    
     #region fade graphic
     [Test]
     public void FadeGraphicDurationException()

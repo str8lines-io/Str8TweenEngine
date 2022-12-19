@@ -11,10 +11,6 @@ using UnityEngine.EventSystems;
 public class TweenTest
 {
     GameObject go;
-    GameObject canvasGo;
-    GameObject eventSystemGo;
-    GameObject toggleGo;
-    GameObject sliderGo;
     Vector3 toVectorValue;
     float toFloatValue;
     Easing.EaseType easeType;
@@ -24,12 +20,6 @@ public class TweenTest
     public void Setup()
     {
         go = new GameObject();
-        GameObject canvas = Resources.Load<GameObject>("Canvas");
-        canvasGo = UnityEngine.Object.Instantiate(canvas);
-        GameObject eventSystem = Resources.Load<GameObject>("EventSystem");
-        eventSystemGo = UnityEngine.Object.Instantiate(eventSystem);
-        toggleGo = canvasGo.transform.GetChild(0).gameObject;
-        sliderGo = canvasGo.transform.GetChild(1).gameObject;
 
         toVectorValue = new Vector3(2f, 2f, 2f);
         toFloatValue = 0.5f;
@@ -41,8 +31,6 @@ public class TweenTest
     public void Teardown()
     {
         UnityEngine.Object.Destroy(go);
-        UnityEngine.Object.Destroy(canvasGo);
-        UnityEngine.Object.Destroy(eventSystemGo);
     }
 
 #region constructors
@@ -572,140 +560,7 @@ public class TweenTest
         });
     }
     #endregion
-
-    #region fade toggle
-    [Test]
-    public void TweenToggleFadeDefaultKill()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-
-    [Test]
-    public void TweenToggleFadeKillOnEnd()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration, true);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-
-    [Test]
-    public void TweenToggleFadeDontKillOnEnd()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration, false);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == toggleGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
     
-    [Test]
-    public void TweenToggleFadeNullTarget()
-    {
-        Toggle toggle = null;
-        Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        });
-    }
-
-    [Test]
-    public void TweenToggleInvalidMethod()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        
-        // Test
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(String.Empty, toggle, toFloatValue, easeType, duration);
-        });
-    }
-    
-    [Test]
-    public void TweenToggleFadeZeroDuration()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        
-        // Test
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween("fade", toggle, toFloatValue, easeType, 0f);
-        });
-    }
-
-    [Test]
-    public void TweenToggleFadeNegativeDuration()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        
-        // Test
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween("fade", toggle, toFloatValue, easeType, -1f);
-        });
-    }
-    #endregion
-
-    #region fade slider
-    [Test]
-    public void TweenSliderFadeDefaultKill()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-
-    [Test]
-    public void TweenSliderFadeKillOnEnd()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration, true);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-
-    [Test]
-    public void TweenSliderFadeDontKillOnEnd()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration, false);
-        Assert.IsTrue((t.id.Length == 36) && (t.target == sliderGo) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-    
-    [Test]
-    public void TweenSliderFadeNullTarget()
-    {
-        Slider slider = null;
-        Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        });
-    }
-
-    [Test]
-    public void TweenSliderInvalidMethod()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-    
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(String.Empty, slider, toFloatValue, easeType, duration);
-        });
-    }
-    
-    [Test]
-    public void TweenSliderFadeZeroDuration()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-    
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween("fade", slider, toFloatValue, easeType, 0f);
-        });
-    }
-
-    [Test]
-    public void TweenSliderFadeNegativeDuration()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-    
-        Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween("fade", slider, toFloatValue, easeType, -1f);
-        });
-    }
-    #endregion
-
     #region fade graphic
     [Test]
     public void TweenGraphicFadeDefaultKill()
@@ -1845,211 +1700,7 @@ public class TweenTest
         Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
     }
     #endregion
-
-    #region fade toggle
-    [Test]
-    public void TweenToggleFadeUpdateFirstFrame()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f);
-        Assert.IsTrue(initialAlpha == toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenToggleFadeUpdateWithTimeEqualZero()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(0f);
-        Assert.IsTrue(initialAlpha == toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenToggleFadeUpdateWithTimeBelowDuration()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != toggle.graphic.color.a && toFloatValue != toggle.graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenToggleFadeUpdateWithTimeEqualDuration()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration);
-        Assert.IsTrue(toFloatValue == toggle.graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
-    }
-
-    [Test]
-    public void TweenToggleFadeUpdateWithTimeHigherThanDuration()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == toggle.graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
-    }
-
-    [Test]
-    public void TweenToggleFadeLoopsRestart()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
-        t.update(duration * 0.999999f);
-        float firstLoopEndAlpha = toggle.graphic.color.a;
-        t.update(duration * 0.000001f);
-        float secondLoopStartAlpha = toggle.graphic.color.a;
-        t.update(duration * 0.999999f);
-        float secondLoopEndAlpha = toggle.graphic.color.a;
-        t.update(duration * 0.000001f);
-        float thirdLoopStartAlpha = toggle.graphic.color.a;
-        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
-    }
-
-    [Test]
-    public void TweenToggleFadeLoopsWithOffset()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
-        t.update(duration);
-        float firstLoopEndAlpha = toggle.graphic.color.a;
-        t.update(duration);
-        float secondLoopEndAlpha = toggle.graphic.color.a;
-        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
-    }
-
-    [Test]
-    public void TweenToggleFadeLoopsOscillate()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
-        t.update(duration);
-        float firstLoopEndAlpha = toggle.graphic.color.a;
-        t.update(duration);
-        float secondLoopEndAlpha = toggle.graphic.color.a;
-        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
-    }
-    #endregion
-
-    #region fade slider
-    [Test]
-    public void TweenSliderFadeUpdateFirstFrame()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f);
-        Assert.IsTrue(initialAlpha == slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenSliderFadeUpdateWithTimeEqualZero()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(0f);
-        Assert.IsTrue(initialAlpha == slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenSliderFadeUpdateWithTimeBelowDuration()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != slider.image.color.a && toFloatValue != slider.image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
-    }
-
-    [Test]
-    public void TweenSliderFadeUpdateWithTimeEqualDuration()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration);
-        Assert.IsTrue(toFloatValue == slider.image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
-    }
-
-    [Test]
-    public void TweenSliderFadeUpdateWithTimeHigherThanDuration()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == slider.image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
-    }
-
-    [Test]
-    public void TweenSliderFadeLoopsRestart()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
-        t.update(duration * 0.999999f);
-        float firstLoopEndAlpha = slider.image.color.a;
-        t.update(duration * 0.000001f);
-        float secondLoopStartAlpha = slider.image.color.a;
-        t.update(duration * 0.999999f);
-        float secondLoopEndAlpha = slider.image.color.a;
-        t.update(duration * 0.000001f);
-        float thirdLoopStartAlpha = slider.image.color.a;
-        Assert.IsTrue(Math.Round(firstLoopEndAlpha, 5) == toFloatValue && secondLoopStartAlpha == initialAlpha && Math.Round(secondLoopEndAlpha, 5) == toFloatValue && thirdLoopStartAlpha == initialAlpha);
-    }
-
-    [Test]
-    public void TweenSliderFadeLoopsWithOffset()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
-        t.update(duration);
-        float firstLoopEndAlpha = slider.image.color.a;
-        t.update(duration);
-        float secondLoopEndAlpha = slider.image.color.a;
-        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha != initialAlpha && secondLoopEndAlpha != firstLoopEndAlpha);
-    }
-
-    [Test]
-    public void TweenSliderFadeLoopsOscillate()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
-        t.update(duration);
-        float firstLoopEndAlpha = slider.image.color.a;
-        t.update(duration);
-        float secondLoopEndAlpha = slider.image.color.a;
-        Assert.IsTrue(firstLoopEndAlpha == toFloatValue && secondLoopEndAlpha == initialAlpha);
-    }
-    #endregion
-
+    
     #region fade graphic
     [Test]
     public void TweenGraphicFadeUpdateFirstFrame()
@@ -2429,24 +2080,6 @@ public class TweenTest
     }
     
     [Test]
-    public void TweenToggleFadeComplete()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        t.complete();
-        Assert.AreEqual(toggle.graphic.color.a, toFloatValue);
-    }
-    
-    [Test]
-    public void TweenSliderFadeComplete()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        t.complete();
-        Assert.AreEqual(slider.image.color.a, toFloatValue);
-    }
-    
-    [Test]
     public void TweenGraphicFadeComplete()
     {
         go.AddComponent<Image>();
@@ -2589,26 +2222,6 @@ public class TweenTest
     }
 
     [Test]
-    public void TweenToggleFadeCancel()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.cancel();
-        Assert.AreEqual(toggle.graphic.color.a, initialAlpha);
-    }
-
-    [Test]
-    public void TweenSliderFadeCancel()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.cancel();
-        Assert.AreEqual(slider.image.color.a, initialAlpha);
-    }
-
-    [Test]
     public void TweenGraphicFadeCancel()
     {
         go.AddComponent<Image>();
@@ -2636,42 +2249,6 @@ public class TweenTest
         Vector3 positionBeforeReset = rect.anchoredPosition3D;
         t.reset();
         Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && !t.isRunning 
-            && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
-    }
-    
-    [Test]
-    public void TweenRectTransformMoveResetDontPlayOnReset()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        Vector3 initialPosition = rect.anchoredPosition3D;
-        bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
-        bool isRunning = t.isRunning;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2);
-        Vector3 positionBeforeReset = rect.anchoredPosition3D;
-        t.reset(false);
-        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && !t.isRunning 
-            && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
-    }
-    
-    [Test]
-    public void TweenRectTransformMoveResetPlayOnReset()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        Vector3 initialPosition = rect.anchoredPosition3D;
-        bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
-        bool isRunning = t.isRunning;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2);
-        Vector3 positionBeforeReset = rect.anchoredPosition3D;
-        t.reset(true);
-        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && t.isRunning 
             && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
     }
     
@@ -2704,7 +2281,7 @@ public class TweenTest
         t.update(duration);
         t.update(duration);
         int loopsBeforeReset = triggered;
-        t.reset(true);
+        t.reset();
         triggered = 0;
         t.update(0f); //First frame update is also reset 
         t.update(duration);
@@ -2807,32 +2384,6 @@ public class TweenTest
         float alphaBeforeReset = text.color.a;
         t.reset();
         Assert.IsTrue(alphaBeforeReset != initialAlpha && text.color.a == initialAlpha && text.color.a != alphaBeforeReset);
-    }
-    
-    [Test]
-    public void TweenToggleFadeReset()
-    {
-        Toggle toggle = toggleGo.GetComponent<Toggle>();
-        Tween t = new Tween("fade", toggle, toFloatValue, easeType, duration);
-        float initialAlpha = toggle.graphic.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2);
-        float alphaBeforeReset = toggle.graphic.color.a;
-        t.reset();
-        Assert.IsTrue(alphaBeforeReset != initialAlpha && toggle.graphic.color.a == initialAlpha && toggle.graphic.color.a != alphaBeforeReset);
-    }
-    
-    [Test]
-    public void TweenSliderFadeReset()
-    {
-        Slider slider = sliderGo.GetComponent<Slider>();
-        Tween t = new Tween("fade", slider, toFloatValue, easeType, duration);
-        float initialAlpha = slider.image.color.a;
-        t.update(0f); //First frame is not taken in count
-        t.update(duration/2);
-        float alphaBeforeReset = slider.image.color.a;
-        t.reset();
-        Assert.IsTrue(alphaBeforeReset != initialAlpha && slider.image.color.a == initialAlpha && slider.image.color.a != alphaBeforeReset);
     }
     
     [Test]

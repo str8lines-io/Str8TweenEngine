@@ -45,8 +45,6 @@ namespace Str8lines.Tweening
         private SpriteRenderer _spriteRenderer;
         private CanvasRenderer _canvasRenderer;
         private Graphic _graphic;
-        private Toggle _toggle;
-        private Slider _slider;
         private float _initialFromSpriteRendererAlpha;
         private float _fromSpriteRendererAlpha;
         private float _spriteRendererAlphaChange;
@@ -56,12 +54,6 @@ namespace Str8lines.Tweening
         private float _initialFromGraphicAlpha;
         private float _fromGraphicAlpha;
         private float _graphicAlphaChange;
-        private float _initialFromToggleAlpha;
-        private float _fromToggleAlpha;
-        private float _toggleAlphaChange;
-        private float _initialFromSliderAlpha;
-        private float _fromSliderAlpha;
-        private float _sliderAlphaChange;
         private float _initialToValue;
         private float _toValue;
         #endregion
@@ -217,87 +209,6 @@ namespace Str8lines.Tweening
             _initialFromSpriteRendererAlpha = _spriteRenderer.color.a;
             _fromSpriteRendererAlpha = _initialFromSpriteRendererAlpha;
             _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <param name="toggle">The <see href="https://docs.unity3d.com/ScriptReference/Toggle.html">Toggle</see> on which changes will be applied.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="toggle"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
-        /// <example>
-        /// Create new tween that changes Toggle's alpha :
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Toggle toggle;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Tween t = new Tween("fade", toggle, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public Tween(string methodName, Toggle toggle, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(toggle == null) throw new ArgumentNullException("toggle", "toggle can not be null");
-            if(toggle.graphic == null && toggle.targetGraphic == null) throw new Exception("Toggle has no graphic to fade");
-            _init(methodName, toggle.gameObject, easeType, duration, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
-
-            _toggle = toggle;
-            if(_toggle.targetGraphic == null) _initialFromToggleAlpha = _toggle.targetGraphic.color.a;
-            if(_toggle.graphic == null) _initialFromToggleAlpha = _toggle.graphic.color.a;
-            _fromToggleAlpha = _initialFromToggleAlpha;
-            _toggleAlphaChange = _toValue - _fromToggleAlpha;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <param name="slider">The <see href="https://docs.unity3d.com/ScriptReference/Slider.html">Slider</see> on which changes will be applied.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="slider"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
-        /// <example>
-        /// Create new tween that changes slider's transparency :
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Slider slider;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Tween t = new Tween("fade", slider, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public Tween(string methodName, Slider slider, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(slider == null) throw new ArgumentNullException("slider", "slider can not be null");
-            if(slider.image == null && slider.fillRect == null && slider.handleRect == null) throw new Exception("Slider has no graphic to fade");
-            _init(methodName, slider.gameObject, easeType, duration, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
-
-            _slider = slider;
-            if(_slider.fillRect != null && _slider.fillRect.gameObject.TryGetComponent(out Image fill)) _initialFromSliderAlpha = fill.color.a;
-            if(_slider.handleRect != null && _slider.handleRect.gameObject.TryGetComponent(out Image handle)) _initialFromSliderAlpha = handle.color.a;
-            if(_slider.image != null) _initialFromSliderAlpha = _slider.image.color.a;
-            _fromSliderAlpha = _initialFromSliderAlpha;
-            _sliderAlphaChange = _toValue - _fromSliderAlpha;
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
@@ -661,7 +572,6 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Resets the <see cref="Tween">tween</see> values.</summary>
-        /// <param name="playOnReset">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will play automatically. Default value is <c>false</c>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset.
@@ -690,13 +600,13 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void reset(bool playOnReset = false)
+        public void reset()
         {
             _passedLoopsCount = 0;
             _isIncrementing = true;
             _isDelayOver = false;
             this.isCompleted = false;
-            this.isRunning = playOnReset;
+            this.isRunning = false;
             _isFirstUpdate = true;
             _elapsed = 0f;
             _playTime = 0f;
@@ -735,6 +645,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void play()
         {
+            if(this.isCompleted) this.reset();
             this.isRunning = true;
         }
 
@@ -984,17 +895,6 @@ namespace Str8lines.Tweening
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, this.duration));
                         spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
-                        float newAlpha = Easing.ease(this.easeType, playtime, _fromToggleAlpha, _toggleAlphaChange, this.duration);
-                        if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, newAlpha);
-                        if(toggle.targetGraphic != null) toggle.targetGraphic.color = new Color(_toggle.targetGraphic.color.r, _toggle.targetGraphic.color.g, _toggle.targetGraphic.color.b, newAlpha);
-                    }
-                    if(_slider != null && this.target.TryGetComponent(out Slider slider)){
-                        float newAlpha = Easing.ease(this.easeType, playtime, _fromSliderAlpha, _sliderAlphaChange, this.duration);
-                        if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, newAlpha);
-                        if(slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, newAlpha); }
-                        if(slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, newAlpha); }
-                    }
                     if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, this.duration));
                         graphic.color = newGraphicColor;
@@ -1020,16 +920,6 @@ namespace Str8lines.Tweening
                     _toValue += _spriteRendererAlphaChange;
                 }
 
-                if(_toggle != null){
-                    _fromToggleAlpha = _toValue;
-                    _toValue += _toggleAlphaChange;
-                }
-
-                if(_slider != null){
-                    _fromSliderAlpha = _toValue;
-                    _toValue += _sliderAlphaChange;
-                }
-
                 if(_graphic != null){
                     _fromGraphicAlpha = _toValue;
                     _toValue += _graphicAlphaChange;
@@ -1040,8 +930,6 @@ namespace Str8lines.Tweening
                     _toValue = 1; //Clamps alpha max value
                     if(_canvasRenderer != null) _canvasRendererAlphaChange = _toValue - _fromCanvasRendererAlpha;
                     if(_spriteRenderer != null) _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
-                    if(_toggle != null) _toggleAlphaChange = _toValue - _fromToggleAlpha;
-                    if(_slider != null) _sliderAlphaChange = _toValue - _fromSliderAlpha;
                     if(_graphic != null) _graphicAlphaChange = _toValue - _fromGraphicAlpha;
                 }
                 if(_toValue < 0) _toValue = 0; //Clamps alpha min value
@@ -1078,17 +966,6 @@ namespace Str8lines.Tweening
                         initialValue = useToValues ? _initialToValue : _initialFromSpriteRendererAlpha;
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
                         spriteRenderer.color = newSpriteRendererColor;
-                    }
-                    if(_toggle != null && this.target.TryGetComponent(out Toggle toggle)){
-                        initialValue = useToValues ? _initialToValue : _initialFromToggleAlpha;
-                        if(toggle.graphic != null) toggle.graphic.color = new Color(_toggle.graphic.color.r, _toggle.graphic.color.g, _toggle.graphic.color.b, initialValue);
-                        if(toggle.targetGraphic != null) toggle.targetGraphic.color = new Color(_toggle.targetGraphic.color.r, _toggle.targetGraphic.color.g, _toggle.targetGraphic.color.b, initialValue);
-                    }
-                    if(_slider != null && this.target.TryGetComponent(out Slider slider)){
-                        initialValue = useToValues ? _initialToValue : _initialFromSliderAlpha;
-                        if(slider.image != null) slider.image.color = new Color(_slider.image.color.r, _slider.image.color.g, _slider.image.color.b, initialValue);
-                        if(slider.fillRect != null && slider.fillRect.gameObject.TryGetComponent(out Image fill)){ fill.color = new Color(fill.color.r, fill.color.g, fill.color.b, initialValue); }
-                        if(slider.handleRect != null && slider.handleRect.gameObject.TryGetComponent(out Image handle)){ handle.color = new Color(handle.color.r, handle.color.g, handle.color.b, initialValue); }
                     }
                     if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
                         initialValue = useToValues ? _initialToValue : _initialFromGraphicAlpha;

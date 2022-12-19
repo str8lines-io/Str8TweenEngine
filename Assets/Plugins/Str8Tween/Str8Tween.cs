@@ -318,78 +318,6 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="toggle"/>'s alpha to a given value.</summary>
-        /// <param name="toggle">The <see href="https://docs.unity3d.com/ScriptReference/Toggle.html">Toggle</see> that will fade.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="toggle"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
-        /// <returns>The <see cref="Tween">tween</see> created.</returns>
-        /// <example>
-        /// Fades the Toggle during 3 seconds to the given alpha with a linear easing.
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Toggle toggle;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Str8Tween.fade(toggle, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public static Tween fade(Toggle toggle, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(toggle == null) throw new ArgumentNullException("toggle", "toggle can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, toggle, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
-            return t;
-        }
-
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="slider"/>'s alpha to a given value.</summary>
-        /// <param name="slider">The <see href="https://docs.unity3d.com/ScriptReference/Slider.html">Slider</see> that will fade.</param>
-        /// <param name="toValue">A <c>float</c> that represents <paramref name="slider"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
-        /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
-        /// <returns>The <see cref="Tween">tween</see> created.</returns>
-        /// <example>
-        /// Fades the Slider during 3 seconds to the given alpha with a linear easing.
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public Slider slider;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Str8Tween.fade(slider, 0f, Easing.EaseType.Linear, 3f);
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public static Tween fade(Slider slider, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
-        {
-            if(slider == null) throw new ArgumentNullException("slider", "slider can not be null");
-            if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, slider, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
-            return t;
-        }
-
         /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="graphic"/>'s alpha to a given value.</summary>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha value.</param>
@@ -686,7 +614,6 @@ namespace Str8lines.Tweening
 
         /// <summary>Reset the <see cref="Tween">tween</see> associated to the given uuid.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to reset.</param>
-        /// <param name="playOnReset">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will play automatically after values <see cref="Tween.reset(bool)">reset</see>. Default value is <c>false</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset a tween :
@@ -706,13 +633,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void reset(string id, bool playOnReset = false)
+        public static void reset(string id)
         {
-            get(id)?.reset(playOnReset);
+            get(id)?.reset();
         }
 
         /// <summary>Reset every <see cref="Tween">tween</see> alive.</summary>
-        /// <param name="playOnReset">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will play automatically after values <see cref="Tween.reset(bool)">reset</see>. Default value is <c>false</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset every tween :
@@ -732,16 +658,15 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void reset(bool playOnReset = false)
+        public static void reset()
         {
             if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.reset(playOnReset);
+                foreach(Tween t in tweens.Values) t.reset();
             }
         }
 
         /// <summary>Reset every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
         /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.reset(bool)">reset</see>. Default value is <c>false</c></param>
-        /// <param name="playOnReset">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will play automatically after values <see cref="Tween.reset(bool)">reset</see>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset target's tweens :
@@ -763,12 +688,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void reset(GameObject target, bool playOnReset = false)
+        public static void reset(GameObject target)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
-                foreach(Tween t in tweensFound) t.reset(playOnReset);
+                foreach(Tween t in tweensFound) t.reset();
             }
         }
 
