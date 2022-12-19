@@ -606,7 +606,6 @@ namespace Str8lines.Tweening
             _isIncrementing = true;
             _isDelayOver = false;
             this.isCompleted = false;
-            this.isRunning = false;
             _isFirstUpdate = true;
             _elapsed = 0f;
             _playTime = 0f;

@@ -2253,7 +2253,7 @@ public class TweenTest
     }
     
     [Test]
-    public void TweenRectTransformMoveResetLoopCountWhenRunning()
+    public void TweenRectTransformMoveResetLoopCount()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -2268,24 +2268,6 @@ public class TweenTest
         t.update(0f); //First frame update is also reset 
         t.update(duration);
         Assert.IsTrue(loopsBeforeReset == 2 && triggered == 0);
-    }
-    
-    [Test]
-    public void TweenRectTransformMoveResetLoopCountWhenNotRunning()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        int triggered = 0;
-        t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
-        t.update(duration);
-        t.update(duration);
-        int loopsBeforeReset = triggered;
-        t.reset();
-        triggered = 0;
-        t.update(0f); //First frame update is also reset 
-        t.update(duration);
-        Assert.IsTrue(loopsBeforeReset == 2 && triggered == 1);
     }
     
     [Test]
