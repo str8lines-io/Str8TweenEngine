@@ -4,14 +4,14 @@ using UnityEngine.UI;
 using Str8lines.Tweening;
 
 public class EndUserTests : MonoBehaviour 
-{    
+{
+    #region variables
     public bool controlAll;
     public GameObject target;
     public string id;
     public float duration;
     public float delay;
     public bool killOnEnd;
-    public bool playOnReset;
     public bool isLoop;
     public Tween.LoopType loopType;
     public int loopsCount;
@@ -21,6 +21,7 @@ public class EndUserTests : MonoBehaviour
     private Transform monitor;
     private int panelIndex;
     private int fadeSetIndex;
+    #endregion
 
     void Start()
     {
@@ -31,6 +32,15 @@ public class EndUserTests : MonoBehaviour
         panelsContainer = this.gameObject.transform.GetChild(1);
         for(int i = 0; i < panelsContainer.childCount - 1; i++) panelsContainer.GetChild(i).gameObject.SetActive(false);
         _updatePanel();
+
+        controlAll = false;
+        killOnEnd = false;
+        isLoop = false;
+        duration = 0;
+        delay = 0;
+        loopsCount = 0;
+        loopType = Tween.LoopType.Restart;
+        id = String.Empty;
     }
 
     private void Update() {
@@ -77,7 +87,6 @@ public class EndUserTests : MonoBehaviour
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
         switch(panelIndex){
             case 0:
-            #region Move
                 Transform movePanel = panelsContainer.GetChild(0);
                 float xValue = 225f;
                 for(int i = 0; i < easeTypesCount; i++){
@@ -87,11 +96,9 @@ public class EndUserTests : MonoBehaviour
                     else if(i > 10 && i <= 20) _move(go, (Easing.EaseType)(3*(i - 10) - 1), 475f); //Out
                     else _move(go, (Easing.EaseType)(3*(i - 20)), 700f); //InOut
                 }
-            #endregion
                 break;
 
             case 1:
-            #region Scale
                 Transform scalePanel = panelsContainer.GetChild(1);
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = scalePanel.GetChild(i).gameObject;
@@ -100,11 +107,9 @@ public class EndUserTests : MonoBehaviour
                     else if(i > 10 && i <= 20) _scale(go, (Easing.EaseType)(3*(i - 10) - 1)); //Out
                     else _scale(go, (Easing.EaseType)(3*(i - 20))); //InOut
                 }
-            #endregion
                 break;
 
             case 2:
-            #region Rotate
                 Transform rotatePanel = panelsContainer.GetChild(2);
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = rotatePanel.GetChild(i).gameObject;
@@ -113,14 +118,12 @@ public class EndUserTests : MonoBehaviour
                     else if(i > 10 && i <= 20) _rotate(go, (Easing.EaseType)(3*(i - 10) - 1), 60f); //Out
                     else _rotate(go, (Easing.EaseType)(3*(i - 20)), 60f); //InOut
                 }
-            #endregion
                 break;
                 
             case 3:
                 Transform fadePanel = panelsContainer.GetChild(3);
                 switch(fadeSetIndex){
                     case 0:
-                    #region FadeCanvasRenderer
                         Transform fadeCanvasRendererPanel = fadePanel.GetChild(0);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -128,11 +131,9 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
 
                     case 1:
-                    #region FadeSpriteRenderer
                         Transform fadeSpriteRendererPanel = fadePanel.GetChild(1);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -140,11 +141,9 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
 
                     case 2:
-                    #region FadeImage
                         Transform fadeImagePanel = fadePanel.GetChild(2);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeImage(fadeImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -152,11 +151,9 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
                         
                     case 3:
-                    #region FadeRawImage
                         Transform fadeRawImagePanel = fadePanel.GetChild(3);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -164,11 +161,9 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
                         
                     case 4:
-                    #region FadeText
                         Transform fadeTextPanel = fadePanel.GetChild(4);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeText(fadeTextPanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -176,11 +171,9 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
                         
                     case 5:
-                    #region FadeGraphic
                         Transform fadeGraphicPanel = fadePanel.GetChild(5);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)i, 0.2f); //Linear
@@ -188,10 +181,8 @@ public class EndUserTests : MonoBehaviour
                             else if(i > 10 && i <= 20) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
                             else _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
                         }
-                    #endregion
                         break;
                 }
-
                 break;
         }
     }
@@ -258,6 +249,33 @@ public class EndUserTests : MonoBehaviour
             else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.kill(activePanel.transform.GetChild(i).gameObject);
         }
     }
+    
+    public void UpdateControlAll(Toggle change){ controlAll = change.isOn; }
+    public void UpdateKillOnEnd(Toggle change){ killOnEnd = change.isOn; }
+    public void UpdateIsLoop(Toggle change){ isLoop = change.isOn; }
+    public void UpdateID(InputField change){ id = change.text; }
+    public void UpdateDuration(InputField change){ 
+        try{
+            duration = Int32.Parse(change.text);
+        }catch{
+            duration = 0;
+        }
+    }
+    public void UpdateDelay(InputField change){ 
+        try{
+            delay = Int32.Parse(change.text);
+        }catch{
+            delay = 0;
+        }
+    }
+    public void UpdateLoopsCount(InputField change){
+        try{
+            loopsCount = Int32.Parse(change.text);
+        }catch{
+            loopsCount = 0;
+        }
+    }
+    public void UpdateLoopType(Dropdown change){ loopType = (Tween.LoopType)change.value; }
     #endregion
 
     #region private
