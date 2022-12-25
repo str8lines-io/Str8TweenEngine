@@ -235,15 +235,6 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
-    public void CancelTweens(){
-        if(controlAll) Str8Tween.cancel();
-        else{
-            if(target != null) Str8Tween.cancel(target);
-            else if(id != String.Empty) Str8Tween.cancel(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.cancel(activePanel.transform.GetChild(i).gameObject);
-        }
-    }
-
     public void KillTweens(){
         if(controlAll) Str8Tween.kill();
         else{

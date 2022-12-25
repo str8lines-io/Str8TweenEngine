@@ -715,51 +715,8 @@ namespace Str8lines.Tweening
         /// </example>
         public void complete(bool triggerOnEnd = true)
         {
-            this.isFinished = true;
-            this.isRunning = false;
+            this.stop(triggerOnEnd);
             _setInitialValue(true);
-            if(triggerOnEnd) _end?.Invoke();
-            if(_killOnEnd == true) kill();
-        }
-
-        /// <summary>Cancels the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
-        /// <returns><c>void</c></returns>
-        /// <remarks>Canceling a <see cref="Tween">tween</see> sends the target to its initial values.</remarks>
-        /// <example>
-        /// Press space to cancel.
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public RectTransform rectTransform;
-        ///     private Tween t;
-        ///
-        ///     private void Start()
-        ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///     }
-        ///
-        ///     private void Update()
-        ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.cancel();
-        ///         }
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public void cancel(bool triggerOnEnd = true)
-        {
-            this.isFinished = true;
-            this.isRunning = false;
-            _setInitialValue();
-            if(triggerOnEnd) _end?.Invoke();
-            if(_killOnEnd == true) kill();
         }
 
         /// <summary>Stops the <see cref="Tween">tween</see>.</summary>
@@ -795,6 +752,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void stop(bool triggerOnEnd = true)
         {
+            if(this.isFinished) return;
             this.isFinished = true;
             this.isRunning = false;
             if(triggerOnEnd) _end?.Invoke();
