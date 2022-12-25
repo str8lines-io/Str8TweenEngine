@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using Str8lines.Tweening;
 
+/*
+    This class provides navigation functions for the UI,
+    methods to control tweens lifecycles,
+    updates UI for monitoring purposes,
+    allows tweens parameters updates through UI,
+    and instantiates Tweens
+*/
 public class EndUserTests : MonoBehaviour 
 {
-    //Commenter les 2 fichiers de façon à décrire l'utilité globale des scripts
-    //Commenter les sections des scripts (ex: méthodes utilisées par le paneau de controle pour gérer les lifecycles des tweens)
-    //Commenter succintement l'utilité de chaque fonction
     #region variables
     public bool controlAll;
     public GameObject target;
@@ -26,6 +30,7 @@ public class EndUserTests : MonoBehaviour
     private int fadeSetIndex;
     #endregion
 
+    //Initializes UI and public variables
     void Start()
     {
         panelIndex = 0;
@@ -46,6 +51,8 @@ public class EndUserTests : MonoBehaviour
         id = String.Empty;
     }
 
+    #region monitoring
+    //Display tweens count according to tweens state in real time
     private void Update() {
         Tween[] tweens = Str8Tween.get();
         int running = 0;
@@ -64,20 +71,35 @@ public class EndUserTests : MonoBehaviour
         monitor.GetChild(2).GetComponent<Text>().text = "Finished = " + finished;
         monitor.GetChild(3).GetComponent<Text>().text = "Paused = " + paused;
     }
+    
+    //Logs when events are triggered with associated tween's id in console
+    private void _logEvents(Tween t){
+        string logRoot = t.easeType.ToString() + " (" + t.id + ") ";
+        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
+        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+    }
+    #endregion
 
-    #region public
+    /*
+        Contains the functions used to display the differents panels in the scene
+        and the methods called by clicking on buttons for tweens lifecycle tests
+    */
+    #region navigation and control
+    //Shows next panel
     public void Next(){
         panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
         if(panelIndex < 3) panelIndex++;
         _updatePanel();
     }
 
+    //Shows previous panel
     public void Previous(){
         panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
         if(panelIndex > 0) panelIndex--;
         _updatePanel();
     }
 
+    //Display approriate panel according to the target to fade
     public void ChangeFadeTarget(Dropdown change){
         Transform fadePanel = panelsContainer.GetChild(3);
         for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
@@ -86,6 +108,7 @@ public class EndUserTests : MonoBehaviour
         activePanel.SetActive(true);
     }
 
+    //Instantiates panel's tweens
     public void StartTweens(){
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
         switch(panelIndex){
@@ -190,6 +213,7 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
+    //Calls tween's play() method
     public void PlayTweens(){
         if(controlAll) Str8Tween.play();
         else{
@@ -199,6 +223,7 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
+    //Calls tween's pause() method
     public void PauseTweens(){
         if(controlAll) Str8Tween.pause();
         else{
@@ -208,6 +233,7 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
+    //Calls tween's stop() method
     public void StopTweens(){
         if(controlAll) Str8Tween.stop();
         else{
@@ -217,6 +243,7 @@ public class EndUserTests : MonoBehaviour
         }
     }
 
+    //Calls tween's complete() method
     public void CompleteTweens(){
         if(controlAll) Str8Tween.complete();
         else{
@@ -234,7 +261,8 @@ public class EndUserTests : MonoBehaviour
             else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.reset(activePanel.transform.GetChild(i).gameObject);
         }
     }
-
+    
+    //Calls tween's kill() method
     public void KillTweens(){
         if(controlAll) Str8Tween.kill();
         else{
@@ -244,6 +272,23 @@ public class EndUserTests : MonoBehaviour
         }
     }
     
+    //Updates the UI according to the active panel
+    private void _updatePanel(){
+        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
+        activePanel.SetActive(true);
+        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
+        if(panelIndex == 3){
+            header.GetChild(1).gameObject.SetActive(true);
+            Transform fadePanel = panelsContainer.GetChild(panelIndex);
+            for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
+            activePanel = fadePanel.GetChild(fadeSetIndex).gameObject;
+            activePanel.SetActive(true);
+        }else header.GetChild(1).gameObject.SetActive(false);
+    }   
+    #endregion
+
+    // Functions which updates public variables of the current script
+    #region parameters
     public void UpdateControlAll(Toggle change){ controlAll = change.isOn; }
     public void UpdateKillOnEnd(Toggle change){ killOnEnd = change.isOn; }
     public void UpdateIsLoop(Toggle change){ isLoop = change.isOn; }
@@ -272,7 +317,8 @@ public class EndUserTests : MonoBehaviour
     public void UpdateLoopType(Dropdown change){ loopType = (Tween.LoopType)change.value; }
     #endregion
 
-    #region private
+    // Creates the tweens to checks
+    #region instantiations
     private void _move(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = Str8Tween.move(rect, new Vector3(x, rect.anchoredPosition.y, 0f), easeType, duration, killOnEnd);
@@ -336,31 +382,13 @@ public class EndUserTests : MonoBehaviour
         _handleTweenUpdates(fadeGraphicGo, t, easeType);
     }
 
-    private void _updatePanel(){
-        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
-        activePanel.SetActive(true);
-        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        if(panelIndex == 3){
-            header.GetChild(1).gameObject.SetActive(true);
-            Transform fadePanel = panelsContainer.GetChild(panelIndex);
-            for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
-            activePanel = fadePanel.GetChild(fadeSetIndex).gameObject;
-            activePanel.SetActive(true);
-        }else header.GetChild(1).gameObject.SetActive(false);
-    }
-
+    //Updates delay and loop parameters of a tween and displays the ID of the tween created
     private void _handleTweenUpdates(GameObject go, Tween t, Easing.EaseType easeType){
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
         _logEvents(t);
         Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         text.text = easeType.ToString() + "\n" + t.id;
-    }
-
-    private void _logEvents(Tween t){
-        string logRoot = t.easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
-        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
-    }
+    } 
     #endregion
 }

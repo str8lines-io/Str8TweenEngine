@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Loads the Canvas and EventSystem to use for testing
 public class EndUserTestsSetup : MonoBehaviour
 {
     void Start()
