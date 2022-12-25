@@ -325,9 +325,7 @@ public class EndUserTests : MonoBehaviour
         Tween t = Str8Tween.fade(txt, x, easeType, duration, killOnEnd);
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
-        string logRoot = easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
-        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+        _logEvents(t);
         txt.text = easeType.ToString() + "\n" + t.id;
     }
 
@@ -354,11 +352,15 @@ public class EndUserTests : MonoBehaviour
     private void _handleTweenUpdates(GameObject go, Tween t, Easing.EaseType easeType){
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
-        string logRoot = easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
-        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+        _logEvents(t);
         Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         text.text = easeType.ToString() + "\n" + t.id;
+    }
+
+    private void _logEvents(Tween t){
+        string logRoot = t.easeType.ToString() + " (" + t.id + ") ";
+        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
+        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
     }
     #endregion
 }
