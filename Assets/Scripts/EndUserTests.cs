@@ -49,11 +49,11 @@ public class EndUserTests : MonoBehaviour
     private void Update() {
         Tween[] tweens = Str8Tween.get();
         int running = 0;
-        int completed = 0;
+        int ended = 0;
         int paused = 0;
         foreach(Tween t in tweens){
             if(!t.isAlive) continue;
-            if(t.isFinished) completed++;
+            if(t.isFinished) ended++;
             else{
                 if(t.isRunning) running++;
                 else paused++;
@@ -61,7 +61,7 @@ public class EndUserTests : MonoBehaviour
         }
         monitor.GetChild(0).GetComponent<Text>().text = "Total = " + tweens.Length;
         monitor.GetChild(1).GetComponent<Text>().text = "Running = " + running;
-        monitor.GetChild(2).GetComponent<Text>().text = "Completed = " + completed;
+        monitor.GetChild(2).GetComponent<Text>().text = "Ended = " + ended;
         monitor.GetChild(3).GetComponent<Text>().text = "Paused = " + paused;
     }
 
