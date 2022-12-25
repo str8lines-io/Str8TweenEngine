@@ -28,7 +28,6 @@ namespace Str8lines.Tweening
         #endregion
 
         #region Private variables
-        private string[] _authorizedMethods = {"move", "fade", "scale", "rotate"};
         private bool _killOnEnd;
         private bool _isDelayOver;
         private string _methodName;
@@ -42,20 +41,15 @@ namespace Str8lines.Tweening
         private Vector3 _initialToVector;
         private Vector3 _toVector;
         private Vector3 _vectorChange;
+        private float _initialFromValue;
+        private float _fromValue;
+        private float _valueChange;
+        private float _initialToValue;
+        private float _toValue;
+        private RectTransform _rectTransform;
         private SpriteRenderer _spriteRenderer;
         private CanvasRenderer _canvasRenderer;
         private Graphic _graphic;
-        private float _initialFromSpriteRendererAlpha;
-        private float _fromSpriteRendererAlpha;
-        private float _spriteRendererAlphaChange;
-        private float _initialFromCanvasRendererAlpha;
-        private float _fromCanvasRendererAlpha;
-        private float _canvasRendererAlphaChange;
-        private float _initialFromGraphicAlpha;
-        private float _fromGraphicAlpha;
-        private float _graphicAlphaChange;
-        private float _initialToValue;
-        private float _toValue;
         #endregion
 
         #region Loop specific
@@ -115,24 +109,28 @@ namespace Str8lines.Tweening
         public Tween(string methodName, RectTransform rectTransform, Vector3 toVector, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
-            _init(methodName, rectTransform.gameObject, easeType, duration, killOnEnd);
-            _initialToVector = toVector;
-            _toVector = toVector;
+            _rectTransform = rectTransform;
+            _initCommon(rectTransform.gameObject, easeType, duration, killOnEnd);
 
-            switch(_methodName)
+            switch(methodName)
             {
                 case "move":
-                    _initialFromVector = rectTransform.anchoredPosition3D;
+                    _initialFromVector = _rectTransform.anchoredPosition3D;
                     break;
 
                 case "scale":
-                    _initialFromVector = rectTransform.localScale;
+                    _initialFromVector = _rectTransform.localScale;
                     break;
 
                 case "rotate":
-                    _initialFromVector = rectTransform.localEulerAngles;
+                    _initialFromVector = _rectTransform.localEulerAngles;
                     break;
+
+                default: throw new ArgumentException("methodName is not allowed", "methodName");
             }
+            _methodName = methodName;
+            _initialToVector = toVector;
+            _toVector = _initialToVector;
             _fromVector = _initialFromVector;
             _vectorChange = _toVector - _fromVector;
         }
@@ -165,13 +163,9 @@ namespace Str8lines.Tweening
         public Tween(string methodName, CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
-            _init(methodName, canvasRenderer.gameObject, easeType, duration, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
             _canvasRenderer = canvasRenderer;
-            _initialFromCanvasRendererAlpha = _canvasRenderer.GetAlpha();
-            _fromCanvasRendererAlpha = _initialFromCanvasRendererAlpha;
-            _canvasRendererAlphaChange = _toValue - _fromCanvasRendererAlpha;
+            _initCommon(canvasRenderer.gameObject, easeType, duration, killOnEnd);
+            _initFloatTweening(methodName, toValue, _canvasRenderer.GetAlpha());
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
@@ -202,13 +196,9 @@ namespace Str8lines.Tweening
         public Tween(string methodName, SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
-            _init(methodName, spriteRenderer.gameObject, easeType, duration, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
             _spriteRenderer = spriteRenderer;
-            _initialFromSpriteRendererAlpha = _spriteRenderer.color.a;
-            _fromSpriteRendererAlpha = _initialFromSpriteRendererAlpha;
-            _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
+            _initCommon(spriteRenderer.gameObject, easeType, duration, killOnEnd);
+            _initFloatTweening(methodName, toValue, _spriteRenderer.color.a);
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
@@ -239,13 +229,9 @@ namespace Str8lines.Tweening
         public Tween(string methodName, Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
-            _init(methodName, graphic.gameObject, easeType, duration, killOnEnd);
-            _initialToValue = toValue;
-            _toValue = toValue;
             _graphic = graphic;
-            _initialFromGraphicAlpha = _graphic.color.a;
-            _fromGraphicAlpha = _initialFromGraphicAlpha;
-            _graphicAlphaChange = _toValue - _fromGraphicAlpha;
+            _initCommon(graphic.gameObject, easeType, duration, killOnEnd);
+            _initFloatTweening(methodName, toValue, _graphic.color.a);
         }
 
         /// <summary>Add delay to the <see cref="Tween">tween</see> before play.</summary>
@@ -798,10 +784,9 @@ namespace Str8lines.Tweening
     #endregion
 
     #region Private methods
-        private void _init(string methodName, GameObject target, Easing.EaseType easeType, float duration, bool killOnEnd)
+        private void _initCommon(GameObject target, Easing.EaseType easeType, float duration, bool killOnEnd)
         {
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if(!Array.Exists(_authorizedMethods, name => name == methodName)) throw new ArgumentException("methodName is not allowed", "methodName");
 
             this.id = Guid.NewGuid().ToString();
             this.target = target;
@@ -811,7 +796,6 @@ namespace Str8lines.Tweening
             this.isFinished = false;
             this.isRunning = true;
             
-            _methodName = methodName;
             _delay = 0f;
             _isLoop = false;
             _loopsCount = 0;
@@ -827,36 +811,41 @@ namespace Str8lines.Tweening
             _killOnEnd = killOnEnd;
         }
 
+        private void _initFloatTweening(string methodName, float toValue, float fromValue){
+            if(methodName != "fade") throw new ArgumentException("methodName is not allowed", "methodName");
+            _methodName = methodName;
+            _initialToValue = toValue;
+            _toValue = toValue;
+            _initialFromValue = fromValue;
+            _fromValue = _initialFromValue;
+            _valueChange = _toValue - _fromValue;
+        }
+
         private void _setCalculatedValue(float playtime)
         {
-            RectTransform rectTransform = null;
-            if(this.target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
             switch(_methodName)
             {
                 case "move":
-                    Vector3 newPosition = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
-                    if(rectTransform != null) rectTransform.anchoredPosition3D = new Vector3(newPosition.x, newPosition.y, newPosition.z);
+                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
                     break;
 
                 case "scale":
-                    Vector3 newScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
-                    if(rectTransform != null) rectTransform.localScale = new Vector3(newScale.x, newScale.y, newScale.z);
+                    if(_rectTransform != null) _rectTransform.localScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
                     break;
 
                 case "rotate":
-                    Vector3 newEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
-                    if(rectTransform != null) rectTransform.localEulerAngles = new Vector3(newEulerAngles.x, newEulerAngles.y, newEulerAngles.z);
+                    if(_rectTransform != null) _rectTransform.localEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
                     break;
 
                 case "fade":
-                    if(_canvasRenderer != null && this.target.TryGetComponent(out CanvasRenderer canvasRenderer)) canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromCanvasRendererAlpha, _canvasRendererAlphaChange, this.duration));
-                    if(_spriteRenderer != null && this.target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromSpriteRendererAlpha, _spriteRendererAlphaChange, this.duration));
-                        spriteRenderer.color = newSpriteRendererColor;
+                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                    if(_spriteRenderer != null){
+                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                        _spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
-                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromGraphicAlpha, _graphicAlphaChange, this.duration));
-                        graphic.color = newGraphicColor;
+                    if(_graphic != null){
+                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                        _graphic.color = newGraphicColor;
                     }
                     break;
             }
@@ -868,28 +857,12 @@ namespace Str8lines.Tweening
             {
                 _fromVector = _toVector;
                 _toVector += _vectorChange;
+                _fromValue = _toValue;
+                _toValue += _valueChange;
 
-                if(_canvasRenderer != null){
-                    _fromCanvasRendererAlpha = _toValue;
-                    _toValue += _canvasRendererAlphaChange;
-                }
-
-                if(_spriteRenderer != null){
-                    _fromSpriteRendererAlpha = _toValue;
-                    _toValue += _spriteRendererAlphaChange;
-                }
-
-                if(_graphic != null){
-                    _fromGraphicAlpha = _toValue;
-                    _toValue += _graphicAlphaChange;
-                }
-
-                if(_toValue > 1)
-                {
+                if(_toValue > 1){
                     _toValue = 1; //Clamps alpha max value
-                    if(_canvasRenderer != null) _canvasRendererAlphaChange = _toValue - _fromCanvasRendererAlpha;
-                    if(_spriteRenderer != null) _spriteRendererAlphaChange = _toValue - _fromSpriteRendererAlpha;
-                    if(_graphic != null) _graphicAlphaChange = _toValue - _fromGraphicAlpha;
+                    _valueChange = _toValue - _fromValue;
                 }
                 if(_toValue < 0) _toValue = 0; //Clamps alpha min value
             }
@@ -898,38 +871,32 @@ namespace Str8lines.Tweening
         }
 
         //Go to initial "to values" or to initial "from values"
-        private void _setInitialValue(bool useToValues = false){
-            RectTransform rectTransform = null;
-            if(this.target.TryGetComponent(out RectTransform rt)) rectTransform = rt;
+        private void _setInitialValue(bool useToValues = false)
+        {
             switch(_methodName)
             {
                 case "move":
-                    if(rectTransform != null) rectTransform.anchoredPosition3D = useToValues ? _initialToVector : _initialFromVector;
+                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = useToValues ? _initialToVector : _initialFromVector;
                     break;
 
                 case "scale":
-                    if(rectTransform != null) rectTransform.localScale = useToValues ? _initialToVector : _initialFromVector;
+                    if(_rectTransform != null) _rectTransform.localScale = useToValues ? _initialToVector : _initialFromVector;
                     break;
 
                 case "rotate":
-                    if(rectTransform != null) rectTransform.localEulerAngles = useToValues ? _initialToVector : _initialFromVector;
+                    if(_rectTransform != null) _rectTransform.localEulerAngles = useToValues ? _initialToVector : _initialFromVector;
                     break;
 
                 case "fade":
-                    float initialValue;
-                    if(_canvasRenderer != null && this.target.TryGetComponent(out CanvasRenderer canvasRenderer)){
-                        initialValue = useToValues ? _initialToValue : _initialFromCanvasRendererAlpha;
-                        canvasRenderer.SetAlpha(initialValue);
-                    }
-                    if(_spriteRenderer != null && this.target.TryGetComponent(out SpriteRenderer spriteRenderer)){
-                        initialValue = useToValues ? _initialToValue : _initialFromSpriteRendererAlpha;
+                    float initialValue = useToValues ? _initialToValue : _initialFromValue;
+                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(initialValue);
+                    if(_spriteRenderer != null){
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
-                        spriteRenderer.color = newSpriteRendererColor;
+                        _spriteRenderer.color = newSpriteRendererColor;
                     }
-                    if(_graphic != null && this.target.TryGetComponent(out Graphic graphic)){
-                        initialValue = useToValues ? _initialToValue : _initialFromGraphicAlpha;
+                    if(_graphic != null){
                         Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, initialValue);
-                        graphic.color = newGraphicColor;
+                        _graphic.color = newGraphicColor;
                     }
                     break;
             }
