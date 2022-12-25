@@ -2141,7 +2141,7 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         bool triggered = false;
         t.onEnd(()=>{ triggered = true; }).cancel();
-        Assert.IsTrue(!triggered);
+        Assert.IsTrue(triggered);
     }
 
     [Test]
@@ -2248,7 +2248,7 @@ public class TweenTest
         t.update(duration/2);
         Vector3 positionBeforeReset = rect.anchoredPosition3D;
         t.reset();
-        Assert.IsTrue(isAlive && t.isAlive && !isFinished && !t.isFinished && isRunning && !t.isRunning 
+        Assert.IsTrue(isAlive && t.isAlive && !isFinished && !t.isFinished && isRunning && t.isRunning 
             && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
     }
     
@@ -2265,8 +2265,7 @@ public class TweenTest
         int loopsBeforeReset = triggered;
         t.reset();
         triggered = 0;
-        t.update(0f); //First frame update is also reset 
-        t.update(duration);
+        t.update(0f); //First frame update is also reset
         Assert.IsTrue(loopsBeforeReset == 2 && triggered == 0);
     }
     
