@@ -812,7 +812,7 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f);
-        Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -824,7 +824,7 @@ public class TweenTest
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -836,7 +836,7 @@ public class TweenTest
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialPosition != rect.anchoredPosition3D && toVectorValue != rect.anchoredPosition3D && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialPosition != rect.anchoredPosition3D && toVectorValue != rect.anchoredPosition3D && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -847,7 +847,7 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -858,7 +858,7 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -923,7 +923,7 @@ public class TweenTest
         Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
         Vector3 initialScale = rect.localScale;
         t.update(0f);
-        Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -935,7 +935,7 @@ public class TweenTest
         Vector3 initialScale = rect.localScale;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -947,7 +947,7 @@ public class TweenTest
         Vector3 initialScale = rect.localScale;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialScale != rect.localScale && toVectorValue != rect.localScale && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialScale != rect.localScale && toVectorValue != rect.localScale && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -958,7 +958,7 @@ public class TweenTest
         Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -969,7 +969,7 @@ public class TweenTest
         Tween t = new Tween("scale", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1034,7 +1034,7 @@ public class TweenTest
         Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f);
-        Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1046,7 +1046,7 @@ public class TweenTest
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1058,7 +1058,7 @@ public class TweenTest
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialRotation != rect.localEulerAngles && toVectorValue != rect.localEulerAngles && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialRotation != rect.localEulerAngles && toVectorValue != rect.localEulerAngles && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1069,7 +1069,7 @@ public class TweenTest
         Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1080,7 +1080,7 @@ public class TweenTest
         Tween t = new Tween("rotate", rect, toVectorValue, easeType, duration);
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1145,7 +1145,7 @@ public class TweenTest
         Tween t = new Tween("fade", canvasRenderer, toFloatValue, easeType, duration);
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f);
-        Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1157,7 +1157,7 @@ public class TweenTest
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1169,7 +1169,7 @@ public class TweenTest
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != canvasRenderer.GetAlpha() && toFloatValue != canvasRenderer.GetAlpha() && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != canvasRenderer.GetAlpha() && toFloatValue != canvasRenderer.GetAlpha() && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1181,7 +1181,7 @@ public class TweenTest
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1193,7 +1193,7 @@ public class TweenTest
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == canvasRenderer.GetAlpha() && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1258,7 +1258,7 @@ public class TweenTest
         Tween t = new Tween("fade", spriteRenderer, toFloatValue, easeType, duration);
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f);
-        Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1270,7 +1270,7 @@ public class TweenTest
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1282,7 +1282,7 @@ public class TweenTest
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != spriteRenderer.color.a && toFloatValue != spriteRenderer.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != spriteRenderer.color.a && toFloatValue != spriteRenderer.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1294,7 +1294,7 @@ public class TweenTest
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1306,7 +1306,7 @@ public class TweenTest
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == spriteRenderer.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1371,7 +1371,7 @@ public class TweenTest
         Tween t = new Tween("fade", rawImage, toFloatValue, easeType, duration);
         float initialAlpha = rawImage.color.a;
         t.update(0f);
-        Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1383,7 +1383,7 @@ public class TweenTest
         float initialAlpha = rawImage.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == rawImage.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1395,7 +1395,7 @@ public class TweenTest
         float initialAlpha = rawImage.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != rawImage.color.a && toFloatValue != rawImage.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != rawImage.color.a && toFloatValue != rawImage.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1407,7 +1407,7 @@ public class TweenTest
         float initialAlpha = rawImage.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1419,7 +1419,7 @@ public class TweenTest
         float initialAlpha = rawImage.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == rawImage.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1484,7 +1484,7 @@ public class TweenTest
         Tween t = new Tween("fade", image, toFloatValue, easeType, duration);
         float initialAlpha = image.color.a;
         t.update(0f);
-        Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1496,7 +1496,7 @@ public class TweenTest
         float initialAlpha = image.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == image.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1508,7 +1508,7 @@ public class TweenTest
         float initialAlpha = image.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != image.color.a && toFloatValue != image.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != image.color.a && toFloatValue != image.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1520,7 +1520,7 @@ public class TweenTest
         float initialAlpha = image.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1532,7 +1532,7 @@ public class TweenTest
         float initialAlpha = image.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == image.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1597,7 +1597,7 @@ public class TweenTest
         Tween t = new Tween("fade", text, toFloatValue, easeType, duration);
         float initialAlpha = text.color.a;
         t.update(0f);
-        Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1609,7 +1609,7 @@ public class TweenTest
         float initialAlpha = text.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == text.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1621,7 +1621,7 @@ public class TweenTest
         float initialAlpha = text.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != text.color.a && toFloatValue != text.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != text.color.a && toFloatValue != text.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1633,7 +1633,7 @@ public class TweenTest
         float initialAlpha = text.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1645,7 +1645,7 @@ public class TweenTest
         float initialAlpha = text.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == text.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1710,7 +1710,7 @@ public class TweenTest
         Tween t = new Tween("fade", graphic, toFloatValue, easeType, duration);
         float initialAlpha = graphic.color.a;
         t.update(0f);
-        Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1722,7 +1722,7 @@ public class TweenTest
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
-        Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1734,7 +1734,7 @@ public class TweenTest
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
-        Assert.IsTrue(initialAlpha != graphic.color.a && toFloatValue != graphic.color.a && t.isAlive && !t.isCompleted && t.isRunning);
+        Assert.IsTrue(initialAlpha != graphic.color.a && toFloatValue != graphic.color.a && t.isAlive && !t.isFinished && t.isRunning);
     }
 
     [Test]
@@ -1746,7 +1746,7 @@ public class TweenTest
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
-        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1758,7 +1758,7 @@ public class TweenTest
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
-        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isCompleted && !t.isRunning);
+        Assert.IsTrue(toFloatValue == graphic.color.a && !t.isAlive && t.isFinished && !t.isRunning);
     }
 
     [Test]
@@ -1872,7 +1872,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         bool triggered = false;
-        t.onComplete(()=>{ triggered = true; }).update(0f); //First frame is not taken in count
+        t.onEnd(()=>{ triggered = true; }).update(0f); //First frame is not taken in count
         t.update(duration);
         Assert.IsTrue(triggered);
     }
@@ -1912,10 +1912,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.stop();
-        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && !t.isAlive);
+        Assert.IsTrue(isAlive && isRunning && !isFinished && !t.isRunning && t.isFinished && !t.isAlive);
     }
 
     [Test]
@@ -1925,10 +1925,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.stop();
-        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && t.isAlive);
+        Assert.IsTrue(isAlive && isRunning && !isFinished && !t.isRunning && t.isFinished && t.isAlive);
     }
 
     [Test]
@@ -1938,10 +1938,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.stop();
-        Assert.IsTrue(isAlive && isRunning && !isCompleted && !t.isRunning && t.isCompleted && !t.isAlive);
+        Assert.IsTrue(isAlive && isRunning && !isFinished && !t.isRunning && t.isFinished && !t.isAlive);
     }
     #endregion
 
@@ -1966,10 +1966,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.complete();
-        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
     }
     
     [Test]
@@ -1979,10 +1979,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.complete();
-        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+        Assert.IsTrue(isAlive && t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
     }
     
     [Test]
@@ -1992,10 +1992,10 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.complete();
-        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
     }
     
     [Test]
@@ -2005,7 +2005,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         bool triggered = false;
-        t.onComplete(()=>{ triggered = true; }).complete();
+        t.onEnd(()=>{ triggered = true; }).complete();
         Assert.IsTrue(triggered);
     }
     
@@ -2099,10 +2099,10 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.cancel();
-        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
     }
     
     [Test]
@@ -2113,10 +2113,10 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
         Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.cancel();
-        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+        Assert.IsTrue(isAlive && t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
     }
     
     [Test]
@@ -2127,10 +2127,10 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.cancel();
-        Assert.IsTrue(isAlive && !t.isAlive && !isCompleted && t.isCompleted && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
+        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == initialPosition);
     }
     
     [Test]
@@ -2140,7 +2140,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
         bool triggered = false;
-        t.onComplete(()=>{ triggered = true; }).cancel();
+        t.onEnd(()=>{ triggered = true; }).cancel();
         Assert.IsTrue(!triggered);
     }
 
@@ -2242,13 +2242,13 @@ public class TweenTest
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
-        bool isCompleted = t.isCompleted;
+        bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);
         Vector3 positionBeforeReset = rect.anchoredPosition3D;
         t.reset();
-        Assert.IsTrue(isAlive && t.isAlive && !isCompleted && !t.isCompleted && isRunning && !t.isRunning 
+        Assert.IsTrue(isAlive && t.isAlive && !isFinished && !t.isFinished && isRunning && !t.isRunning 
             && positionBeforeReset != initialPosition && rect.anchoredPosition3D == initialPosition && rect.anchoredPosition3D != positionBeforeReset);
     }
     

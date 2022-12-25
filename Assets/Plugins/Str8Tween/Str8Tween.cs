@@ -718,9 +718,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(string id)
+        public static void complete(string id, bool triggerOnEnd = true)
         {
-            get(id)?.complete();
+            get(id)?.complete(triggerOnEnd);
         }
 
         /// <summary>Complete every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete()"/></summary>
@@ -743,10 +743,10 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete()
+        public static void complete(bool triggerOnEnd = true)
         {
             if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.complete();
+                foreach(Tween t in tweens.Values) t.complete(triggerOnEnd);
             }
         }
 
@@ -773,12 +773,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(GameObject target)
+        public static void complete(GameObject target, bool triggerOnEnd = true)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
-                foreach(Tween t in tweensFound) t.complete();
+                foreach(Tween t in tweensFound) t.complete(triggerOnEnd);
             }
         }
 
@@ -803,9 +803,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void cancel(string id)
+        public static void cancel(string id, bool triggerOnEnd = true)
         {
-            get(id)?.cancel();
+            get(id)?.cancel(triggerOnEnd);
         }
 
         /// <summary>Cancel every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.cancel()"/></summary>
@@ -828,10 +828,10 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void cancel()
+        public static void cancel(bool triggerOnEnd = true)
         {
             if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.cancel();
+                foreach(Tween t in tweens.Values) t.cancel(triggerOnEnd);
             }
         }
 
@@ -858,12 +858,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void cancel(GameObject target)
+        public static void cancel(GameObject target, bool triggerOnEnd = true)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
-                foreach(Tween t in tweensFound) t.cancel();
+                foreach(Tween t in tweensFound) t.cancel(triggerOnEnd);
             }
         }
 
@@ -888,9 +888,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void stop(string id)
+        public static void stop(string id, bool triggerOnEnd = true)
         {
-            get(id)?.stop();
+            get(id)?.stop(triggerOnEnd);
         }
 
         /// <summary>Stop every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.stop()"/></summary>
@@ -913,10 +913,10 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void stop()
+        public static void stop(bool triggerOnEnd = true)
         {
             if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.stop();
+                foreach(Tween t in tweens.Values) t.stop(triggerOnEnd);
             }
         }
 
@@ -943,12 +943,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void stop(GameObject target)
+        public static void stop(GameObject target, bool triggerOnEnd = true)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
-                foreach(Tween t in tweensFound) t.stop();
+                foreach(Tween t in tweensFound) t.stop(triggerOnEnd);
             }
         }
 

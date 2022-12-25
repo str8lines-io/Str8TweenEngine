@@ -5,6 +5,9 @@ using Str8lines.Tweening;
 
 public class EndUserTests : MonoBehaviour 
 {
+    //Commenter les 2 fichiers de façon à décrire l'utilité globale des scripts
+    //Commenter les sections des scripts (ex: méthodes utilisées par le paneau de controle pour gérer les lifecycles des tweens)
+    //Commenter succintement l'utilité de chaque fonction
     #region variables
     public bool controlAll;
     public GameObject target;
@@ -50,7 +53,7 @@ public class EndUserTests : MonoBehaviour
         int paused = 0;
         foreach(Tween t in tweens){
             if(!t.isAlive) continue;
-            if(t.isCompleted) completed++;
+            if(t.isFinished) completed++;
             else{
                 if(t.isRunning) running++;
                 else paused++;
@@ -332,7 +335,7 @@ public class EndUserTests : MonoBehaviour
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
         string logRoot = easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onComplete(()=> Debug.Log(logRoot + "Completed"));
+        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
         if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
         txt.text = easeType.ToString() + "\n" + t.id;
     }
@@ -361,7 +364,7 @@ public class EndUserTests : MonoBehaviour
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
         string logRoot = easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onComplete(()=> Debug.Log(logRoot + "Completed"));
+        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
         if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
         Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
         text.text = easeType.ToString() + "\n" + t.id;

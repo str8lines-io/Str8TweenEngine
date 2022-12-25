@@ -24,7 +24,7 @@ namespace Str8lines.Tweening
         /// <value>If <c>true</c> the tween is currently playing.</value>
         public bool isRunning { get;private set; }
         /// <value>If <c>true</c> the tween finished playing.</value>
-        public bool isCompleted { get;private set; }
+        public bool isFinished { get;private set; }
         #endregion
 
         #region Private variables
@@ -74,8 +74,8 @@ namespace Str8lines.Tweening
         public delegate void TweenDelegate();
         private event TweenDelegate _start;
         private TweenDelegate _callbackOnStart;
-        private event TweenDelegate _complete;
-        private TweenDelegate _callbackOnComplete;
+        private event TweenDelegate _end;
+        private TweenDelegate _callbackOnEnd;
 
         /// <summary>Delegate for loop event.</summary>
         /// <param name="loopsCount">The number of loops completed.</param>
@@ -449,7 +449,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Registers to <see cref="Tween">tween</see>'s complete event.</summary>
-        /// <param name="onComplete">Callback function to trigger.</param>
+        /// <param name="onEnd">Callback function to trigger.</param>
         /// <returns>The <see cref="Tween">tween</see> which will rise the complete event.</returns>
         /// <example>
         /// Displays a message in console when the move tween completes.
@@ -465,21 +465,21 @@ namespace Str8lines.Tweening
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
         ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.onComplete(_onComplete);
+        ///         t.onEnd(_onEnd);
         ///     }
         ///
-        ///     private void _onComplete()
+        ///     private void _onEnd()
         ///     {
         ///         UnityEngine.Debug.Log("End");
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween onComplete(TweenDelegate onComplete)
+        public Tween onEnd(TweenDelegate onEnd)
         {
-            if(onComplete != null){
-                _callbackOnComplete = onComplete;
-                _complete += _callbackOnComplete;
+            if(onEnd != null){
+                _callbackOnEnd = onEnd;
+                _end += _callbackOnEnd;
             }
             return this;
         }
@@ -515,7 +515,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void update(float t)
         {
-            if(!this.isAlive || this.target == null || this.isCompleted || !this.isRunning) return;
+            if(!this.isAlive || this.target == null || this.isFinished || !this.isRunning) return;
 
             if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
             else _elapsed += t;
@@ -605,7 +605,7 @@ namespace Str8lines.Tweening
             _passedLoopsCount = 0;
             _isIncrementing = true;
             _isDelayOver = false;
-            this.isCompleted = false;
+            this.isFinished = false;
             _isFirstUpdate = true;
             _elapsed = 0f;
             _playTime = 0f;
@@ -644,7 +644,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void play()
         {
-            if(this.isCompleted) this.reset();
+            if(this.isFinished) this.reset();
             this.isRunning = true;
         }
 
@@ -683,7 +683,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnComplete">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
+        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
         /// <example>
@@ -713,17 +713,17 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void complete()
+        public void complete(bool triggerOnEnd = true)
         {
-            this.isCompleted = true;
+            this.isFinished = true;
             this.isRunning = false;
             _setInitialValue(true);
-            _complete?.Invoke();
+            if(triggerOnEnd) _end?.Invoke();
             if(_killOnEnd == true) kill();
         }
 
         /// <summary>Cancels the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnComplete">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
+        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Canceling a <see cref="Tween">tween</see> sends the target to its initial values.</remarks>
         /// <example>
@@ -753,16 +753,17 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void cancel()
+        public void cancel(bool triggerOnEnd = true)
         {
-            this.isCompleted = true;
+            this.isFinished = true;
             this.isRunning = false;
             _setInitialValue();
+            if(triggerOnEnd) _end?.Invoke();
             if(_killOnEnd == true) kill();
         }
 
         /// <summary>Stops the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnComplete">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
+        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Stopping a <see cref="Tween">tween</see> does not change the target's current values.</remarks>
         /// <example>
@@ -792,10 +793,11 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void stop()
+        public void stop(bool triggerOnEnd = true)
         {
-            this.isCompleted = true;
+            this.isFinished = true;
             this.isRunning = false;
+            if(triggerOnEnd) _end?.Invoke();
             if(_killOnEnd == true) kill();
         }
 
@@ -833,7 +835,7 @@ namespace Str8lines.Tweening
             this.isAlive = false;
             _start -= _callbackOnStart;
             _loop -= _callbackOnLoop;
-            _complete -= _callbackOnComplete;
+            _end -= _callbackOnEnd;
         }
     #endregion
 
@@ -848,7 +850,7 @@ namespace Str8lines.Tweening
             this.easeType = easeType;
             this.duration = duration;
             this.isAlive = true;
-            this.isCompleted = false;
+            this.isFinished = false;
             this.isRunning = true;
             
             _methodName = methodName;
