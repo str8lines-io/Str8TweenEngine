@@ -25,15 +25,18 @@ namespace Str8lines.Tweening
         public bool isRunning { get;private set; }
         /// <value>If <c>true</c> the tween finished playing.</value>
         public bool isFinished { get;private set; }
+        /// <value>If <c>true</c> the tween will be killed after playing.</value>
+        public bool killOnEnd { get;private set; }
+        /// <value>Time elapsed in seconds (delay included).</value>
+        public float elapsedTotal { get;private set; }
+        /// <value>Time elapsed in seconds (delay excluded).</value>
+        public float elapsedSinceDelay { get;private set; }
         #endregion
 
         #region Private variables
-        private bool _killOnEnd;
         private bool _isDelayOver;
         private string _methodName;
-        private float _elapsed;
         private float _lifeTime;
-        private float _playTime;
         private bool _isFirstUpdate;
         private float _delay;
         private Vector3 _initialFromVector;
@@ -53,14 +56,17 @@ namespace Str8lines.Tweening
         #endregion
 
         #region Loop specific
+        /// <value>The number of loops to do.</value>
+        public int loopsCount { get;private set; }
         /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
         public enum LoopType { Restart, Oscillate, WithOffset }
+        /// <value>The <see cref="LoopType">type of loop</see> to use.</value>
+        public LoopType loopType { get;private set; }
+        /// <value>The number of loops completed since the Tween started.</value>
+        public int completedLoopsCount { get;private set; }
         private bool _isLoop;
         private bool _isIncrementing;
-        private int _loopsCount;
-        private int _passedLoopsCount;
         private float _loopTime;
-        private LoopType _loopType;
         #endregion
 
         #region Events
@@ -315,77 +321,11 @@ namespace Str8lines.Tweening
                 throw new ArgumentException("loopsCount can not be equal to zero or inferior to minus one", "loopsCount");
             }
             _isLoop = true;
-            _loopType = loopType;
-            _loopsCount = loopsCount;
-            _lifeTime = this.duration * _loopsCount;
+            this.loopType = loopType;
+            this.loopsCount = loopsCount;
+            _lifeTime = this.duration * this.loopsCount;
             return this;
         }
-
-        /// <returns>The number of loops to do.</returns>
-        /// <example>
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public RectTransform rectTransform;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.loop(5, LoopType.Oscillate);
-        ///         Debug.Log(t.loopsCount());
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public int loopsCount() { return _loopsCount; }
-
-        /// <returns>The <see cref="LoopType">type of loop</see> to do.</returns>
-        /// <example>
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public RectTransform rectTransform;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.loop(5, LoopType.Oscillate);
-        ///         Debug.Log(t.loopType());
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public LoopType loopType() { return _loopType; }
-
-        /// <returns>The number of loops completed.</returns>
-        /// <example>
-        /// <code>
-        /// using UnityEngine;
-        /// using Str8lines.Tweening;
-        /// 
-        /// public class MyClass : MonoBehaviour
-        /// {
-        ///     public RectTransform rectTransform;
-        /// 
-        ///     private void Start()
-        ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.loop(5, LoopType.Oscillate);
-        ///         Debug.Log(t.completedLoopsCount());
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public int completedLoopsCount() { return _passedLoopsCount; }
 
         /// <summary>Registers to <see cref="Tween">tween</see>'s start event.</summary>
         /// <param name="onStart">Callback function to trigger.</param>
@@ -529,29 +469,29 @@ namespace Str8lines.Tweening
             if(!this.isAlive || this.target == null || this.isFinished || !this.isRunning) return;
 
             if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
-            else _elapsed += t;
+            else this.elapsedTotal += t;
 
-            if(_elapsed < _delay) return; //Delay is not over, the tween can not start
+            if(this.elapsedTotal < _delay) return; //Delay is not over, the tween can not start
             
             float time = 0f; //Time used for calculations
             if(!_isDelayOver){
                 //The first frame when the tween plays is the starting frame
                 _isDelayOver = true;
                 _start?.Invoke();
-                t = _elapsed - _delay; // Fixing time for the first animation frame
+                t = this.elapsedTotal - _delay; // Fixing time for the first animation frame
             }
             
-            _playTime += t;
-            time = _playTime;
+            this.elapsedSinceDelay += t;
+            time = this.elapsedSinceDelay;
 
             if(_isLoop)
             {
-                switch(_loopType)
+                switch(this.loopType)
                 {
                     case LoopType.Restart :
                     case LoopType.WithOffset :
                         _loopTime += t; //These two loop types are always played forward
-                        if(_loopTime >= this.duration || _playTime >= _lifeTime){
+                        if(_loopTime >= this.duration || this.elapsedSinceDelay >= _lifeTime){
                             _loopTime = 0;
                             _completeLoop();
                         }
@@ -560,14 +500,14 @@ namespace Str8lines.Tweening
                     case LoopType.Oscillate :
                         if(_isIncrementing){
                             _loopTime += t; //Plays the tween forward
-                            if(_loopTime >= this.duration || _playTime >= _lifeTime){
+                            if(_loopTime >= this.duration || this.elapsedSinceDelay >= _lifeTime){
                                 _loopTime = this.duration;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
                             }
                         }else{
                             _loopTime -= t; //Plays the tween backward
-                            if(_loopTime <= 0f || _playTime >= _lifeTime){
+                            if(_loopTime <= 0f || this.elapsedSinceDelay >= _lifeTime){
                                 _loopTime = 0f;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
@@ -578,7 +518,7 @@ namespace Str8lines.Tweening
                 time = _loopTime;
             }
             
-            if(_lifeTime > 0 && _playTime >= _lifeTime) complete();
+            if(_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime) complete();
             else _setCalculatedValue(time);
         }
 
@@ -613,13 +553,13 @@ namespace Str8lines.Tweening
         /// </example>
         public void reset()
         {
-            _passedLoopsCount = 0;
+            this.completedLoopsCount = 0;
             _isIncrementing = true;
             _isDelayOver = false;
             this.isFinished = false;
             _isFirstUpdate = true;
-            _elapsed = 0f;
-            _playTime = 0f;
+            this.elapsedTotal = 0f;
+            this.elapsedSinceDelay = 0f;
             _loopTime = 0f;
             _setInitialValue();
         }
@@ -767,7 +707,7 @@ namespace Str8lines.Tweening
             this.isFinished = true;
             this.isRunning = false;
             if(triggerOnEnd) _end?.Invoke();
-            if(_killOnEnd == true) kill();
+            if(this.killOnEnd == true) kill();
         }
 
         /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets this.isAlive to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
@@ -823,17 +763,17 @@ namespace Str8lines.Tweening
             
             _delay = 0f;
             _isLoop = false;
-            _loopsCount = 0;
-            _passedLoopsCount = 0;
-            _loopType = LoopType.Restart;
+            this.loopsCount = 0;
+            this.completedLoopsCount = 0;
+            this.loopType = LoopType.Restart;
             _isIncrementing = true;
             _isDelayOver = false;
             _isFirstUpdate = true;
-            _elapsed = 0f;
+            this.elapsedTotal = 0f;
             _loopTime = 0f;
             _lifeTime = this.duration;
-            _playTime = 0f;
-            _killOnEnd = killOnEnd;
+            this.elapsedSinceDelay = 0f;
+            this.killOnEnd = killOnEnd;
         }
 
         private void _initFloatTweening(string methodName, float toValue, float fromValue){
@@ -878,7 +818,7 @@ namespace Str8lines.Tweening
 
         private void _completeLoop()
         {
-            if(_loopType == LoopType.WithOffset)
+            if(this.loopType == LoopType.WithOffset)
             {
                 _fromVector = _toVector;
                 _toVector += _vectorChange;
@@ -891,8 +831,8 @@ namespace Str8lines.Tweening
                 }
                 if(_toValue < 0) _toValue = 0; //Clamps alpha min value
             }
-            _passedLoopsCount++;
-            _loop?.Invoke(_passedLoopsCount);
+            this.completedLoopsCount++;
+            _loop?.Invoke(this.completedLoopsCount);
         }
 
         //Go to initial "to values" or to initial "from values"

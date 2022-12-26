@@ -676,7 +676,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.loop();
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Restart);
+        Assert.IsTrue(t.loopsCount == -1 && t.loopType == Tween.LoopType.Restart);
     }
 
     [Test]
@@ -685,8 +685,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(-2);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Restart);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(-2);
+        });
     }
 
     [Test]
@@ -695,8 +696,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(0);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Restart);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(0);
+        });
     }
 
     [Test]
@@ -706,7 +708,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.loop(10000);
-        Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.Restart);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Restart);
     }
 
     [Test]
@@ -715,8 +717,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(-2, Tween.LoopType.Restart);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Restart);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(-2, Tween.LoopType.Restart);
+        });
     }
 
     [Test]
@@ -725,8 +728,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(0, Tween.LoopType.Restart);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Restart);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(0, Tween.LoopType.Restart);
+        });
     }
 
     [Test]
@@ -736,7 +740,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.loop(10000, Tween.LoopType.Restart);
-        Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.Restart);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Restart);
     }
     
     [Test]
@@ -745,8 +749,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(-2, Tween.LoopType.Oscillate);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Oscillate);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(-2, Tween.LoopType.Oscillate);
+        });
     }
 
     [Test]
@@ -755,8 +760,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(0, Tween.LoopType.Oscillate);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.Oscillate);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(0, Tween.LoopType.Oscillate);
+        });
     }
 
     [Test]
@@ -766,7 +772,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.loop(10000, Tween.LoopType.Oscillate);
-        Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.Oscillate);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Oscillate);
     }
 
     [Test]
@@ -775,8 +781,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(-2, Tween.LoopType.WithOffset);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.WithOffset);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(-2, Tween.LoopType.WithOffset);
+        });
     }
 
     [Test]
@@ -785,8 +792,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
-        t.loop(0, Tween.LoopType.WithOffset);
-        Assert.IsTrue(t.loopsCount() == -1 && t.loopType() == Tween.LoopType.WithOffset);
+        Assert.Throws<ArgumentException>(()=>{
+            t.loop(0, Tween.LoopType.WithOffset);
+        });
     }
 
     [Test]
@@ -796,7 +804,7 @@ public class TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         t.loop(10000, Tween.LoopType.WithOffset);
-        Assert.IsTrue(t.loopsCount() == 10000 && t.loopType() == Tween.LoopType.WithOffset);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.WithOffset);
     }
     #endregion
 
