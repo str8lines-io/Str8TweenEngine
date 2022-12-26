@@ -310,10 +310,13 @@ namespace Str8lines.Tweening
         /// </example>
         public Tween loop(int loopsCount = -1, LoopType loopType = LoopType.Restart)
         {
+            if(loopsCount == 0 || loopsCount < -1){
+                this.kill();
+                throw new ArgumentException("loopsCount can not be equal to zero or inferior to minus one", "loopsCount");
+            }
             _isLoop = true;
             _loopType = loopType;
             _loopsCount = loopsCount;
-            if(_loopsCount <= 0) _loopsCount = -1; //Fix loops count value
             _lifeTime = this.duration * _loopsCount;
             return this;
         }
@@ -361,6 +364,28 @@ namespace Str8lines.Tweening
         /// </code>
         /// </example>
         public LoopType loopType() { return _loopType; }
+
+        /// <returns>The number of loops completed.</returns>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using Str8lines.Tweening;
+        /// 
+        /// public class MyClass : MonoBehaviour
+        /// {
+        ///     public RectTransform rectTransform;
+        /// 
+        ///     private void Start()
+        ///     {
+        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t.loop(5, LoopType.Oscillate);
+        ///         Debug.Log(t.completedLoopsCount());
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public int completedLoopsCount() { return _passedLoopsCount; }
 
         /// <summary>Registers to <see cref="Tween">tween</see>'s start event.</summary>
         /// <param name="onStart">Callback function to trigger.</param>
@@ -526,7 +551,7 @@ namespace Str8lines.Tweening
                     case LoopType.Restart :
                     case LoopType.WithOffset :
                         _loopTime += t; //These two loop types are always played forward
-                        if(_loopTime >= this.duration){
+                        if(_loopTime >= this.duration || _playTime >= _lifeTime){
                             _loopTime = 0;
                             _completeLoop();
                         }
@@ -535,14 +560,14 @@ namespace Str8lines.Tweening
                     case LoopType.Oscillate :
                         if(_isIncrementing){
                             _loopTime += t; //Plays the tween forward
-                            if(_loopTime >= this.duration){
+                            if(_loopTime >= this.duration || _playTime >= _lifeTime){
                                 _loopTime = this.duration;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
                             }
                         }else{
                             _loopTime -= t; //Plays the tween backward
-                            if(_loopTime <= 0f){
+                            if(_loopTime <= 0f || _playTime >= _lifeTime){
                                 _loopTime = 0f;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
