@@ -26,6 +26,7 @@ public class EndUserTests : MonoBehaviour
     private GameObject _activePanel;
     private Transform _panelsContainer;
     private Transform _header;
+    private Transform _body;
     private Transform _monitor;
     private int _panelIndex;
     private int _fadeSetIndex;
@@ -36,16 +37,26 @@ public class EndUserTests : MonoBehaviour
     //Initializes UI and public variables
     void Start()
     {
+        //Init panels indexes
         _panelIndex = 0;
         _fadeSetIndex = 0;
+
         _header = this.gameObject.transform.GetChild(0);
+        _body = this.gameObject.transform.GetChild(1);
         _monitor = _header.GetChild(2);
-        _panelsContainer = this.gameObject.transform.GetChild(1);
+        _panelsContainer = _body.GetChild(0);
+
+        //Init logs panel and test panels
+        _body.GetChild(1).gameObject.SetActive(false);
+        _body.GetChild(2).GetChild(0).GetComponent<Text>().text = ">";
         for(int i = 0; i < _panelsContainer.childCount - 1; i++) _panelsContainer.GetChild(i).gameObject.SetActive(false);
         _updatePanel();
+
+        //Init starting values storage
         _initialVectors3 = new Dictionary<GameObject, Vector3>();
         _initialVectors4 = new Dictionary<GameObject, Vector4>();
 
+        //Init Tweens controls
         controlAll = false;
         killOnEnd = false;
         isLoop = false;
@@ -79,7 +90,7 @@ public class EndUserTests : MonoBehaviour
 
     //Destroys every logs added
     public void clearLogs(){
-        Transform logContainer = _monitor.GetChild(4).GetChild(0).GetChild(0);
+        Transform logContainer = _body.GetChild(1).GetChild(0).GetChild(0);
         for(int i = 1; i < logContainer.childCount; i++) Destroy(logContainer.GetChild(i).gameObject);
     }
     
@@ -92,12 +103,23 @@ public class EndUserTests : MonoBehaviour
 
     //Adds log text in scrollview and console
     private void _logAdd(string log){
-        Transform logContainer = _monitor.GetChild(4).GetChild(0).GetChild(0);
+        Transform logContainer = _body.GetChild(1).GetChild(0).GetChild(0);
         Transform template = logContainer.GetChild(0);
         GameObject clone = Instantiate(template.gameObject, logContainer);
         clone.transform.GetComponent<Text>().text = log;
         clone.SetActive(true);
         Debug.Log(log);
+    }
+
+    public void toggleLogs(){
+        GameObject logsPanel = _body.GetChild(1).gameObject;
+        if(logsPanel.activeSelf){
+            _body.GetChild(2).GetChild(0).GetComponent<Text>().text = ">";
+            logsPanel.SetActive(false);
+        }else{
+            _body.GetChild(2).GetChild(0).GetComponent<Text>().text = "<";
+            logsPanel.SetActive(true);
+        }
     }
     #endregion
 
