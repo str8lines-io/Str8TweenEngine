@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Str8lines.Tweening;
@@ -6,7 +7,7 @@ using Str8lines.Tweening;
 /*
     This class provides navigation functions for the UI,
     methods to control tweens lifecycles,
-    updates UI for monitoring purposes,
+    updates UI for _monitoring purposes,
     allows tweens parameters updates through UI,
     and instantiates Tweens
 */
@@ -22,24 +23,28 @@ public class EndUserTests : MonoBehaviour
     public bool isLoop;
     public Tween.LoopType loopType;
     public int loopsCount;
-    private GameObject activePanel;
-    private Transform panelsContainer;
-    private Transform header;
-    private Transform monitor;
-    private int panelIndex;
-    private int fadeSetIndex;
+    private GameObject _activePanel;
+    private Transform _panelsContainer;
+    private Transform _header;
+    private Transform _monitor;
+    private int _panelIndex;
+    private int _fadeSetIndex;
+    private Dictionary<GameObject, Vector3> _initialVectors3;
+    private Dictionary<GameObject, Vector4> _initialVectors4;
     #endregion
 
     //Initializes UI and public variables
     void Start()
     {
-        panelIndex = 0;
-        fadeSetIndex = 0;
-        header = this.gameObject.transform.GetChild(0);
-        monitor = header.GetChild(2);
-        panelsContainer = this.gameObject.transform.GetChild(1);
-        for(int i = 0; i < panelsContainer.childCount - 1; i++) panelsContainer.GetChild(i).gameObject.SetActive(false);
+        _panelIndex = 0;
+        _fadeSetIndex = 0;
+        _header = this.gameObject.transform.GetChild(0);
+        _monitor = _header.GetChild(2);
+        _panelsContainer = this.gameObject.transform.GetChild(1);
+        for(int i = 0; i < _panelsContainer.childCount - 1; i++) _panelsContainer.GetChild(i).gameObject.SetActive(false);
         _updatePanel();
+        _initialVectors3 = new Dictionary<GameObject, Vector3>();
+        _initialVectors4 = new Dictionary<GameObject, Vector4>();
 
         controlAll = false;
         killOnEnd = false;
@@ -51,7 +56,7 @@ public class EndUserTests : MonoBehaviour
         id = String.Empty;
     }
 
-    #region monitoring
+    #region _monitoring
     //Display tweens count according to tweens state in real time
     private void Update() {
         Tween[] tweens = Str8Tween.get();
@@ -66,17 +71,33 @@ public class EndUserTests : MonoBehaviour
                 else paused++;
             }
         }
-        monitor.GetChild(0).GetComponent<Text>().text = "Total = " + tweens.Length;
-        monitor.GetChild(1).GetComponent<Text>().text = "Running = " + running;
-        monitor.GetChild(2).GetComponent<Text>().text = "Finished = " + finished;
-        monitor.GetChild(3).GetComponent<Text>().text = "Paused = " + paused;
+        _monitor.GetChild(0).GetComponent<Text>().text = "Total = " + tweens.Length;
+        _monitor.GetChild(1).GetComponent<Text>().text = "Running = " + running;
+        _monitor.GetChild(2).GetComponent<Text>().text = "Finished = " + finished;
+        _monitor.GetChild(3).GetComponent<Text>().text = "Paused = " + paused;
+    }
+
+    //Destroys every logs added
+    public void clearLogs(){
+        Transform logContainer = _monitor.GetChild(4).GetChild(0).GetChild(0);
+        for(int i = 1; i < logContainer.childCount; i++) Destroy(logContainer.GetChild(i).gameObject);
     }
     
     //Logs when events are triggered with associated tween's id in console
     private void _logEvents(Tween t){
         string logRoot = t.easeType.ToString() + " (" + t.id + ") ";
-        t.onStart(() => Debug.Log(logRoot + "Started")).onEnd(()=> Debug.Log(logRoot + "Ended"));
-        if(isLoop) t.onLoop((loopsCount) => Debug.Log(logRoot + "Loops = " + loopsCount));
+        t.onStart(() => _logAdd(logRoot + "Started")).onEnd(()=> _logAdd(logRoot + "Ended"));
+        if(isLoop) t.onLoop((loopsCount) => _logAdd(logRoot + "Loops = " + loopsCount));
+    }
+
+    //Adds log text in scrollview and console
+    private void _logAdd(string log){
+        Transform logContainer = _monitor.GetChild(4).GetChild(0).GetChild(0);
+        Transform template = logContainer.GetChild(0);
+        GameObject clone = Instantiate(template.gameObject, logContainer);
+        clone.transform.GetComponent<Text>().text = log;
+        clone.SetActive(true);
+        Debug.Log(log);
     }
     #endregion
 
@@ -87,33 +108,33 @@ public class EndUserTests : MonoBehaviour
     #region navigation and control
     //Shows next panel
     public void Next(){
-        panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
-        if(panelIndex < 3) panelIndex++;
+        _panelsContainer.GetChild(_panelIndex).gameObject.SetActive(false);
+        if(_panelIndex < 3) _panelIndex++;
         _updatePanel();
     }
 
     //Shows previous panel
     public void Previous(){
-        panelsContainer.GetChild(panelIndex).gameObject.SetActive(false);
-        if(panelIndex > 0) panelIndex--;
+        _panelsContainer.GetChild(_panelIndex).gameObject.SetActive(false);
+        if(_panelIndex > 0) _panelIndex--;
         _updatePanel();
     }
 
     //Display approriate panel according to the target to fade
     public void ChangeFadeTarget(Dropdown change){
-        Transform fadePanel = panelsContainer.GetChild(3);
+        Transform fadePanel = _panelsContainer.GetChild(3);
         for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
-        fadeSetIndex = change.value;
-        activePanel = fadePanel.GetChild(fadeSetIndex).gameObject;
-        activePanel.SetActive(true);
+        _fadeSetIndex = change.value;
+        _activePanel = fadePanel.GetChild(_fadeSetIndex).gameObject;
+        _activePanel.SetActive(true);
     }
 
     //Instantiates panel's tweens
     public void StartTweens(){
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
-        switch(panelIndex){
+        switch(_panelIndex){
             case 0:
-                Transform movePanel = panelsContainer.GetChild(panelIndex);
+                Transform movePanel = _panelsContainer.GetChild(_panelIndex);
                 float xValue = 225f;
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = movePanel.GetChild(i).gameObject;
@@ -125,7 +146,7 @@ public class EndUserTests : MonoBehaviour
                 break;
 
             case 1:
-                Transform scalePanel = panelsContainer.GetChild(panelIndex);
+                Transform scalePanel = _panelsContainer.GetChild(_panelIndex);
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = scalePanel.GetChild(i).gameObject;
                     if(i == 0) _scale(go, (Easing.EaseType)i); //Linear
@@ -136,7 +157,7 @@ public class EndUserTests : MonoBehaviour
                 break;
 
             case 2:
-                Transform rotatePanel = panelsContainer.GetChild(panelIndex);
+                Transform rotatePanel = _panelsContainer.GetChild(_panelIndex);
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = rotatePanel.GetChild(i).gameObject;
                     if(i == 0) _rotate(go, (Easing.EaseType)i, 60f); //Linear
@@ -147,10 +168,10 @@ public class EndUserTests : MonoBehaviour
                 break;
                 
             case 3:
-                Transform fadePanel = panelsContainer.GetChild(panelIndex);
-                switch(fadeSetIndex){
+                Transform fadePanel = _panelsContainer.GetChild(_panelIndex);
+                switch(_fadeSetIndex){
                     case 0:
-                        Transform fadeCanvasRendererPanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeCanvasRendererPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -160,7 +181,7 @@ public class EndUserTests : MonoBehaviour
                         break;
 
                     case 1:
-                        Transform fadeSpriteRendererPanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeSpriteRendererPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -170,7 +191,7 @@ public class EndUserTests : MonoBehaviour
                         break;
 
                     case 2:
-                        Transform fadeImagePanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeImagePanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeImage(fadeImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -180,7 +201,7 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 3:
-                        Transform fadeRawImagePanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeRawImagePanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -190,7 +211,7 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 4:
-                        Transform fadeTextPanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeTextPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeText(fadeTextPanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -200,7 +221,7 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 5:
-                        Transform fadeGraphicPanel = fadePanel.GetChild(fadeSetIndex);
+                        Transform fadeGraphicPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
                             if(i == 0) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)i, 0.2f); //Linear
                             else if(i <= 10) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
@@ -219,7 +240,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.play(target);
             else if(id != String.Empty) Str8Tween.play(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.play(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.play(_activePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -229,7 +250,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.pause(target);
             else if(id != String.Empty) Str8Tween.pause(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.pause(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.pause(_activePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -239,7 +260,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.stop(target);
             else if(id != String.Empty) Str8Tween.stop(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.stop(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.stop(_activePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -249,7 +270,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.complete(target);
             else if(id != String.Empty) Str8Tween.complete(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.complete(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.complete(_activePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -258,7 +279,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.reset(target);
             else if(id != String.Empty) Str8Tween.reset(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.reset(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.reset(_activePanel.transform.GetChild(i).gameObject);
         }
     }
     
@@ -268,22 +289,22 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.kill(target);
             else if(id != String.Empty) Str8Tween.kill(id);
-            else for(int i = 0; i < activePanel.transform.childCount; i++) Str8Tween.kill(activePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.kill(_activePanel.transform.GetChild(i).gameObject);
         }
     }
     
     //Updates the UI according to the active panel
     private void _updatePanel(){
-        activePanel = panelsContainer.GetChild(panelIndex).gameObject;
-        activePanel.SetActive(true);
-        header.GetChild(0).GetComponent<Text>().text = activePanel.name.Replace("Panel", String.Empty);
-        if(panelIndex == 3){
-            header.GetChild(1).gameObject.SetActive(true);
-            Transform fadePanel = panelsContainer.GetChild(panelIndex);
+        _activePanel = _panelsContainer.GetChild(_panelIndex).gameObject;
+        _activePanel.SetActive(true);
+        _header.GetChild(0).GetComponent<Text>().text = _activePanel.name.Replace("Panel", String.Empty);
+        if(_panelIndex == 3){
+            _header.GetChild(1).gameObject.SetActive(true);
+            Transform fadePanel = _panelsContainer.GetChild(_panelIndex);
             for(int i = 0; i < fadePanel.childCount; i++) fadePanel.GetChild(i).gameObject.SetActive(false);
-            activePanel = fadePanel.GetChild(fadeSetIndex).gameObject;
-            activePanel.SetActive(true);
-        }else header.GetChild(1).gameObject.SetActive(false);
+            _activePanel = fadePanel.GetChild(_fadeSetIndex).gameObject;
+            _activePanel.SetActive(true);
+        }else _header.GetChild(1).gameObject.SetActive(false);
     }   
     #endregion
 
@@ -317,29 +338,41 @@ public class EndUserTests : MonoBehaviour
     public void UpdateLoopType(Dropdown change){ loopType = (Tween.LoopType)change.value; }
     #endregion
 
-    // Creates the tweens to checks
+    // Save or resets initial values and creates the tweens to check
     #region instantiations
     private void _move(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
+        if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().anchoredPosition3D);
+        else go.GetComponent<RectTransform>().anchoredPosition3D = _initialVectors3[go];
+
         Tween t = Str8Tween.move(rect, new Vector3(x, rect.anchoredPosition.y, 0f), easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 
     private void _scale(GameObject go, Easing.EaseType easeType){
         RectTransform rect = go.GetComponent<RectTransform>();
+        if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localScale);
+        else go.GetComponent<RectTransform>().localScale = _initialVectors3[go];
+
         Tween t = Str8Tween.scale(rect, Vector3.one * 1.5f, easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 
     private void _rotate(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.rotate(rect, new Vector3(rect.eulerAngles.x, rect.eulerAngles.y, rect.eulerAngles.z + x), easeType, duration, killOnEnd);
+        if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localEulerAngles);
+        else go.GetComponent<RectTransform>().localEulerAngles = _initialVectors3[go];
+
+        Tween t = Str8Tween.rotate(rect, new Vector3(rect.localEulerAngles.x, rect.localEulerAngles.y, rect.localEulerAngles.z + x), easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 
     private void _fadeCanvasRenderer(Transform fadeCanvasRendererPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeCanvasRendererGo = fadeCanvasRendererPanel.GetChild(childIndex).gameObject;
         CanvasRenderer canvasRenderer = fadeCanvasRendererGo.GetComponent<CanvasRenderer>();
+        if(!_initialVectors4.ContainsKey(fadeCanvasRendererGo)) _initialVectors4.Add(fadeCanvasRendererGo, canvasRenderer.GetColor());
+        else canvasRenderer.SetColor(_initialVectors4[fadeCanvasRendererGo]);
+
         Tween t = Str8Tween.fade(canvasRenderer, x, easeType, duration, killOnEnd);
         _handleTweenUpdates(fadeCanvasRendererGo, t, easeType);
     }
@@ -347,6 +380,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeSpriteRenderer(Transform fadeSpriteRendererPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeSpriteRendererGo = fadeSpriteRendererPanel.GetChild(childIndex).gameObject;
         SpriteRenderer spriteRenderer = fadeSpriteRendererGo.GetComponent<SpriteRenderer>();
+        if(!_initialVectors4.ContainsKey(fadeSpriteRendererGo)) _initialVectors4.Add(fadeSpriteRendererGo, spriteRenderer.color);
+        else spriteRenderer.color = _initialVectors4[fadeSpriteRendererGo];
+
         Tween t = Str8Tween.fade(spriteRenderer, x, easeType, duration, killOnEnd);
         _handleTweenUpdates(fadeSpriteRendererGo, t, easeType);
     }
@@ -354,6 +390,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeRawImage(Transform fadeRawImagePanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeRawImageGo = fadeRawImagePanel.GetChild(childIndex).gameObject;
         RawImage rawImage = fadeRawImageGo.GetComponent<RawImage>();
+        if(!_initialVectors4.ContainsKey(fadeRawImageGo)) _initialVectors4.Add(fadeRawImageGo, rawImage.color);
+        else rawImage.color = _initialVectors4[fadeRawImageGo];
+
         Tween t = Str8Tween.fade(rawImage, x, easeType, duration, killOnEnd);
         _handleTweenUpdates(fadeRawImageGo, t, easeType);
     }
@@ -361,6 +400,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeImage(Transform fadeImagePanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeImageGo = fadeImagePanel.GetChild(childIndex).gameObject;
         Image image = fadeImageGo.GetComponent<Image>();
+        if(!_initialVectors4.ContainsKey(fadeImageGo)) _initialVectors4.Add(fadeImageGo, image.color);
+        else image.color = _initialVectors4[fadeImageGo];
+        
         Tween t = Str8Tween.fade(image, x, easeType, duration, killOnEnd);
         _handleTweenUpdates(fadeImageGo, t, easeType);
     }
@@ -368,6 +410,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeText(Transform fadeTextPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeTextGo = fadeTextPanel.GetChild(childIndex).gameObject;
         Text txt = fadeTextGo.GetComponent<Text>();
+        if(!_initialVectors4.ContainsKey(fadeTextGo)) _initialVectors4.Add(fadeTextGo, txt.color);
+        else txt.color = _initialVectors4[fadeTextGo];
+        
         Tween t = Str8Tween.fade(txt, x, easeType, duration, killOnEnd);
         t.delay(delay);
         if(isLoop) t.loop(loopsCount, loopType);
@@ -378,6 +423,9 @@ public class EndUserTests : MonoBehaviour
     private void _fadeGraphic(Transform fadeGraphicPanel, int childIndex, Easing.EaseType easeType, float x){
         GameObject fadeGraphicGo = fadeGraphicPanel.GetChild(childIndex).gameObject;
         Graphic graphic = fadeGraphicGo.GetComponent<Image>();
+        if(!_initialVectors4.ContainsKey(fadeGraphicGo)) _initialVectors4.Add(fadeGraphicGo, graphic.color);
+        else graphic.color = _initialVectors4[fadeGraphicGo];
+        
         Tween t = Str8Tween.fade(graphic, x, easeType, duration, killOnEnd);
         _handleTweenUpdates(fadeGraphicGo, t, easeType);
     }
