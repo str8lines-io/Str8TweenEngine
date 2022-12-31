@@ -23,7 +23,7 @@ namespace Str8lines.Tweening
     {
         #region Variables
         private static GameObject _tweenerGameObject;
-        private static Dictionary<string, Tween> tweens = new Dictionary<string, Tween>();
+        private static Dictionary<string, Tween> _tweens = new Dictionary<string, Tween>();
         private List<string> _deadTweenIDs = new List<string>();
         #endregion
 
@@ -60,7 +60,7 @@ namespace Str8lines.Tweening
             if (_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -96,7 +96,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -134,7 +134,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -170,7 +170,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, canvasRenderer, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -206,7 +206,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, spriteRenderer, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -242,7 +242,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rawImage, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -278,7 +278,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, image, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -314,7 +314,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, text, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -350,7 +350,7 @@ namespace Str8lines.Tweening
             if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, graphic, toValue, easeType, duration, killOnEnd);
-            tweens.Add(t.id, t);
+            _tweens.Add(t.id, t);
             return t;
         }
 
@@ -374,7 +374,7 @@ namespace Str8lines.Tweening
         /// </example>
         public static Tween get(string id)
         {
-            if(id != "" && tweens.ContainsKey(id)) return tweens[id];
+            if(id != "" && _tweens.ContainsKey(id)) return _tweens[id];
             else return null;
         }
 
@@ -403,7 +403,7 @@ namespace Str8lines.Tweening
         public static Tween[] get()
         {
             List<Tween> t = new List<Tween>();
-            foreach(Tween tween in tweens.Values) t.Add(tween);
+            foreach(Tween tween in _tweens.Values) t.Add(tween);
             return t.ToArray();
         }
 
@@ -436,7 +436,7 @@ namespace Str8lines.Tweening
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             List<Tween> tweensFound = new List<Tween>();
-            foreach(Tween tween in tweens.Values){
+            foreach(Tween tween in _tweens.Values){
                 if(tween.target == target) tweensFound.Add(tween);
             }
             return tweensFound.ToArray();
@@ -490,8 +490,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void play()
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.play();
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.play();
             }
         }
 
@@ -575,8 +575,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void pause()
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.pause();
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.pause();
             }
         }
 
@@ -660,8 +660,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void reset()
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.reset();
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.reset();
             }
         }
 
@@ -745,8 +745,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void complete(bool triggerOnEnd = true)
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.complete(triggerOnEnd);
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.complete(triggerOnEnd);
             }
         }
 
@@ -830,8 +830,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void stop(bool triggerOnEnd = true)
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.stop(triggerOnEnd);
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.stop(triggerOnEnd);
             }
         }
 
@@ -915,8 +915,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void kill()
         {
-            if(tweens.Count > 0){
-                foreach(Tween t in tweens.Values) t.kill();
+            if(_tweens.Count > 0){
+                foreach(Tween t in _tweens.Values) t.kill();
             }
         }
 
@@ -974,15 +974,15 @@ namespace Str8lines.Tweening
             _deadTweenIDs.Clear(); //Remove dead tweens
             _deadTweenIDs.TrimExcess(); //Remove empty entries
             
-            for(int i = 0; i < tweens.Count; i++) //Working with foreach loops to iterate through a dictionnary while manipulating it triggers errors
+            for(int i = 0; i < _tweens.Count; i++) //Working with foreach loops to iterate through a dictionnary while manipulating it triggers errors
             {
-                KeyValuePair<string, Tween> entry = tweens.ElementAt(i);
+                KeyValuePair<string, Tween> entry = _tweens.ElementAt(i);
                 if(entry.Value.target != null && entry.Value.isAlive) entry.Value.update(Time.deltaTime);
                 else _deadTweenIDs.Add(entry.Key);
             }
 
-            foreach(string id in _deadTweenIDs) tweens.Remove(id);
-            if(tweens.Count == 0) Destroy(_tweenerGameObject);
+            foreach(string id in _deadTweenIDs) _tweens.Remove(id);
+            if(_tweens.Count == 0) Destroy(_tweenerGameObject);
         }
         #endregion
     }

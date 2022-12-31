@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 using Str8lines.Tweening;
 
 public class EasingTest
 {
+#region Variables
     float elapsed = 1f;
     float duration = 1f;
     float initialFloat = 0f;
     float floatChange = 1f;
     Vector3 initialVector = Vector3.zero;
     Vector3 vectorChange = new Vector3(1f, 1f, 1f);
+#endregion
 
 #region linear
     // LINEAR ////////////////////////////////////////////////////////////////////////////////////////////////////

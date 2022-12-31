@@ -1,21 +1,22 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TestTools;
 using Str8lines.Tweening;
-using UnityEngine.EventSystems;
 
 public class Str8TweenTest
 {
+#region Variables
     GameObject go;
     Vector3 toVectorValue;
     float toFloatValue;
     Easing.EaseType easeType;
     float duration;
-    
+#endregion
+
+#region Setups and Teardowns
     [SetUp]
     public void Setup()
     {
@@ -49,6 +50,7 @@ public class Str8TweenTest
         easeType = Easing.EaseType.Linear;
         duration = 1f;
     }
+#endregion
 
 #region Tween methods
     #region move
@@ -61,7 +63,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void MoveDurationException()
+    public void MoveRectTransformDurationException()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -71,7 +73,7 @@ public class Str8TweenTest
     }
     
     [Test]
-    public void MoveEngineInstantiation()
+    public void MoveRectTransformEngineInstantiation()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -81,7 +83,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void MoveResult()
+    public void MoveRectTransformResult()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -99,7 +101,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void ScaleDurationException()
+    public void ScaleRectTransformDurationException()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -109,7 +111,7 @@ public class Str8TweenTest
     }
     
     [Test]
-    public void ScaleEngineInstantiation()
+    public void ScaleRectTransformEngineInstantiation()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -119,7 +121,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void ScaleResult()
+    public void ScaleRectTransformResult()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -137,7 +139,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void RotateDurationException()
+    public void RotateRectTransformDurationException()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -147,7 +149,7 @@ public class Str8TweenTest
     }
     
     [Test]
-    public void RotateEngineInstantiation()
+    public void RotateRectTransformEngineInstantiation()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -157,7 +159,7 @@ public class Str8TweenTest
     }
 
     [Test]
-    public void RotateResult()
+    public void RotateRectTransformResult()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
