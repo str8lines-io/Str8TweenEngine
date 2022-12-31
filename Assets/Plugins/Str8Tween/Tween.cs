@@ -553,14 +553,18 @@ namespace Str8lines.Tweening
         /// </example>
         public void reset()
         {
-            this.completedLoopsCount = 0;
-            _isIncrementing = true;
             _isDelayOver = false;
-            this.isFinished = false;
             _isFirstUpdate = true;
+            _isIncrementing = true;
+            _loopTime = 0f;
+            this.completedLoopsCount = 0;
+            this.isFinished = false;
             this.elapsedTotal = 0f;
             this.elapsedSinceDelay = 0f;
-            _loopTime = 0f;
+            _fromValue = _initialFromValue;
+            _toValue = _initialToValue;
+            _fromVector = _initialFromVector;
+            _toVector = _initialToVector;
             _setInitialValue();
         }
 
