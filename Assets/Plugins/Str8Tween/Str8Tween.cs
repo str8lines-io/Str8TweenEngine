@@ -2,7 +2,7 @@
 /* 
     Str8lines Tween Engine for Unity
     Version: 1.0
-    Author:	Geoffrey LESNE
+    Author:	Str8lines (Geoffrey LESNE)
     Contact: contact@str8lines.io
 */
 #endregion

@@ -1,3 +1,12 @@
+#region Author
+/* 
+    Str8lines Tween Engine for Unity
+    Version: 1.0
+    Author:	Str8lines (Geoffrey LESNE)
+    Contact: contact@str8lines.io
+*/
+#endregion
+
 namespace Str8lines.Tweening
 {
     #region namespaces
