@@ -28,15 +28,15 @@ namespace Str8lines.Tweening
         #endregion
 
         #region Public methods
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which moves the <paramref name="rectTransform"/> to a given position.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/RectTransform-anchoredPosition3D.html">anchoredPosition3D</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to move.</param>
-        /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector2.html">Vector2</see> that represents <paramref name="rectTransform"/>'s final position.</param>
+        /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Moves the rectTransform during 3 seconds to the given position in a linear motion.
+        /// Changes the rectTransform's anchoredPosition3D during 3 seconds in a linear motion.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -47,13 +47,13 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500);
         ///         Str8Tween.move(rectTransform, destination, Easing.EaseType.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween move(RectTransform rectTransform, Vector2 toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween move(RectTransform rectTransform, Vector3 toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
@@ -64,15 +64,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes the scale of the <paramref name="rectTransform"/>.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/Transform-localScale.html">localScale</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to resize.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final scale.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Changes rectTransform's scale during 3 seconds with a linear easing.
+        /// Changes rectTransform's localScale during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -100,17 +100,17 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes the euler angles of the <paramref name="rectTransform"/>.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/Transform-localEulerAngles.html">localEulerAngles</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> that will rotate.</param>
-        /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final euler angles.</param>
+        /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final rotation.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
-        /// <remarks>Due to the way Unity handles rotations, <paramref name="toValue"/> may differ from rectTransform's euler angles in the inspector.
+        /// <remarks>Due to the way Unity handles rotations, <paramref name="toValue"/> may differ from rectTransform's rotation in the inspector.
         /// To learn more about rotations in Unity, please check : <see href="https://docs.unity3d.com/Manual/QuaternionAndEulerRotationsInUnity.html">Rotation and Orientation in Unity</see>.</remarks>
         /// <example>
-        /// Rotates the rectTransform during 3 seconds to the given angles in a linear motion.
+        /// Changes the rectTransform's localEulerAngles during 3 seconds in a linear motion.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -138,15 +138,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="canvasRenderer"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="canvasRenderer"/>'s alpha to a given value.</summary>
         /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the CanvasRenderer during 3 seconds to the given alpha with a linear easing.
+        /// Changes the CanvasRenderer's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -174,15 +174,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="spriteRenderer"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="spriteRenderer"/>'s alpha to a given value.</summary>
         /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the SpriteRenderer during 3 seconds to the given alpha with a linear easing.
+        /// Changes the SpriteRenderer's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -210,15 +210,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="rawImage"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="rawImage"/>'s alpha to a given value.</summary>
         /// <param name="rawImage">The <see href="https://docs.unity3d.com/ScriptReference/RawImage.html">RawImage</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="rawImage"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the RawImage during 3 seconds to the given alpha with a linear easing.
+        /// Changes the RawImage's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -246,15 +246,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="image"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="image"/>'s alpha to a given value.</summary>
         /// <param name="image">The <see href="https://docs.unity3d.com/ScriptReference/Image.html">Image</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="image"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the Image during 3 seconds to the given alpha with a linear easing.
+        /// Changes the Image's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -282,15 +282,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="text"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="text"/>'s alpha to a given value.</summary>
         /// <param name="text">The <see href="https://docs.unity3d.com/ScriptReference/Text.html">Text</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="text"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the Text during 3 seconds to the given alpha with a linear easing.
+        /// Changes the Text's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -318,15 +318,15 @@ namespace Str8lines.Tweening
             return t;
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see> which changes <paramref name="graphic"/>'s alpha to a given value.</summary>
+        /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="graphic"/>'s alpha to a given value.</summary>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> that will fade.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed.</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
         /// <example>
-        /// Fades the Graphic during 3 seconds to the given alpha with a linear easing.
+        /// Changes the Graphic's alpha during 3 seconds with a linear easing.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -442,7 +442,7 @@ namespace Str8lines.Tweening
             return tweensFound.ToArray();
         }
 
-        /// <summary>Play the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.play()"/></summary>
+        /// <summary>Plays the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.play()"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to play.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -455,10 +455,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.play("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.play("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -468,7 +465,7 @@ namespace Str8lines.Tweening
             get(id)?.play();
         }
 
-        /// <summary>Plays every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.play()"/></summary>
+        /// <summary>Plays every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.play()"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to play existing tweens :
@@ -480,10 +477,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.play(); 
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.play();
         ///     }
         /// }
         /// </code>
@@ -510,10 +504,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.play(target); 
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.play(target);
         ///     }
         /// }
         /// </code>
@@ -527,7 +518,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Pause the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.pause()"/></summary>
+        /// <summary>Pauses the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.pause()"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to pause.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -540,10 +531,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.pause("7aac6207-107f-4ddc-8761-122f669d3e3b"); 
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.pause("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -553,7 +541,7 @@ namespace Str8lines.Tweening
             get(id)?.pause();
         }
 
-        /// <summary>Pauses every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.pause()"/></summary>
+        /// <summary>Pauses every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.pause()"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to pause existing tweens :
@@ -565,10 +553,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.pause(); 
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.pause();
         ///     }
         /// }
         /// </code>
@@ -595,10 +580,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.pause(target);
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.pause(target);
         ///     }
         /// }
         /// </code>
@@ -612,8 +594,8 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Reset the <see cref="Tween">tween</see> associated to the given uuid.</summary>
-        /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to reset.</param>
+        /// <summary>Resets the <see cref="Tween">tween</see> associated to the given uuid.</summary>
+        /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to reset. See also <seealso cref="Tween.reset()"/></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset a tween :
@@ -625,10 +607,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.reset("7aac6207-107f-4ddc-8761-122f669d3e3b");
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.reset("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -638,7 +617,7 @@ namespace Str8lines.Tweening
             get(id)?.reset();
         }
 
-        /// <summary>Reset every <see cref="Tween">tween</see> alive.</summary>
+        /// <summary>Reset every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.reset()"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset every tween :
@@ -650,10 +629,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.reset();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.reset();
         ///     }
         /// }
         /// </code>
@@ -666,7 +642,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Reset every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
-        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.reset(bool)">reset</see>. Default value is <c>false</c></param>
+        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.reset()">reset</see>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset target's tweens :
@@ -680,10 +656,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.reset(target);
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.reset(target);
         ///     }
         /// }
         /// </code>
@@ -697,7 +670,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Complete the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.complete()"/></summary>
+        /// <summary>Completes the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.complete(bool)"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to complete.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -710,10 +683,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.complete("7aac6207-107f-4ddc-8761-122f669d3e3b");
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.complete("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -723,7 +693,7 @@ namespace Str8lines.Tweening
             get(id)?.complete(triggerOnEnd);
         }
 
-        /// <summary>Complete every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete()"/></summary>
+        /// <summary>Completes every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete(bool)"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete every tween :
@@ -735,10 +705,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.complete();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.complete();
         ///     }
         /// }
         /// </code>
@@ -750,8 +717,8 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Complete every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
-        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.complete()">complete</see>. Default value is <c>true</c></param>
+        /// <summary>Completes every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
+        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.complete(bool)">complete</see>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete target's tweens :
@@ -765,10 +732,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.complete(target);
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.complete(target);
         ///     }
         /// }
         /// </code>
@@ -782,7 +746,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Stop the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.stop()"/></summary>
+        /// <summary>Stops the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.stop(bool)"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to stop.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -795,10 +759,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.stop("7aac6207-107f-4ddc-8761-122f669d3e3b");
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.stop("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -808,7 +769,7 @@ namespace Str8lines.Tweening
             get(id)?.stop(triggerOnEnd);
         }
 
-        /// <summary>Stop every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.stop()"/></summary>
+        /// <summary>Stops every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.stop(bool)"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to stop every tween :
@@ -820,10 +781,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.stop();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.stop();
         ///     }
         /// }
         /// </code>
@@ -835,8 +793,8 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Stop every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
-        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.stop()">stop</see>.</param>
+        /// <summary>Stops every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
+        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.stop(bool)">stop</see>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to stop target's tweens :
@@ -850,10 +808,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.stop(target);
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.stop(target);
         ///     }
         /// }
         /// </code>
@@ -867,7 +822,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Kill the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.kill()"/></summary>
+        /// <summary>Kills the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.kill()"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to kill.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -880,10 +835,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.kill("7aac6207-107f-4ddc-8761-122f669d3e3b");
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.kill("7aac6207-107f-4ddc-8761-122f669d3e3b");
         ///     }
         /// }
         /// </code>
@@ -893,7 +845,7 @@ namespace Str8lines.Tweening
             get(id)?.kill();
         }
 
-        /// <summary>Kill every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.kill()"/></summary>
+        /// <summary>Kills every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.kill()"/>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to kill every tween :
@@ -905,10 +857,7 @@ namespace Str8lines.Tweening
         /// {
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.kill();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.kill();
         ///     }
         /// }
         /// </code>
@@ -920,7 +869,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Kill every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
+        /// <summary>Kills every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
         /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.kill()">kill</see>.</param>
         /// <returns><c>void</c></returns>
         /// <example>
@@ -935,10 +884,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             Str8Tween.kill(target);
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) Str8Tween.kill(target);
         ///     }
         /// }
         /// </code>
@@ -956,7 +902,7 @@ namespace Str8lines.Tweening
         #region Private methods
         private static void _init()
         {
-            //The Str8Tween Class must be attached to a GameObject so the Update method can be triggered on every frame
+            //The Str8Tween Class must be attached to a GameObject so the Update method can be called on every frame
             _tweenerGameObject = new GameObject();
             _tweenerGameObject.name = "Str8Tween";
             _tweenerGameObject.AddComponent(typeof(Str8Tween));

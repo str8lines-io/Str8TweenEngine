@@ -154,10 +154,11 @@ public class EndUserTests : MonoBehaviour
     //Instantiates panel's tweens
     public void StartTweens(){
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
+        float xValue = 0f;
         switch(_panelIndex){
             case 0:
                 Transform movePanel = _panelsContainer.GetChild(_panelIndex);
-                float xValue = 225f;
+                xValue = 225f;
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = movePanel.GetChild(i).gameObject;
                     if(i == 0) _move(go, (Easing.EaseType)i, xValue); //Linear
@@ -169,86 +170,89 @@ public class EndUserTests : MonoBehaviour
 
             case 1:
                 Transform scalePanel = _panelsContainer.GetChild(_panelIndex);
+                xValue = 1.5f;
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = scalePanel.GetChild(i).gameObject;
-                    if(i == 0) _scale(go, (Easing.EaseType)i); //Linear
-                    else if(i <= 10) _scale(go, (Easing.EaseType)(3*i - 2)); //In
-                    else if(i > 10 && i <= 20) _scale(go, (Easing.EaseType)(3*(i - 10) - 1)); //Out
-                    else _scale(go, (Easing.EaseType)(3*(i - 20))); //InOut
+                    if(i == 0) _scale(go, (Easing.EaseType)i, xValue); //Linear
+                    else if(i <= 10) _scale(go, (Easing.EaseType)(3*i - 2), xValue); //In
+                    else if(i > 10 && i <= 20) _scale(go, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                    else _scale(go, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                 }
                 break;
 
             case 2:
                 Transform rotatePanel = _panelsContainer.GetChild(_panelIndex);
+                xValue = 60f;
                 for(int i = 0; i < easeTypesCount; i++){
                     GameObject go = rotatePanel.GetChild(i).gameObject;
-                    if(i == 0) _rotate(go, (Easing.EaseType)i, 60f); //Linear
-                    else if(i <= 10) _rotate(go, (Easing.EaseType)(3*i - 2), 60f); //In
-                    else if(i > 10 && i <= 20) _rotate(go, (Easing.EaseType)(3*(i - 10) - 1), 60f); //Out
-                    else _rotate(go, (Easing.EaseType)(3*(i - 20)), 60f); //InOut
+                    if(i == 0) _rotate(go, (Easing.EaseType)i, xValue); //Linear
+                    else if(i <= 10) _rotate(go, (Easing.EaseType)(3*i - 2), xValue); //In
+                    else if(i > 10 && i <= 20) _rotate(go, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                    else _rotate(go, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                 }
                 break;
                 
             case 3:
                 Transform fadePanel = _panelsContainer.GetChild(_panelIndex);
+                xValue = 0.2f;
                 switch(_fadeSetIndex){
                     case 0:
                         Transform fadeCanvasRendererPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeCanvasRenderer(fadeCanvasRendererPanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
 
                     case 1:
                         Transform fadeSpriteRendererPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeSpriteRenderer(fadeSpriteRendererPanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
 
                     case 2:
                         Transform fadeImagePanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeImage(fadeImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeImage(fadeImagePanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeImage(fadeImagePanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
                         
                     case 3:
                         Transform fadeRawImagePanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeRawImage(fadeRawImagePanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
                         
                     case 4:
                         Transform fadeTextPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeText(fadeTextPanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeText(fadeTextPanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeText(fadeTextPanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
                         
                     case 5:
                         Transform fadeGraphicPanel = fadePanel.GetChild(_fadeSetIndex);
                         for(int i = 0; i < easeTypesCount; i++){
-                            if(i == 0) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)i, 0.2f); //Linear
-                            else if(i <= 10) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*i - 2), 0.2f); //In
-                            else if(i > 10 && i <= 20) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 10) - 1), 0.2f); //Out
-                            else _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 20)), 0.2f); //InOut
+                            if(i == 0) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)i, xValue); //Linear
+                            else if(i <= 10) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*i - 2), xValue); //In
+                            else if(i > 10 && i <= 20) _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 10) - 1), xValue); //Out
+                            else _fadeGraphic(fadeGraphicPanel, i, (Easing.EaseType)(3*(i - 20)), xValue); //InOut
                         }
                         break;
                 }
@@ -367,16 +371,16 @@ public class EndUserTests : MonoBehaviour
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().anchoredPosition3D);
         else go.GetComponent<RectTransform>().anchoredPosition3D = _initialVectors3[go];
 
-        Tween t = Str8Tween.move(rect, new Vector3(x, rect.anchoredPosition.y, 0f), easeType, duration, killOnEnd);
+        Tween t = Str8Tween.move(rect, new Vector3(x, rect.anchoredPosition3D.y, rect.anchoredPosition3D.z), easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 
-    private void _scale(GameObject go, Easing.EaseType easeType){
+    private void _scale(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localScale);
         else go.GetComponent<RectTransform>().localScale = _initialVectors3[go];
 
-        Tween t = Str8Tween.scale(rect, Vector3.one * 1.5f, easeType, duration, killOnEnd);
+        Tween t = Str8Tween.scale(rect, new Vector3(rect.anchoredPosition3D.x * x, rect.anchoredPosition3D.y * x, rect.anchoredPosition3D.z), easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 

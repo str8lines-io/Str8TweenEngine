@@ -785,15 +785,15 @@ namespace Str8lines.Tweening
             switch(_methodName)
             {
                 case "move":
-                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
+                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "scale":
-                    if(_rectTransform != null) _rectTransform.localScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
+                    if(_rectTransform != null) _rectTransform.localScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "rotate":
-                    if(_rectTransform != null) _rectTransform.localEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);;
+                    if(_rectTransform != null) _rectTransform.localEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "fade":
