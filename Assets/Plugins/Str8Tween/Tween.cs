@@ -24,11 +24,11 @@ namespace Str8lines.Tweening
         public string id { get;private set; }
         /// <value><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> on which the tween will be applied.</value>
         public GameObject target { get;private set; }
-        /// <value>Defines easing functions used internally and provides methods to calculate <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> and <c>float</c> values.</value>
+        /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
         public Easing.EaseType easeType { get;private set; }
         /// <value>Duration of a tween loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
         public float duration { get;private set; }
-        /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see>.</value>
+        /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
         public bool isAlive { get;private set; }
         /// <value>If <c>true</c> the tween is currently playing.</value>
         public bool isRunning { get;private set; }
@@ -39,33 +39,7 @@ namespace Str8lines.Tweening
         /// <value>Time elapsed in seconds (delay included).</value>
         public float elapsedTotal { get;private set; }
         /// <value>Time elapsed in seconds (delay excluded).</value>
-        public float elapsedSinceDelay { get;private set; }
-        #endregion
-
-        #region Private variables
-        private bool _isDelayOver;
-        private string _methodName;
-        private float _lifeTime;
-        private bool _isFirstUpdate;
-        private float _delay;
-        private Vector3 _initialFromVector;
-        private Vector3 _fromVector;
-        private Vector3 _initialToVector;
-        private Vector3 _toVector;
-        private Vector3 _vectorChange;
-        private float _initialFromValue;
-        private float _fromValue;
-        private float _valueChange;
-        private float _initialToValue;
-        private float _toValue;
-        private RectTransform _rectTransform;
-        private SpriteRenderer _spriteRenderer;
-        private CanvasRenderer _canvasRenderer;
-        private Graphic _graphic;
-        #endregion
-
-        #region Loop specific
-        /// <value>The number of loops to do.</value>
+        public float elapsedSinceDelay { get;private set; }/// <value>The number of loops to do.</value>
         public int loopsCount { get;private set; }
         /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
         public enum LoopType { Restart, Oscillate, WithOffset }
@@ -73,9 +47,31 @@ namespace Str8lines.Tweening
         public LoopType loopType { get;private set; }
         /// <value>The number of loops completed since the Tween started.</value>
         public int completedLoopsCount { get;private set; }
+        #endregion
+
+        #region Private variables
+        private string _methodName;
+        private float _lifeTime;
+        private float _delay;
         private bool _isLoop;
-        private bool _isIncrementing;
         private float _loopTime;
+        private bool _isDelayOver;
+        private bool _isFirstUpdate;
+        private bool _isIncrementing;
+        private Vector3 _initialFromVector;
+        private Vector3 _fromVector;
+        private Vector3 _initialToVector;
+        private Vector3 _toVector;
+        private Vector3 _vectorChange;
+        private float _initialFromValue;
+        private float _fromValue;
+        private float _initialToValue;
+        private float _toValue;
+        private float _valueChange;
+        private RectTransform _rectTransform;
+        private SpriteRenderer _spriteRenderer;
+        private CanvasRenderer _canvasRenderer;
+        private Graphic _graphic;
         #endregion
 
         #region Events
@@ -225,7 +221,7 @@ namespace Str8lines.Tweening
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
         /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
         /// <example>
-        /// Create new tween that changes graphic's transparency :
+        /// Create new tween that changes graphic's alpha :
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -249,8 +245,8 @@ namespace Str8lines.Tweening
             _initFloatTweening(methodName, toValue, _graphic.color.a);
         }
 
-        /// <summary>Add delay to the <see cref="Tween">tween</see> before play.</summary>
-        /// <param name="delay">Time before tween start (in seconds).</param>
+        /// <summary>Add delay to the <see cref="Tween">tween</see> before it starts playing.</summary>
+        /// <param name="delay">Time before the tween start (in seconds).</param>
         /// <returns>The <see cref="Tween">tween</see> delayed.</returns>
         /// <example>
         /// Add 2 seconds of delay before the tween starts.
@@ -408,11 +404,11 @@ namespace Str8lines.Tweening
             return this;
         }
 
-        /// <summary>Registers to <see cref="Tween">tween</see>'s complete event.</summary>
+        /// <summary>Registers to <see cref="Tween">tween</see>'s end event.</summary>
         /// <param name="onEnd">Callback function to trigger.</param>
-        /// <returns>The <see cref="Tween">tween</see> which will rise the complete event.</returns>
+        /// <returns>The <see cref="Tween">tween</see> which will rise the end event.</returns>
         /// <example>
-        /// Displays a message in console when the move tween completes.
+        /// Displays a message in console when the move tween ends.
         /// <code>
         /// using UnityEngine;
         /// using Str8lines.Tweening;
@@ -446,8 +442,8 @@ namespace Str8lines.Tweening
     #endregion
 
     #region Public methods
-        /// <summary>Determines new values from the time <paramref name="t"/> elapsed since the last frame and applies it to the <see cref="Tween.target"/>. Also triggers callbacks when required.</summary>
-        /// <param name="t">The time elapsed since the last frame (in seconds).</param>
+        /// <summary>Determines new values from the time <paramref name="t"/> elapsed and applies it to the tween's <see cref="Tween.target">target</see>. Also triggers callbacks when required.</summary>
+        /// <param name="t">The time elapsed (in seconds).</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Updates a tween at new frame.
@@ -468,7 +464,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         t.update(Time.DeltaTime)
+        ///         t.update(Time.deltaTime)
         ///     }
         /// }
         /// </code>
@@ -552,10 +548,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.reset();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.reset();
         ///     }
         /// }
         /// </code>
@@ -598,10 +591,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.play();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.play();
         ///     }
         /// }
         /// </code>
@@ -633,10 +623,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.pause();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.pause();
         ///     }
         /// }
         /// </code>
@@ -647,7 +634,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
         /// <example>
@@ -669,10 +656,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.complete();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.complete();
         ///     }
         /// }
         /// </code>
@@ -684,7 +668,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Stops the <see cref="Tween">tween</see>.</summary>
-        /// <param name="callbackOnEnd">(Optional) If <c>true</c>, triggers method call on <see cref="Tween">tween</see>'s end. Default value is <c>true</c></param>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Stopping a <see cref="Tween">tween</see> does not change the target's current values.</remarks>
         /// <example>
@@ -706,10 +690,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.stop();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.stop();
         ///     }
         /// }
         /// </code>
@@ -723,7 +704,7 @@ namespace Str8lines.Tweening
             if(this.killOnEnd == true) kill();
         }
 
-        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets this.isAlive to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets <see cref="this.isAlive">isAlive</see> to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to kill.
@@ -744,10 +725,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Update()
         ///     {
-        ///         if (Input.GetKeyDown(KeyCode.Space))
-        ///         {
-        ///             t.kill();
-        ///         }
+        ///         if (Input.GetKeyDown(KeyCode.Space)) t.kill();
         ///     }
         /// }
         /// </code>
@@ -762,6 +740,7 @@ namespace Str8lines.Tweening
     #endregion
 
     #region Private methods
+        //Handles common values initialization and common checks.
         private void _initCommon(GameObject target, Easing.EaseType easeType, float duration, bool killOnEnd)
         {
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
@@ -773,22 +752,23 @@ namespace Str8lines.Tweening
             this.isAlive = true;
             this.isFinished = false;
             this.isRunning = true;
-            
-            _delay = 0f;
-            _isLoop = false;
             this.loopsCount = 0;
             this.completedLoopsCount = 0;
             this.loopType = LoopType.Restart;
-            _isIncrementing = true;
-            _isDelayOver = false;
-            _isFirstUpdate = true;
             this.elapsedTotal = 0f;
-            _loopTime = 0f;
-            _lifeTime = this.duration;
             this.elapsedSinceDelay = 0f;
             this.killOnEnd = killOnEnd;
+            
+            _lifeTime = this.duration;
+            _delay = 0f;
+            _isLoop = false;
+            _loopTime = 0f;
+            _isDelayOver = false;
+            _isFirstUpdate = true;
+            _isIncrementing = true;
         }
 
+        //Handles specific values initialization and checks for float values tweening.
         private void _initFloatTweening(string methodName, float toValue, float fromValue){
             if(methodName != "fade") throw new ArgumentException("methodName is not allowed", "methodName");
             _methodName = methodName;
@@ -799,6 +779,7 @@ namespace Str8lines.Tweening
             _valueChange = _toValue - _fromValue;
         }
 
+        //Updates values according to the method which called in the Str8Tween class for tween's instantiation and the time elapsed passed in parameters.
         private void _setCalculatedValue(float playtime)
         {
             switch(_methodName)
@@ -829,6 +810,7 @@ namespace Str8lines.Tweening
             }
         }
 
+        //Handles values update for loops with offset, updates loops count and triggers onLoop event.
         private void _completeLoop()
         {
             if(this.loopType == LoopType.WithOffset)
@@ -848,7 +830,7 @@ namespace Str8lines.Tweening
             _loop?.Invoke(this.completedLoopsCount);
         }
 
-        //Go to initial "to values" or to initial "from values"
+        //Go to initial "to values" or to initial "from values".
         private void _setInitialValue(bool useToValues = false)
         {
             switch(_methodName)
