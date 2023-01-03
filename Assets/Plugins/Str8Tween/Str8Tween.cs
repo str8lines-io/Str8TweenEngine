@@ -11,7 +11,6 @@ namespace Str8lines.Tweening
 {
     #region namespaces
     using System;
-    using System.Linq;
     using System.Diagnostics;
     using System.Collections.Generic;
     using UnityEngine;
@@ -19,15 +18,9 @@ namespace Str8lines.Tweening
     #endregion
 
     /// <summary>Str8Tween is a tween engine. This class is meant to instantiate <see cref="Tween">tweens</see> and manage their lifecycle. It provides additional methods to manipulate every <see cref="Tween">tweens</see> created.</summary>
-    public class Str8Tween : MonoBehaviour
+    public static class Str8Tween
     {
-        #region Variables
-        private static GameObject _tweenerGameObject;
-        private static Dictionary<string, Tween> _tweens = new Dictionary<string, Tween>();
-        private List<string> _deadTweenIDs = new List<string>();
-        #endregion
-
-        #region Public methods
+        #region Tweens creation
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/RectTransform-anchoredPosition3D.html">anchoredPosition3D</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to move.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position.</param>
@@ -57,15 +50,14 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if (_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/Transform-localScale.html">localScale</see> of the <paramref name="rectTransform"/>.</summary>
-        /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to resize.</param>
+        /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to scale.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final scale.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -93,10 +85,9 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
@@ -131,15 +122,14 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="canvasRenderer"/>'s alpha to a given value.</summary>
-        /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> that will fade.</param>
+        /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -167,15 +157,14 @@ namespace Str8lines.Tweening
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, canvasRenderer, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="spriteRenderer"/>'s alpha to a given value.</summary>
-        /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> that will fade.</param>
+        /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -203,15 +192,14 @@ namespace Str8lines.Tweening
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, spriteRenderer, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="rawImage"/>'s alpha to a given value.</summary>
-        /// <param name="rawImage">The <see href="https://docs.unity3d.com/ScriptReference/RawImage.html">RawImage</see> that will fade.</param>
+        /// <param name="rawImage">The <see href="https://docs.unity3d.com/ScriptReference/RawImage.html">RawImage</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="rawImage"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -239,15 +227,14 @@ namespace Str8lines.Tweening
             if(rawImage == null) throw new ArgumentNullException("rawImage", "rawImage can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rawImage, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="image"/>'s alpha to a given value.</summary>
-        /// <param name="image">The <see href="https://docs.unity3d.com/ScriptReference/Image.html">Image</see> that will fade.</param>
+        /// <param name="image">The <see href="https://docs.unity3d.com/ScriptReference/Image.html">Image</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="image"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -275,15 +262,14 @@ namespace Str8lines.Tweening
             if(image == null) throw new ArgumentNullException("image", "image can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, image, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="text"/>'s alpha to a given value.</summary>
-        /// <param name="text">The <see href="https://docs.unity3d.com/ScriptReference/Text.html">Text</see> that will fade.</param>
+        /// <param name="text">The <see href="https://docs.unity3d.com/ScriptReference/Text.html">Text</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="text"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -311,15 +297,14 @@ namespace Str8lines.Tweening
             if(text == null) throw new ArgumentNullException("text", "text can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, text, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
 
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="graphic"/>'s alpha to a given value.</summary>
-        /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> that will fade.</param>
+        /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha value.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
@@ -347,13 +332,14 @@ namespace Str8lines.Tweening
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            if(_tweenerGameObject == null) _init();
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, graphic, toValue, easeType, duration, killOnEnd);
-            _tweens.Add(t.id, t);
+            TweensHandler.Instance.AddTween(t);
             return t;
         }
+        #endregion
 
+        #region Tweens control
         /// <summary>Returns the <see cref="Tween">tween</see> associated to the given uuid.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to retrieve.</param>
         /// <returns>The <see cref="Tween">tween</see> retrieved or <c>null</c> if not found.</returns>
@@ -374,7 +360,7 @@ namespace Str8lines.Tweening
         /// </example>
         public static Tween get(string id)
         {
-            if(id != "" && _tweens.ContainsKey(id)) return _tweens[id];
+            if(id != "" && TweensHandler.Instance.tweens.ContainsKey(id)) return TweensHandler.Instance.tweens[id];
             else return null;
         }
 
@@ -403,7 +389,7 @@ namespace Str8lines.Tweening
         public static Tween[] get()
         {
             List<Tween> t = new List<Tween>();
-            foreach(Tween tween in _tweens.Values) t.Add(tween);
+            foreach(Tween tween in TweensHandler.Instance.tweens.Values) t.Add(tween);
             return t.ToArray();
         }
 
@@ -436,7 +422,7 @@ namespace Str8lines.Tweening
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             List<Tween> tweensFound = new List<Tween>();
-            foreach(Tween tween in _tweens.Values){
+            foreach(Tween tween in TweensHandler.Instance.tweens.Values){
                 if(tween.target == target) tweensFound.Add(tween);
             }
             return tweensFound.ToArray();
@@ -484,8 +470,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void play()
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.play();
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.play();
             }
         }
 
@@ -560,8 +546,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void pause()
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.pause();
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.pause();
             }
         }
 
@@ -636,8 +622,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void reset()
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.reset();
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.reset();
             }
         }
 
@@ -712,8 +698,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void complete(bool triggerOnEnd = true)
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.complete(triggerOnEnd);
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.complete(triggerOnEnd);
             }
         }
 
@@ -788,8 +774,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void stop(bool triggerOnEnd = true)
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.stop(triggerOnEnd);
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.stop(triggerOnEnd);
             }
         }
 
@@ -864,8 +850,8 @@ namespace Str8lines.Tweening
         /// </example>
         public static void kill()
         {
-            if(_tweens.Count > 0){
-                foreach(Tween t in _tweens.Values) t.kill();
+            if(TweensHandler.Instance.tweens.Count > 0){
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.kill();
             }
         }
 
@@ -896,39 +882,6 @@ namespace Str8lines.Tweening
             if(tweensFound.Length > 0){
                 foreach(Tween t in tweensFound) t.kill();
             }
-        }
-        #endregion
-
-        #region Private methods
-        private static void _init()
-        {
-            //The Str8Tween Class must be attached to a GameObject so the Update method can be called on every frame
-            _tweenerGameObject = new GameObject();
-            _tweenerGameObject.name = "Str8Tween";
-            _tweenerGameObject.AddComponent(typeof(Str8Tween));
-            _tweenerGameObject.isStatic = true;
-#if UNITY_EDITOR
-            if(Application.isPlaying) DontDestroyOnLoad(_tweenerGameObject);
-#else
-            _tweenerGameObject.hideFlags = HideFlags.HideAndDontSave;
-            DontDestroyOnLoad(_tweenerGameObject);
-#endif
-        }
-
-        private void Update()
-        {
-            _deadTweenIDs.Clear(); //Remove dead tweens
-            _deadTweenIDs.TrimExcess(); //Remove empty entries
-            
-            for(int i = 0; i < _tweens.Count; i++) //Working with foreach loops to iterate through a dictionnary while manipulating it triggers errors
-            {
-                KeyValuePair<string, Tween> entry = _tweens.ElementAt(i);
-                if(entry.Value.target != null && entry.Value.isAlive) entry.Value.update(Time.deltaTime);
-                else _deadTweenIDs.Add(entry.Key);
-            }
-
-            foreach(string id in _deadTweenIDs) _tweens.Remove(id);
-            if(_tweens.Count == 0) Destroy(_tweenerGameObject);
         }
         #endregion
     }

@@ -1,8 +1,10 @@
+#region namespaces
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Str8lines.Tweening;
+#endregion
 
 /*
     This class provides navigation functions for the UI,
@@ -13,7 +15,7 @@ using Str8lines.Tweening;
 */
 public class EndUserTests : MonoBehaviour 
 {
-    #region variables
+    #region Variables
     public bool controlAll;
     public GameObject target;
     public string id;
@@ -67,7 +69,7 @@ public class EndUserTests : MonoBehaviour
         id = String.Empty;
     }
 
-    #region _monitoring
+    #region Monitoring
     //Display tweens count according to tweens state in real time
     private void Update() {
         Tween[] tweens = Str8Tween.get();
@@ -127,7 +129,7 @@ public class EndUserTests : MonoBehaviour
         Contains the functions used to display the differents panels in the scene
         and the methods called by clicking on buttons for tweens lifecycle tests
     */
-    #region navigation and control
+    #region Navigation and control
     //Shows next panel
     public void Next(){
         _panelsContainer.GetChild(_panelIndex).gameObject.SetActive(false);
@@ -335,7 +337,7 @@ public class EndUserTests : MonoBehaviour
     #endregion
 
     // Functions which updates public variables of the current script
-    #region parameters
+    #region Parameters
     public void UpdateControlAll(Toggle change){ controlAll = change.isOn; }
     public void UpdateKillOnEnd(Toggle change){ killOnEnd = change.isOn; }
     public void UpdateIsLoop(Toggle change){ isLoop = change.isOn; }
@@ -365,7 +367,7 @@ public class EndUserTests : MonoBehaviour
     #endregion
 
     // Save or resets initial values and creates the tweens to check
-    #region instantiations
+    #region Instantiations
     private void _move(GameObject go, Easing.EaseType easeType, float x){
         RectTransform rect = go.GetComponent<RectTransform>();
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().anchoredPosition3D);
@@ -380,7 +382,7 @@ public class EndUserTests : MonoBehaviour
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localScale);
         else go.GetComponent<RectTransform>().localScale = _initialVectors3[go];
 
-        Tween t = Str8Tween.scale(rect, new Vector3(rect.anchoredPosition3D.x * x, rect.anchoredPosition3D.y * x, rect.anchoredPosition3D.z), easeType, duration, killOnEnd);
+        Tween t = Str8Tween.scale(rect, new Vector3(rect.localScale.x * x, rect.localScale.y * x, rect.localScale.z), easeType, duration, killOnEnd);
         _handleTweenUpdates(go, t, easeType);
     }
 

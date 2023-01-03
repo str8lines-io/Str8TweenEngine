@@ -16,37 +16,52 @@ namespace Str8lines.Tweening
     #endregion
     
     /// <summary>Representation of a <see cref="Tween">Tween</see>. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
+    [Serializable]
     public class Tween
     {
     #region Variables
         #region Public variables
+        [SerializeField] private string _id;
         /// <value>UUID given on creation.</value>
-        public string id { get;private set; }
+        [SerializeField] public string id => _id;
+        [SerializeField] private GameObject _target;
         /// <value><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> on which the tween will be applied.</value>
-        public GameObject target { get;private set; }
+        [SerializeField] public GameObject target => _target;
+        [SerializeField] private Easing.EaseType _easeType;
         /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
-        public Easing.EaseType easeType { get;private set; }
+        [SerializeField] public Easing.EaseType easeType => _easeType;
+        [SerializeField] private float _duration;
         /// <value>Duration of a tween loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
-        public float duration { get;private set; }
+        [SerializeField] public float duration => _duration;
+        [SerializeField] private bool _isAlive;
         /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
-        public bool isAlive { get;private set; }
+        [SerializeField] public bool isAlive => _isAlive;
+        [SerializeField] private bool _isRunning;
         /// <value>If <c>true</c> the tween is currently playing.</value>
-        public bool isRunning { get;private set; }
+        [SerializeField] public bool isRunning => _isRunning;
+        [SerializeField] private bool _isFinished;
         /// <value>If <c>true</c> the tween finished playing.</value>
-        public bool isFinished { get;private set; }
+        [SerializeField] public bool isFinished => _isFinished;
+        [SerializeField] private bool _killOnEnd;
         /// <value>If <c>true</c> the tween will be killed after playing.</value>
-        public bool killOnEnd { get;private set; }
+        [SerializeField] public bool killOnEnd => _killOnEnd;
+        [SerializeField] private float _elapsedTotal;
         /// <value>Time elapsed in seconds (delay included).</value>
-        public float elapsedTotal { get;private set; }
+        [SerializeField] public float elapsedTotal => _elapsedTotal;
+        [SerializeField] private float _elapsedSinceDelay;
         /// <value>Time elapsed in seconds (delay excluded).</value>
-        public float elapsedSinceDelay { get;private set; }/// <value>The number of loops to do.</value>
-        public int loopsCount { get;private set; }
+        [SerializeField] public float elapsedSinceDelay => _elapsedSinceDelay;
+        [SerializeField] private int _loopsCount;
+        /// <value>The number of loops to do.</value>
+        [SerializeField] public int loopsCount => _loopsCount;
         /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
-        public enum LoopType { Restart, Oscillate, WithOffset }
+        [SerializeField] public enum LoopType { Restart, Oscillate, WithOffset }
+        [SerializeField] private LoopType _loopType;
         /// <value>The <see cref="LoopType">type of loop</see> to use.</value>
-        public LoopType loopType { get;private set; }
+        [SerializeField] public LoopType loopType => _loopType;
+        [SerializeField] private int _completedLoopsCount;
         /// <value>The number of loops completed since the Tween started.</value>
-        public int completedLoopsCount { get;private set; }
+        [SerializeField] public int completedLoopsCount => _completedLoopsCount;
         #endregion
 
         #region Private variables
@@ -77,16 +92,29 @@ namespace Str8lines.Tweening
         #region Events
         /// <summary>Delegate for start and complete events.</summary>
         public delegate void TweenDelegate();
-        private event TweenDelegate _start;
-        private TweenDelegate _callbackOnStart;
-        private event TweenDelegate _end;
-        private TweenDelegate _callbackOnEnd;
+        private TweenDelegate _callbackOnStart = () => {};
+        public event TweenDelegate started
+        {
+            add { _callbackOnStart += value; }
+            remove { _callbackOnStart -= value; }
+        }
+        private TweenDelegate _callbackOnEnd = () => {};
+        private event TweenDelegate ended
+        {
+            add { _callbackOnEnd += value; }
+            remove { _callbackOnEnd -= value; }
+        }
 
         /// <summary>Delegate for loop event.</summary>
         /// <param name="loopsCount">The number of loops completed.</param>
         public delegate void TweenLoopDelegate(int loopsCount);
-        private event TweenLoopDelegate _loop;
-        private TweenLoopDelegate _callbackOnLoop;
+        private TweenLoopDelegate _callbackOnLoop = (int i) => {};
+        private event TweenLoopDelegate looped
+        {
+            add { _callbackOnLoop += value; }
+            remove { _callbackOnLoop -= value; }
+        }
+        
         #endregion
     #endregion
 
@@ -326,8 +354,8 @@ namespace Str8lines.Tweening
                 throw new ArgumentException("loopsCount can not be equal to zero or inferior to minus one", "loopsCount");
             }
             _isLoop = true;
-            this.loopType = loopType;
-            this.loopsCount = loopsCount;
+            _loopType = loopType;
+            _loopsCount = loopsCount;
             _lifeTime = this.duration * this.loopsCount;
             return this;
         }
@@ -359,12 +387,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween onStart(TweenDelegate onStart)
+        public Tween onStart(TweenDelegate callback)
         {
-            if(onStart != null){
-                _callbackOnStart = onStart;
-                _start += _callbackOnStart;
-            }
+            if(callback != null) _callbackOnStart += callback;
             return this;
         }
 
@@ -395,12 +420,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween onLoop(TweenLoopDelegate onLoop)
+        public Tween onLoop(TweenLoopDelegate callback)
         {
-            if(onLoop != null){
-                _callbackOnLoop = onLoop;
-                _loop += _callbackOnLoop;
-            }
+            if(callback != null) _callbackOnLoop += callback;
             return this;
         }
 
@@ -431,12 +453,9 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween onEnd(TweenDelegate onEnd)
+        public Tween onEnd(TweenDelegate callback)
         {
-            if(onEnd != null){
-                _callbackOnEnd = onEnd;
-                _end += _callbackOnEnd;
-            }
+            if(callback != null) _callbackOnEnd += callback;
             return this;
         }
     #endregion
@@ -474,7 +493,7 @@ namespace Str8lines.Tweening
             if(!this.isAlive || this.target == null || this.isFinished || !this.isRunning) return;
 
             if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
-            else this.elapsedTotal += t;
+            else _elapsedTotal += t;
 
             if(this.elapsedTotal < _delay) return; //Delay is not over, the tween can not start
             
@@ -482,11 +501,11 @@ namespace Str8lines.Tweening
             if(!_isDelayOver){
                 //The first frame when the tween plays is the starting frame
                 _isDelayOver = true;
-                _start?.Invoke();
+                _callbackOnStart?.Invoke();
                 t = this.elapsedTotal - _delay; // Fixing time for the first animation frame
             }
             
-            this.elapsedSinceDelay += t;
+            _elapsedSinceDelay += t;
             time = this.elapsedSinceDelay;
 
             if(_isLoop)
@@ -559,10 +578,10 @@ namespace Str8lines.Tweening
             _isFirstUpdate = true;
             _isIncrementing = true;
             _loopTime = 0f;
-            this.completedLoopsCount = 0;
-            this.isFinished = false;
-            this.elapsedTotal = 0f;
-            this.elapsedSinceDelay = 0f;
+            _completedLoopsCount = 0;
+            _isFinished = false;
+            _elapsedTotal = 0f;
+            _elapsedSinceDelay = 0f;
             _fromValue = _initialFromValue;
             _toValue = _initialToValue;
             _fromVector = _initialFromVector;
@@ -599,7 +618,7 @@ namespace Str8lines.Tweening
         public void play()
         {
             if(this.isFinished) this.reset();
-            this.isRunning = true;
+            _isRunning = true;
         }
 
         /// <summary>Pauses the <see cref="Tween">tween</see>.</summary>
@@ -630,7 +649,7 @@ namespace Str8lines.Tweening
         /// </example>
         public void pause()
         {
-            this.isRunning = false;
+            _isRunning = false;
         }
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
@@ -698,9 +717,9 @@ namespace Str8lines.Tweening
         public void stop(bool triggerOnEnd = true)
         {
             if(this.isFinished) return;
-            this.isFinished = true;
-            this.isRunning = false;
-            if(triggerOnEnd) _end?.Invoke();
+            _isFinished = true;
+            _isRunning = false;
+            if(triggerOnEnd) _callbackOnEnd?.Invoke();
             if(this.killOnEnd == true) kill();
         }
 
@@ -732,10 +751,10 @@ namespace Str8lines.Tweening
         /// </example>
         public void kill()
         {
-            this.isAlive = false;
-            _start -= _callbackOnStart;
-            _loop -= _callbackOnLoop;
-            _end -= _callbackOnEnd;
+            _isAlive = false;
+            this.started -= _callbackOnStart;
+            this.looped -= _callbackOnLoop;
+            this.ended -= _callbackOnEnd;
         }
     #endregion
 
@@ -745,19 +764,19 @@ namespace Str8lines.Tweening
         {
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
 
-            this.id = Guid.NewGuid().ToString();
-            this.target = target;
-            this.easeType = easeType;
-            this.duration = duration;
-            this.isAlive = true;
-            this.isFinished = false;
-            this.isRunning = true;
-            this.loopsCount = 0;
-            this.completedLoopsCount = 0;
-            this.loopType = LoopType.Restart;
-            this.elapsedTotal = 0f;
-            this.elapsedSinceDelay = 0f;
-            this.killOnEnd = killOnEnd;
+            _id = Guid.NewGuid().ToString();
+            _target = target;
+            _easeType = easeType;
+            _duration = duration;
+            _isAlive = true;
+            _isFinished = false;
+            _isRunning = true;
+            _loopsCount = 0;
+            _completedLoopsCount = 0;
+            _loopType = LoopType.Restart;
+            _elapsedTotal = 0f;
+            _elapsedSinceDelay = 0f;
+            _killOnEnd = killOnEnd;
             
             _lifeTime = this.duration;
             _delay = 0f;
@@ -826,8 +845,8 @@ namespace Str8lines.Tweening
                 }
                 if(_toValue < 0) _toValue = 0; //Clamps alpha min value
             }
-            this.completedLoopsCount++;
-            _loop?.Invoke(this.completedLoopsCount);
+            _completedLoopsCount++;
+            _callbackOnLoop?.Invoke(this.completedLoopsCount);
         }
 
         //Go to initial "to values" or to initial "from values".

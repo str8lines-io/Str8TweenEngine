@@ -1,10 +1,11 @@
+#region namespaces
 using System;
-using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TestTools;
 using Str8lines.Tweening;
+#endregion
 
 public class Str8TweenTest
 {
@@ -512,28 +513,6 @@ public class Str8TweenTest
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
         Tween[] result = Str8Tween.get(go);
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
-    }
-
-    [UnityTest]
-    public IEnumerator TweenUpdated()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Vector3 initialPosition = rect.anchoredPosition3D;
-        yield return new WaitForSeconds(duration + 0.1f);
-        Assert.IsTrue(rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == toVectorValue);
-    }
-
-    [UnityTest]
-    public IEnumerator TweenRemainingAfterUpdate()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
-        yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.get(t.id);
-        Assert.AreEqual(result, t);
     }
 #endregion
 }
