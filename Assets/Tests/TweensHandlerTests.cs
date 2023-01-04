@@ -37,22 +37,20 @@ public class TweensHandlerTests
 #endregion
 
 #region Tests
-    [UnityTest]
-    public IEnumerator TweenAdded()
+    [Test]
+    public void TweenAdded()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
         TweensHandler.Instance.Add(t);
-        yield return null;
         Assert.IsTrue(TweensHandler.Instance.tweens.Count == 1 && TweensHandler.Instance.tweens[t.id] == t);
     }
     
-    [UnityTest]
-    public IEnumerator TweenNullAdded()
+    [Test]
+    public void TweenNullAdded()
     {
         TweensHandler.Instance.Add(null);
-        yield return null;
         Assert.AreEqual(TweensHandler.Instance.tweens.Count, 0);
     }
 
