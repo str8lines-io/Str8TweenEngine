@@ -15,19 +15,19 @@ namespace Str8lines.Tweening
     using UnityEngine;
     #endregion
 
-    /// <summary></summary>
+    /// <summary>A singleton used to keep track of every <see cref="Tween"/> created with <see cref="Str8Tween"/>. Updates alive ones and removes the dead ones on every frame.</summary>
     public class TweensHandler : MonoBehaviour
     {
         #region Variables
         private static TweensHandler instance;
-        /// <value></value>
+        /// <value>Returns the instance of the singleton <see cref="TweensHandler"/>.</value>
         public static TweensHandler Instance
         {
             get { return instance ?? (instance = new GameObject("Str8Tween").AddComponent<TweensHandler>()); } 
             private set{ instance = value;} 
         }
         private Dictionary<string, Tween> _tweens = new Dictionary<string, Tween>();
-        /// <value></value>
+        /// <value>Returns the <see cref="Tween">tweens</see> stored in the class. The key is the <see cref="Tween">tweens</see>'s <see cref="Tween.id">UUID</see> and the value is the <see cref="Tween"/> itself.</value>
         public Dictionary<string, Tween> tweens => _tweens;
         private List<string> _deadTweenIDs = new List<string>();
         #endregion
@@ -52,8 +52,8 @@ namespace Str8lines.Tweening
             foreach(string id in _deadTweenIDs) _tweens.Remove(id);
         }
 
-        /// <summary></summary>
-        /// <param name="t"></param>
+        /// <summary>Adds the <see cref="Tween"/> passed in parameters to the <see cref="TweensHandler.tweens">tweens dictionary</see></summary>
+        /// <param name="t">The <see cref="Tween"/> to add.</param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// 
@@ -69,11 +69,11 @@ namespace Str8lines.Tweening
         ///     {
         ///         Vector3 destination = new Vector3(0, 500);
         ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         TweensHandler.AddTween(t);
+        ///         TweensHandler.Instance.Add(t);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public void AddTween(Tween t){ if(t != null) _tweens.Add(t.id, t); }
+        public void Add(Tween t){ if(t != null) _tweens.Add(t.id, t); }
     }
 }

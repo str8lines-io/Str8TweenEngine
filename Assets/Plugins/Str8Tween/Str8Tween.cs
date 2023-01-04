@@ -52,7 +52,7 @@ namespace Str8lines.Tweening
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -87,7 +87,7 @@ namespace Str8lines.Tweening
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -124,7 +124,7 @@ namespace Str8lines.Tweening
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -159,7 +159,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, canvasRenderer, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -194,7 +194,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, spriteRenderer, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -229,7 +229,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, rawImage, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -264,7 +264,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, image, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -299,7 +299,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, text, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
 
@@ -334,7 +334,7 @@ namespace Str8lines.Tweening
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
             string method = new StackTrace().GetFrame(0).GetMethod().Name;
             Tween t = new Tween(method, graphic, toValue, easeType, duration, killOnEnd);
-            TweensHandler.Instance.AddTween(t);
+            TweensHandler.Instance.Add(t);
             return t;
         }
         #endregion
