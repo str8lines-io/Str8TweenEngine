@@ -63,7 +63,7 @@ public class Str8TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Str8Tween.move(rect, toVectorValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -101,7 +101,7 @@ public class Str8TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Str8Tween.scale(rect, toVectorValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -139,7 +139,7 @@ public class Str8TweenTest
         RectTransform rect = go.GetComponent<RectTransform>();
         Str8Tween.rotate(rect, toVectorValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -189,7 +189,7 @@ public class Str8TweenTest
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Str8Tween.fade(canvasRenderer, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -239,7 +239,7 @@ public class Str8TweenTest
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Str8Tween.fade(spriteRenderer, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -289,7 +289,7 @@ public class Str8TweenTest
         RawImage rawImage = go.GetComponent<RawImage>();
         Str8Tween.fade(rawImage, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -339,7 +339,7 @@ public class Str8TweenTest
         Image image = go.GetComponent<Image>();
         Str8Tween.fade(image, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -389,7 +389,7 @@ public class Str8TweenTest
         Text text = go.GetComponent<Text>();
         Str8Tween.fade(text, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -439,7 +439,7 @@ public class Str8TweenTest
         Graphic graphic = go.GetComponent<Graphic>();
         Str8Tween.fade(graphic, toFloatValue, easeType, duration);
         GameObject engine = GameObject.Find("Str8Tween");
-        Assert.AreNotEqual(engine, null);
+        Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
 
     [Test]
@@ -453,6 +453,7 @@ public class Str8TweenTest
 #endregion
 
 #region Engine methods
+    #region get
     [Test]
     public void GetTweenById()
     {
@@ -497,16 +498,373 @@ public class Str8TweenTest
         Tween[] result = Str8Tween.get(go);
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
+    #endregion
 
-    [UnityTest]
-    public IEnumerator TweenRemainingAfterUpdate()
+    #region pause
+    [Test]
+    public void PauseTweenById()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
-        TweensHandler.Instance.Add(t);
-        yield return new WaitForSeconds(duration + 0.1f);
-        Assert.AreEqual(TweensHandler.Instance.tweens[t.id], t);
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isRunning = t.isRunning;
+        Str8Tween.pause(t.id);
+        Assert.AreNotEqual(isRunning, t.isRunning);
     }
+
+    [Test]
+    public void PauseTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isRunning = t.isRunning;
+        Str8Tween.pause(String.Empty);
+        Assert.AreEqual(isRunning, t.isRunning);
+    }
+
+    [Test]
+    public void PauseTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [Test]
+    public void PauseTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Running = t1.isRunning;
+        bool isT2Running = t2.isRunning;
+        Str8Tween.pause(go);
+        Assert.IsTrue(isT1Running && !t1.isRunning && isT2Running && !t2.isRunning);
+    }
+
+    [Test]
+    public void PauseAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Running = t1.isRunning;
+        bool isT2Running = t2.isRunning;
+        Str8Tween.pause();
+        Assert.IsTrue(isT1Running && !t1.isRunning && isT2Running && !t2.isRunning);
+    }
+    #endregion
+
+    #region play
+    [Test]
+    public void PlayTweenById()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Str8Tween.pause(t.id);
+        bool isRunning = t.isRunning;
+        Str8Tween.play(t.id);
+        Assert.AreNotEqual(isRunning, t.isRunning);
+    }
+
+    [Test]
+    public void PlayTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Str8Tween.pause(t.id);
+        bool isRunning = t.isRunning;
+        Str8Tween.play(String.Empty);
+        Assert.AreEqual(isRunning, t.isRunning);
+    }
+
+    [Test]
+    public void PlayTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [Test]
+    public void PlayTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Str8Tween.pause(go);
+        bool isT1Running = t1.isRunning;
+        bool isT2Running = t2.isRunning;
+        Str8Tween.play(go);
+        Assert.IsTrue(!isT1Running && t1.isRunning && !isT2Running && t2.isRunning);
+    }
+
+    [Test]
+    public void PlayAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Str8Tween.pause();
+        bool isT1Running = t1.isRunning;
+        bool isT2Running = t2.isRunning;
+        Str8Tween.play();
+        Assert.IsTrue(!isT1Running && t1.isRunning && !isT2Running && t2.isRunning);
+    }
+    #endregion
+
+    #region reset
+    [UnityTest]
+    public IEnumerator ResetTweenById()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        yield return new WaitForSeconds(duration/2f);
+        float elapsedSinceDelay = t.elapsedSinceDelay;
+        Str8Tween.reset(t.id);
+        Assert.IsTrue(elapsedSinceDelay != t.elapsedSinceDelay && t.elapsedSinceDelay == 0);
+    }
+
+    [UnityTest]
+    public IEnumerator ResetTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        float elapsedSinceDelay = t.elapsedSinceDelay;
+        yield return new WaitForSeconds(duration/2f);
+        Str8Tween.reset(String.Empty);
+        Assert.IsTrue(elapsedSinceDelay != t.elapsedSinceDelay && t.elapsedSinceDelay != 0);
+    }
+
+    [Test]
+    public void ResetTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [UnityTest]
+    public IEnumerator ResetTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        yield return new WaitForSeconds(duration/2f);
+        float t1ElapsedSinceDelay = t1.elapsedSinceDelay;
+        float t2ElapsedSinceDelay = t2.elapsedSinceDelay;
+        Str8Tween.reset(go);
+        Assert.IsTrue(t1ElapsedSinceDelay != t1.elapsedSinceDelay && t1.elapsedSinceDelay == 0 && t2ElapsedSinceDelay != t2.elapsedSinceDelay && t2.elapsedSinceDelay == 0);
+    }
+
+    [UnityTest]
+    public IEnumerator ResetAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        UnityEngine.Debug.Log("0");
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        UnityEngine.Debug.Log("1");
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        UnityEngine.Debug.Log("2");
+        yield return new WaitForSeconds(duration/2f);
+        UnityEngine.Debug.Log("3");
+        float t1ElapsedSinceDelay = t1.elapsedSinceDelay;
+        float t2ElapsedSinceDelay = t2.elapsedSinceDelay;
+        Str8Tween.reset();
+        UnityEngine.Debug.Log("4");
+        Assert.IsTrue(t1ElapsedSinceDelay != t1.elapsedSinceDelay && t1.elapsedSinceDelay == 0 && t2ElapsedSinceDelay != t2.elapsedSinceDelay && t2.elapsedSinceDelay == 0);
+    }
+    #endregion
+    
+    #region stop
+    [Test]
+    public void StopTweenById()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isFinished = t.isFinished;
+        Str8Tween.stop(t.id);
+        Assert.AreNotEqual(isFinished, t.isFinished);
+    }
+
+    [Test]
+    public void StopTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isFinished = t.isFinished;
+        Str8Tween.stop(String.Empty);
+        Assert.AreEqual(isFinished, t.isFinished);
+    }
+
+    [Test]
+    public void StopTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [Test]
+    public void StopTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Finished = t1.isFinished;
+        bool isT2Finished = t2.isFinished;
+        Str8Tween.stop(go);
+        Assert.IsTrue(!isT1Finished && t1.isFinished && !isT2Finished && t2.isFinished);
+    }
+
+    [Test]
+    public void StopAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Finished = t1.isFinished;
+        bool isT2Finished = t2.isFinished;
+        Str8Tween.stop();
+        Assert.IsTrue(!isT1Finished && t1.isFinished && !isT2Finished && t2.isFinished);
+    }
+    #endregion
+    
+    #region complete
+    [Test]
+    public void CompleteTweenById()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isFinished = t.isFinished;
+        Str8Tween.complete(t.id);
+        Assert.AreNotEqual(isFinished, t.isFinished);
+    }
+
+    [Test]
+    public void CompleteTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isFinished = t.isFinished;
+        Str8Tween.complete(String.Empty);
+        Assert.AreEqual(isFinished, t.isFinished);
+    }
+
+    [Test]
+    public void CompleteTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [Test]
+    public void CompleteTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Finished = t1.isFinished;
+        bool isT2Finished = t2.isFinished;
+        Str8Tween.complete(go);
+        Assert.IsTrue(!isT1Finished && t1.isFinished && !isT2Finished && t2.isFinished);
+    }
+
+    [Test]
+    public void CompleteAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Finished = t1.isFinished;
+        bool isT2Finished = t2.isFinished;
+        Str8Tween.complete();
+        Assert.IsTrue(!isT1Finished && t1.isFinished && !isT2Finished && t2.isFinished);
+    }
+    #endregion
+    
+    #region kill
+    [Test]
+    public void KillTweenById()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isAlive = t.isAlive;
+        Str8Tween.kill(t.id);
+        Assert.AreNotEqual(isAlive, t.isAlive);
+    }
+
+    [Test]
+    public void KillTweenByEmptyId()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isAlive = t.isAlive;
+        Str8Tween.kill(String.Empty);
+        Assert.AreEqual(isAlive, t.isAlive);
+    }
+
+    [Test]
+    public void KillTweenByTargetNull()
+    {
+        Assert.Throws<ArgumentNullException>(()=>{
+            GameObject go = null;
+            Str8Tween.pause(go);
+        });
+    }
+
+    [Test]
+    public void KillTweensByTarget()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Alive = t1.isAlive;
+        bool isT2Alive = t2.isAlive;
+        Str8Tween.kill(go);
+        Assert.IsTrue(isT1Alive && !t1.isAlive && isT2Alive && !t2.isAlive);
+    }
+
+    [Test]
+    public void KillAllTweens()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        bool isT1Alive = t1.isAlive;
+        bool isT2Alive = t2.isAlive;
+        Str8Tween.kill();
+        Assert.IsTrue(isT1Alive && !t1.isAlive && isT2Alive && !t2.isAlive);
+    }
+    #endregion
 #endregion
 }
