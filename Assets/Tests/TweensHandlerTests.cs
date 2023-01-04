@@ -1,9 +1,8 @@
 #region namespaces
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.TestTools;
 using Str8lines.Tweening;
 #endregion
@@ -18,10 +17,11 @@ public class TweensHandlerTests
     float duration;
     #endregion
 
-#region Setups and Teardowns
-    [UnitySetUp]
+#region Init
+    [SetUp]
     public void SetUp()
     {
+        UnityEngine.Debug.Log("executed");
         go = new GameObject();
         toVectorValue = new Vector2(2f, 2f);
         toFloatValue = 0.5f;
@@ -29,7 +29,7 @@ public class TweensHandlerTests
         duration = 1f;
     }
 
-    [UnityTearDown]
+    [TearDown]
     public void TearDown()
     {
         UnityEngine.Object.Destroy(go);
@@ -42,21 +42,18 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
-        yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.get(t.id);
-        Assert.AreEqual(result, t);
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        TweensHandler.Instance.Add(t);
+        yield return null;
+        Assert.IsTrue(TweensHandler.Instance.tweens.Count == 1 && TweensHandler.Instance.tweens[t.id] == t);
     }
     
     [UnityTest]
     public IEnumerator TweenNullAdded()
     {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
-        yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.get(t.id);
-        Assert.AreEqual(result, t);
+        TweensHandler.Instance.Add(null);
+        yield return null;
+        Assert.AreEqual(TweensHandler.Instance.tweens.Count, 0);
     }
 
     [UnityTest]
@@ -64,8 +61,9 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
         Vector3 initialPosition = rect.anchoredPosition3D;
+        TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
         Assert.IsTrue(rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == toVectorValue);
     }
@@ -75,10 +73,10 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.get(t.id);
-        Assert.AreEqual(result, t);
+        Assert.AreEqual(TweensHandler.Instance.tweens[t.id], t);
     }
 
     [UnityTest]
@@ -86,10 +84,12 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration, false);
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
-        Tween result = Str8Tween.get(t.id);
-        Assert.AreEqual(result, t);
+        Assert.Throws<KeyNotFoundException>(()=>{
+            Tween result = TweensHandler.Instance.tweens[t.id];
+        });
     }
 #endregion
 }

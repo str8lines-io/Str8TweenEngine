@@ -14,7 +14,7 @@ public class TweenTest
     float duration;
 #endregion
 
-#region Setups and Teardowns
+#region Init
     [SetUp]
     public void Setup()
     {

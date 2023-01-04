@@ -1,5 +1,6 @@
 #region namespaces
 using System;
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,39 +18,21 @@ public class Str8TweenTest
     float duration;
 #endregion
 
-#region Setups and Teardowns
+#region Init
     [SetUp]
     public void Setup()
     {
         go = new GameObject();
-        _setInitialValues();
+        toVectorValue = new Vector2(2f, 2f);
+        toFloatValue = 0.5f;
+        easeType = Easing.EaseType.Linear;
+        duration = 1f;
     }
 
     [TearDown]
     public void Teardown()
     {
         UnityEngine.Object.Destroy(go);
-    }
-
-    [UnitySetUp]
-    public void SetUp()
-    {
-        go = new GameObject();
-        _setInitialValues();
-    }
-
-    [UnityTearDown]
-    public void TearDown()
-    {
-        UnityEngine.Object.Destroy(go);
-    }
-
-    private void _setInitialValues()
-    {
-        toVectorValue = new Vector2(2f, 2f);
-        toFloatValue = 0.5f;
-        easeType = Easing.EaseType.Linear;
-        duration = 1f;
     }
 #endregion
 
@@ -513,6 +496,17 @@ public class Str8TweenTest
         Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
         Tween[] result = Str8Tween.get(go);
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
+    }
+
+    [UnityTest]
+    public IEnumerator TweenRemainingAfterUpdate()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        TweensHandler.Instance.Add(t);
+        yield return new WaitForSeconds(duration + 0.1f);
+        Assert.AreEqual(TweensHandler.Instance.tweens[t.id], t);
     }
 #endregion
 }
