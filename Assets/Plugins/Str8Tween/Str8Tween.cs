@@ -11,7 +11,6 @@ namespace Str8lines.Tweening
 {
     #region namespaces
     using System;
-    using System.Diagnostics;
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.UI;
@@ -50,8 +49,7 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -85,8 +83,7 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -122,8 +119,7 @@ namespace Str8lines.Tweening
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -157,8 +153,7 @@ namespace Str8lines.Tweening
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, canvasRenderer, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(canvasRenderer, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -192,8 +187,7 @@ namespace Str8lines.Tweening
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, spriteRenderer, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(spriteRenderer, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -227,8 +221,7 @@ namespace Str8lines.Tweening
             if(rawImage == null) throw new ArgumentNullException("rawImage", "rawImage can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, rawImage, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rawImage, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -262,8 +255,7 @@ namespace Str8lines.Tweening
             if(image == null) throw new ArgumentNullException("image", "image can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, image, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(image, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -297,8 +289,7 @@ namespace Str8lines.Tweening
             if(text == null) throw new ArgumentNullException("text", "text can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, text, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(text, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -332,8 +323,7 @@ namespace Str8lines.Tweening
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            string method = new StackTrace().GetFrame(0).GetMethod().Name;
-            Tween t = new Tween(method, graphic, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(graphic, toValue, easeType, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }

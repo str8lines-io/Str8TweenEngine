@@ -11,6 +11,7 @@ namespace Str8lines.Tweening
 {
     #region namespaces
     using System;
+    using System.Runtime.CompilerServices;
     using UnityEngine;
     using UnityEngine.UI;
     #endregion
@@ -145,7 +146,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween(string methodName, RectTransform rectTransform, Vector3 toVector, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public Tween(RectTransform rectTransform, Vector3 toVector, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             _rectTransform = rectTransform;
@@ -199,7 +200,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween(string methodName, CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public Tween(CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             _canvasRenderer = canvasRenderer;
@@ -232,7 +233,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween(string methodName, SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public Tween(SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             _spriteRenderer = spriteRenderer;
@@ -265,7 +266,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public Tween(string methodName, Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public Tween(Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             _graphic = graphic;

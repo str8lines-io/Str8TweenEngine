@@ -1,6 +1,8 @@
+#region namespaces
 using NUnit.Framework;
 using UnityEngine;
 using Str8lines.Tweening;
+#endregion
 
 public class EasingTest
 {

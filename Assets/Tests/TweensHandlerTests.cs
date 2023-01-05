@@ -42,7 +42,7 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
         TweensHandler.Instance.Add(t);
         Assert.IsTrue(TweensHandler.Instance.tweens.Count == 1 && TweensHandler.Instance.tweens[t.id] == t);
     }
@@ -59,7 +59,7 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration);
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
@@ -71,7 +71,7 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, false);
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
         TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
         Assert.AreEqual(TweensHandler.Instance.tweens[t.id], t);
@@ -82,7 +82,7 @@ public class TweensHandlerTests
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween("move", rect, toVectorValue, easeType, duration, true);
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
         TweensHandler.Instance.Add(t);
         yield return new WaitForSeconds(duration + 0.1f);
         Assert.Throws<KeyNotFoundException>(()=>{
