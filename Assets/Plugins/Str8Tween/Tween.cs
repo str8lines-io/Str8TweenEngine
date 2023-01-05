@@ -17,52 +17,51 @@ namespace Str8lines.Tweening
     #endregion
     
     /// <summary>Representation of a <see cref="Tween">Tween</see>. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
-    [Serializable]
     public class Tween
     {
     #region Variables
         #region Public variables
-        [SerializeField] private string _id;
+        private string _id;
         /// <value>UUID given on creation.</value>
-        [SerializeField] public string id => _id;
-        [SerializeField] private GameObject _target;
+        public string id => _id;
+        private GameObject _target;
         /// <value><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> on which the tween will be applied.</value>
-        [SerializeField] public GameObject target => _target;
-        [SerializeField] private Easing.EaseType _easeType;
+        public GameObject target => _target;
+        private Easing.EaseType _easeType;
         /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
-        [SerializeField] public Easing.EaseType easeType => _easeType;
-        [SerializeField] private float _duration;
+        public Easing.EaseType easeType => _easeType;
+        private float _duration;
         /// <value>Duration of a tween loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
-        [SerializeField] public float duration => _duration;
-        [SerializeField] private bool _isAlive;
+        public float duration => _duration;
+        private bool _isAlive;
         /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
-        [SerializeField] public bool isAlive => _isAlive;
-        [SerializeField] private bool _isRunning;
+        public bool isAlive => _isAlive;
+        private bool _isRunning;
         /// <value>If <c>true</c> the tween is currently playing.</value>
-        [SerializeField] public bool isRunning => _isRunning;
-        [SerializeField] private bool _isFinished;
+        public bool isRunning => _isRunning;
+        private bool _isFinished;
         /// <value>If <c>true</c> the tween finished playing.</value>
-        [SerializeField] public bool isFinished => _isFinished;
-        [SerializeField] private bool _killOnEnd;
+        public bool isFinished => _isFinished;
+        private bool _killOnEnd;
         /// <value>If <c>true</c> the tween will be killed after playing.</value>
-        [SerializeField] public bool killOnEnd => _killOnEnd;
-        [SerializeField] private float _elapsedTotal;
+        public bool killOnEnd => _killOnEnd;
+        private float _elapsedTotal;
         /// <value>Time elapsed in seconds (delay included).</value>
-        [SerializeField] public float elapsedTotal => _elapsedTotal;
-        [SerializeField] private float _elapsedSinceDelay;
+        public float elapsedTotal => _elapsedTotal;
+        private float _elapsedSinceDelay;
         /// <value>Time elapsed in seconds (delay excluded).</value>
-        [SerializeField] public float elapsedSinceDelay => _elapsedSinceDelay;
-        [SerializeField] private int _loopsCount;
+        public float elapsedSinceDelay => _elapsedSinceDelay;
+        private int _loopsCount;
         /// <value>The number of loops to do.</value>
-        [SerializeField] public int loopsCount => _loopsCount;
+        public int loopsCount => _loopsCount;
         /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
-        [SerializeField] public enum LoopType { Restart, Oscillate, WithOffset }
-        [SerializeField] private LoopType _loopType;
+        public enum LoopType { Restart, Oscillate, WithOffset }
+        private LoopType _loopType;
         /// <value>The <see cref="LoopType">type of loop</see> to use.</value>
-        [SerializeField] public LoopType loopType => _loopType;
-        [SerializeField] private int _completedLoopsCount;
+        public LoopType loopType => _loopType;
+        private int _completedLoopsCount;
         /// <value>The number of loops completed since the Tween started.</value>
-        [SerializeField] public int completedLoopsCount => _completedLoopsCount;
+        public int completedLoopsCount => _completedLoopsCount;
         #endregion
 
         #region Private variables
