@@ -120,12 +120,12 @@ namespace Str8lines.Tweening
 
     #region Constructors
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> on which changes will be applied.</param>
         /// <param name="toVector">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position, scale or rotation.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
         /// <example>
         /// Create new tween that changes target's position :
@@ -175,12 +175,12 @@ namespace Str8lines.Tweening
         }
         
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
         /// <example>
         /// Create new tween that changes CanvasRenderer's alpha :
@@ -208,12 +208,12 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
         /// <example>
         /// Create new tween that changes SpriteRenderer's alpha :
@@ -241,12 +241,12 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
-        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha.</param>
         /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="methodName">Name of the method which called this constructor.</param>
         /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
         /// <example>
         /// Create new tween that changes graphic's alpha :
