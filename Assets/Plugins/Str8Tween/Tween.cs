@@ -508,6 +508,7 @@ namespace Str8lines.Tweening
             _elapsedSinceDelay += t;
             time = this.elapsedSinceDelay;
 
+            bool isTotalDurationOver = (_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime);
             if(_isLoop)
             {
                 switch(this.loopType)
@@ -515,7 +516,7 @@ namespace Str8lines.Tweening
                     case LoopType.Restart :
                     case LoopType.WithOffset :
                         _loopTime += t; //These two loop types are always played forward
-                        if(_loopTime >= this.duration || this.elapsedSinceDelay >= _lifeTime){
+                        if(_loopTime >= this.duration || isTotalDurationOver){
                             _loopTime = 0;
                             _completeLoop();
                         }
@@ -524,14 +525,14 @@ namespace Str8lines.Tweening
                     case LoopType.Oscillate :
                         if(_isIncrementing){
                             _loopTime += t; //Plays the tween forward
-                            if(_loopTime >= this.duration || this.elapsedSinceDelay >= _lifeTime){
+                            if(_loopTime >= this.duration || isTotalDurationOver){
                                 _loopTime = this.duration;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
                             }
                         }else{
                             _loopTime -= t; //Plays the tween backward
-                            if(_loopTime <= 0f || this.elapsedSinceDelay >= _lifeTime){
+                            if(_loopTime <= 0f || isTotalDurationOver){
                                 _loopTime = 0f;
                                 _isIncrementing = !_isIncrementing;
                                 _completeLoop();
@@ -542,7 +543,7 @@ namespace Str8lines.Tweening
                 time = _loopTime;
             }
             
-            if(_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime) complete();
+            if(isTotalDurationOver) complete();
             else _setCalculatedValue(time);
         }
 
