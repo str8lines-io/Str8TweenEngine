@@ -675,17 +675,12 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        UnityEngine.Debug.Log("0");
         Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        UnityEngine.Debug.Log("1");
         Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        UnityEngine.Debug.Log("2");
         yield return new WaitForSeconds(duration/2f);
-        UnityEngine.Debug.Log("3");
         float t1ElapsedSinceDelay = t1.elapsedSinceDelay;
         float t2ElapsedSinceDelay = t2.elapsedSinceDelay;
         Str8Tween.reset();
-        UnityEngine.Debug.Log("4");
         Assert.IsTrue(t1ElapsedSinceDelay != t1.elapsedSinceDelay && t1.elapsedSinceDelay == 0 && t2ElapsedSinceDelay != t2.elapsedSinceDelay && t2.elapsedSinceDelay == 0);
     }
     #endregion

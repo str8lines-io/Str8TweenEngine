@@ -21,7 +21,6 @@ public class TweensHandlerTests
     [SetUp]
     public void SetUp()
     {
-        UnityEngine.Debug.Log("executed");
         go = new GameObject();
         toVectorValue = new Vector2(2f, 2f);
         toFloatValue = 0.5f;
