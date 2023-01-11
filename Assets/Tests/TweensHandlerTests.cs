@@ -12,7 +12,6 @@ public class TweensHandlerTests
     #region Variables
     GameObject go;
     Vector3 toVectorValue;
-    float toFloatValue;
     Easing.EaseType easeType;
     float duration;
     #endregion
@@ -23,7 +22,6 @@ public class TweensHandlerTests
     {
         go = new GameObject();
         toVectorValue = new Vector2(2f, 2f);
-        toFloatValue = 0.5f;
         easeType = Easing.EaseType.Linear;
         duration = 1f;
     }
