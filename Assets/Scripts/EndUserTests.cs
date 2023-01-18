@@ -25,6 +25,7 @@ public class EndUserTests : MonoBehaviour
     public bool isLoop;
     public Tween.LoopType loopType;
     public int loopsCount;
+    public Tween.CompletionMode completionMode;
     private GameObject _activePanel;
     private Transform _panelsContainer;
     private Transform _header;
@@ -294,11 +295,11 @@ public class EndUserTests : MonoBehaviour
 
     //Calls tween's complete() method
     public void CompleteTweens(){
-        if(controlAll) Str8Tween.complete();
+        if(controlAll) Str8Tween.complete(true, completionMode);
         else{
-            if(target != null) Str8Tween.complete(target);
-            else if(id != String.Empty) Str8Tween.complete(id);
-            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.complete(_activePanel.transform.GetChild(i).gameObject);
+            if(target != null) Str8Tween.complete(target, completionMode);
+            else if(id != String.Empty) Str8Tween.complete(id, true, completionMode);
+            else for(int i = 0; i < _activePanel.transform.childCount; i++) Str8Tween.complete(_activePanel.transform.GetChild(i).gameObject, true, completionMode);
         }
     }
 
@@ -364,6 +365,7 @@ public class EndUserTests : MonoBehaviour
         }
     }
     public void UpdateLoopType(Dropdown change){ loopType = (Tween.LoopType)change.value; }
+    public void UpdateCompletionMode(Dropdown change){ completionMode = (Tween.CompletionMode)change.value; }
     #endregion
 
     // Save or resets initial values and creates the tweens to check

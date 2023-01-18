@@ -31,19 +31,19 @@ namespace Str8lines.Tweening
         /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
         public Easing.EaseType easeType => _easeType;
         private float _duration;
-        /// <value>Duration of a tween loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
+        /// <value>Duration of a <see cref="Tween">Tween</see>'s loop (in seconds). If the <see cref="Tween">Tween</see> is not a loop then it's the duration of the <see cref="Tween">Tween</see> itself.</value>
         public float duration => _duration;
         private bool _isAlive;
-        /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
+        /// <value>While <c>true</c> the <see cref="Tween">Tween</see> is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
         public bool isAlive => _isAlive;
         private bool _isRunning;
-        /// <value>If <c>true</c> the tween is currently playing.</value>
+        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> is currently playing.</value>
         public bool isRunning => _isRunning;
         private bool _isFinished;
-        /// <value>If <c>true</c> the tween finished playing.</value>
+        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> finished playing.</value>
         public bool isFinished => _isFinished;
         private bool _killOnEnd;
-        /// <value>If <c>true</c> the tween will be killed after playing.</value>
+        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> will be killed after playing.</value>
         public bool killOnEnd => _killOnEnd;
         private float _elapsedTotal;
         /// <value>Time elapsed in seconds (delay included).</value>
@@ -54,14 +54,19 @@ namespace Str8lines.Tweening
         private int _loopsCount;
         /// <value>The number of loops to do.</value>
         public int loopsCount => _loopsCount;
-        /// <summary>Defines if values are reset on loop (Restart), if tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
+        /// <summary>Defines if values are reset on loop (Restart), if <see cref="Tween">Tween</see> is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
         public enum LoopType { Restart, Oscillate, WithOffset }
         private LoopType _loopType;
         /// <value>The <see cref="LoopType">type of loop</see> to use.</value>
         public LoopType loopType => _loopType;
         private int _completedLoopsCount;
-        /// <value>The number of loops completed since the Tween started.</value>
+        /// <value>The number of loops completed since the <see cref="Tween">Tween</see> started.</value>
         public int completedLoopsCount => _completedLoopsCount;
+        /// <summary>Defines end values to use after <see cref="Tween.">Tween</see> completion.</summary>
+        /// <value><c>STATIC</c> will set end values to the initial toValue or toVector.</value>
+        /// <value><c>DYNAMIC</c> works only for loops, this will set end values depending on the next value to reach.</value>
+        /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the <see cref="Tween">Tween</see> ended normaly.</value>
+        public enum CompletionMode { STATIC, DYNAMIC, PROJECTED }
         #endregion
 
         #region Private variables
@@ -509,8 +514,12 @@ namespace Str8lines.Tweening
             time = this.elapsedSinceDelay;
 
             bool isTotalDurationOver = (_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime);
-            if(_isLoop)
+            CompletionMode mode = CompletionMode.STATIC;
+            bool revertIncrementation= false; //Used to tag the need to revert incrementation
+
+            if(_isLoop) //Handle changes according to the loop type
             {
+                mode = CompletionMode.PROJECTED; //PROJECTED mode makes every looptype ending look natural
                 switch(this.loopType)
                 {
                     case LoopType.Restart :
@@ -527,14 +536,14 @@ namespace Str8lines.Tweening
                             _loopTime += t; //Plays the tween forward
                             if(_loopTime >= this.duration || isTotalDurationOver){
                                 _loopTime = this.duration;
-                                _isIncrementing = !_isIncrementing;
+                                revertIncrementation = true;
                                 _completeLoop();
                             }
                         }else{
                             _loopTime -= t; //Plays the tween backward
                             if(_loopTime <= 0f || isTotalDurationOver){
                                 _loopTime = 0f;
-                                _isIncrementing = !_isIncrementing;
+                                revertIncrementation = true;
                                 _completeLoop();
                             }
                         }
@@ -543,8 +552,12 @@ namespace Str8lines.Tweening
                 time = _loopTime;
             }
             
-            if(isTotalDurationOver) complete();
-            else _setCalculatedValue(time);
+            if(isTotalDurationOver) complete(true, mode);
+            else{
+                _setCalculatedValue(time);
+                //We must revert incrementation after the potential call of complete() since it checks _isIncrementingValue to set end values properly
+                if(revertIncrementation) _isIncrementing = !_isIncrementing;
+            }
         }
 
         /// <summary>Resets the <see cref="Tween">tween</see> values.</summary>
@@ -655,6 +668,7 @@ namespace Str8lines.Tweening
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
         /// <example>
@@ -681,10 +695,77 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void complete(bool triggerOnEnd = true)
+        public void complete(bool triggerOnEnd = true, CompletionMode mode = CompletionMode.STATIC)
         {
             this.stop(triggerOnEnd);
-            _setInitialValue(true);
+            switch(mode){
+                case CompletionMode.STATIC:
+                    _setInitialValue(true);
+                    break;
+
+                case CompletionMode.DYNAMIC:
+                    if(_isLoop && this.loopType == LoopType.WithOffset) _setCurrentToValue();
+                    else _setInitialValue(_isIncrementing);
+                    break;
+
+                case CompletionMode.PROJECTED:
+                    if(!_isLoop){
+                        _setInitialValue(true);
+                        return;
+                    }
+
+                    switch(this.loopType){
+                        case LoopType.Restart:
+                            _setInitialValue(true);
+                            break;
+
+                        case LoopType.Oscillate:
+                            bool useToValues = (this.loopsCount < 0) ? _isIncrementing : !(this.loopsCount%2 == 0);
+                            _setInitialValue(useToValues);
+                            break;
+
+                        case LoopType.WithOffset:
+                            if(this.loopsCount < 0){
+                                _setCurrentToValue();
+                                return;
+                            }
+                            
+                            //For positive a loops count we must calculate Tween's real end values
+                            Vector3 projectedVector = new Vector3(_initialFromVector.x + (_vectorChange.x * this.loopsCount), _initialFromVector.y + (_vectorChange.y * this.loopsCount), _initialFromVector.z + (_vectorChange.z * this.loopsCount));
+                            float projectedValue = _initialFromValue + (_valueChange * this.loopsCount);
+                            if(projectedValue > 1) projectedValue = 1f;
+                            if(projectedValue < 0) projectedValue = 0f;
+
+                            switch(_methodName)
+                            {
+                                case "move":
+                                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = projectedVector;
+                                    break;
+
+                                case "scale":
+                                    if(_rectTransform != null) _rectTransform.localScale = projectedVector;
+                                    break;
+
+                                case "rotate":
+                                    if(_rectTransform != null) _rectTransform.localEulerAngles = projectedVector;
+                                    break;
+
+                                case "fade":
+                                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(projectedValue);
+                                    if(_spriteRenderer != null){
+                                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, projectedValue);
+                                        _spriteRenderer.color = newSpriteRendererColor;
+                                    }
+                                    if(_graphic != null){
+                                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, projectedValue);
+                                        _graphic.color = newGraphicColor;
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+            }
         }
 
         /// <summary>Stops the <see cref="Tween">tween</see>.</summary>
@@ -869,6 +950,38 @@ namespace Str8lines.Tweening
 
                 case "fade":
                     float initialValue = useToValues ? _initialToValue : _initialFromValue;
+                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(initialValue);
+                    if(_spriteRenderer != null){
+                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);
+                        _spriteRenderer.color = newSpriteRendererColor;
+                    }
+                    if(_graphic != null){
+                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, initialValue);
+                        _graphic.color = newGraphicColor;
+                    }
+                    break;
+            }
+        }
+
+        //Go to current "to values".
+        private void _setCurrentToValue()
+        {
+            switch(_methodName)
+            {
+                case "move":
+                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = _toVector;
+                    break;
+
+                case "scale":
+                    if(_rectTransform != null) _rectTransform.localScale = _toVector;
+                    break;
+
+                case "rotate":
+                    if(_rectTransform != null) _rectTransform.localEulerAngles = _toVector;
+                    break;
+
+                case "fade":
+                    float initialValue = _toValue;
                     if(_canvasRenderer != null) _canvasRenderer.SetAlpha(initialValue);
                     if(_spriteRenderer != null){
                         Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, initialValue);

@@ -648,6 +648,8 @@ namespace Str8lines.Tweening
 
         /// <summary>Completes the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.complete(bool)"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to complete.</param>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete a tween :
@@ -664,12 +666,14 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(string id, bool triggerOnEnd = true)
+        public static void complete(string id, bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
         {
-            get(id)?.complete(triggerOnEnd);
+            get(id)?.complete(triggerOnEnd, mode);
         }
 
         /// <summary>Completes every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete(bool)"/>.</summary>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete every tween :
@@ -686,15 +690,17 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(bool triggerOnEnd = true)
+        public static void complete(bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
         {
             if(TweensHandler.Instance.tweens.Count > 0){
-                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.complete(triggerOnEnd);
+                foreach(Tween t in TweensHandler.Instance.tweens.Values) t.complete(triggerOnEnd, mode);
             }
         }
 
         /// <summary>Completes every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
         /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.complete(bool)">complete</see>.</param>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete target's tweens :
@@ -713,12 +719,12 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(GameObject target, bool triggerOnEnd = true)
+        public static void complete(GameObject target, bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);
             if(tweensFound.Length > 0){
-                foreach(Tween t in tweensFound) t.complete(triggerOnEnd);
+                foreach(Tween t in tweensFound) t.complete(triggerOnEnd, mode);
             }
         }
 
