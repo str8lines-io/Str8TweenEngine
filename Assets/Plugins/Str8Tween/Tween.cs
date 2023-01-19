@@ -514,12 +514,9 @@ namespace Str8lines.Tweening
             time = this.elapsedSinceDelay;
 
             bool isTotalDurationOver = (_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime);
-            CompletionMode mode = CompletionMode.STATIC;
             bool revertIncrementation= false; //Used to tag the need to revert incrementation
-
             if(_isLoop) //Handle changes according to the loop type
             {
-                mode = CompletionMode.PROJECTED; //PROJECTED mode makes every looptype ending look natural
                 switch(this.loopType)
                 {
                     case LoopType.Restart :
@@ -552,7 +549,7 @@ namespace Str8lines.Tweening
                 time = _loopTime;
             }
             
-            if(isTotalDurationOver) complete(true, mode);
+            if(isTotalDurationOver) complete();
             else{
                 _setCalculatedValue(time);
                 //We must revert incrementation after the potential call of complete() since it checks _isIncrementingValue to set end values properly
@@ -668,7 +665,7 @@ namespace Str8lines.Tweening
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
-        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
+        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>PROJECTED</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
         /// <example>
@@ -695,7 +692,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void complete(bool triggerOnEnd = true, CompletionMode mode = CompletionMode.STATIC)
+        public void complete(bool triggerOnEnd = true, CompletionMode mode = CompletionMode.PROJECTED)
         {
             this.stop(triggerOnEnd);
             switch(mode){
