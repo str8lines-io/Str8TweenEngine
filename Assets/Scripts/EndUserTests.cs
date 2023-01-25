@@ -70,6 +70,7 @@ public class EndUserTests : MonoBehaviour
     private GameObject _activeScenePanel;
     private Transform _activeEffectPanel;
     private Transform _activeTargetPanel;
+    private Transform _activeTestPanel;
     private List<string> _easeCategories = new List<string>{"In", "Out", "InOut"};
     private Dictionary<GameObject, Vector3> _initialVectors3;
     private Dictionary<GameObject, Vector4> _initialVectors4;
@@ -94,22 +95,23 @@ public class EndUserTests : MonoBehaviour
 
         //Init other dropdowns
         effectDropdown.value = 0;
-        targetDropdown.value = 0;
         for(int i = 0; i < _activeScenePanel.transform.childCount; i++){
             Transform t = _activeScenePanel.transform.GetChild(i);
             effectDropdown.options.Add(new Dropdown.OptionData(t.gameObject.name));
-            bool isActiveEffectPanel = (i == 0);
+            bool isActiveEffectPanel = (i == effectDropdown.value);
             if(isActiveEffectPanel) _activeEffectPanel = t; //Defines active effect panel
             t.gameObject.SetActive(isActiveEffectPanel); //Activate panel related to the active effect and deactivate other effect related panels
             _initPanelChildren(t);
         }
-        easeCategoryDropdown.value = 0;
         for(int i = 0; i < _easeCategories.Count; i++) easeCategoryDropdown.options.Add(new Dropdown.OptionData(_easeCategories[i]));
+        targetDropdown.value = 0;
+        easeCategoryDropdown.value = 0;
 
         //Init panels
         logsPanel.gameObject.SetActive(false);
         logsBtn.GetChild(0).GetComponent<Text>().text = ">";
         targetDropdown.transform.parent.gameObject.SetActive(false);
+        _activeTestPanel = (_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) ? _activeEffectPanel.GetChild(easeCategoryDropdown.value) : _activeTargetPanel.GetChild(easeCategoryDropdown.value);
 
         //Init starting values storage
         _initialVectors3 = new Dictionary<GameObject, Vector3>();
@@ -240,6 +242,9 @@ public class EndUserTests : MonoBehaviour
         
         //Handle target dropdown activation
         targetDropdown.transform.parent.gameObject.SetActive(!_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name));
+
+        //Update active test panel
+        _activeTestPanel = (_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) ? _activeEffectPanel.GetChild(easeCategoryDropdown.value) : _activeTargetPanel.GetChild(easeCategoryDropdown.value);
     }
 
     //Display appropriate panel according to selected ease category
@@ -248,6 +253,9 @@ public class EndUserTests : MonoBehaviour
         if(_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) t = _activeEffectPanel;
         else t = _activeTargetPanel;
         for(int i = 0; i < t.childCount; i++) t.GetChild(i).gameObject.SetActive((change.value == i));
+
+        //Update active test panel
+        _activeTestPanel = (_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) ? _activeEffectPanel.GetChild(easeCategoryDropdown.value) : _activeTargetPanel.GetChild(easeCategoryDropdown.value);
     }
 
     //Display appropriate panel according to selected target
@@ -259,16 +267,18 @@ public class EndUserTests : MonoBehaviour
         _activeTargetPanel = _activeEffectPanel.GetChild(change.value);
         for(int i = 0; i < _activeEffectPanel.childCount; i++) _activeEffectPanel.GetChild(i).gameObject.SetActive((change.value == i));
         for(int i = 0; i < _activeTargetPanel.childCount; i++) _activeTargetPanel.GetChild(i).gameObject.SetActive((easeCategoryDropdown.value == i));
+
+        //Update active test panel
+        _activeTestPanel = (_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) ? _activeEffectPanel.GetChild(easeCategoryDropdown.value) : _activeTargetPanel.GetChild(easeCategoryDropdown.value);
     }
 
     //Instantiates panel's tweens
     public void StartTweens(){
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
-        Transform panel = _activeEffectPanel.GetChild(easeCategoryDropdown.value);
         switch(effectDropdown.value){
             case 0:
-                for(int i = 0; i < panel.childCount; i++){
-                    GameObject go = panel.GetChild(i).gameObject;
+                for(int i = 0; i < _activeTestPanel.childCount; i++){
+                    GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
                             if(i==0) _move(go, (Easing.EaseType)i);
@@ -287,8 +297,8 @@ public class EndUserTests : MonoBehaviour
                 break;
 
             case 1:
-                for(int i = 0; i < panel.childCount; i++){
-                    GameObject go = panel.GetChild(i).gameObject;
+                for(int i = 0; i < _activeTestPanel.childCount; i++){
+                    GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
                             if(i==0) _scale(go, (Easing.EaseType)i);
@@ -307,8 +317,8 @@ public class EndUserTests : MonoBehaviour
                 break;
 
             case 2:
-                for(int i = 0; i < panel.childCount; i++){
-                    GameObject go = panel.GetChild(i).gameObject;
+                for(int i = 0; i < _activeTestPanel.childCount; i++){
+                    GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
                             if(i==0) _rotate(go, (Easing.EaseType)i);
@@ -327,11 +337,10 @@ public class EndUserTests : MonoBehaviour
                 break;
                 
             case 3:
-                panel = _activeEffectPanel.GetChild(targetDropdown.value).GetChild(easeCategoryDropdown.value);
                 switch(targetDropdown.value){
                     case 0:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeCanvasRenderer(go, (Easing.EaseType)i);
@@ -350,8 +359,8 @@ public class EndUserTests : MonoBehaviour
                         break;
 
                     case 1:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeSpriteRenderer(go, (Easing.EaseType)i);
@@ -370,8 +379,8 @@ public class EndUserTests : MonoBehaviour
                         break;
 
                     case 2:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeImage(go, (Easing.EaseType)i);
@@ -390,8 +399,8 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 3:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeRawImage(go, (Easing.EaseType)i);
@@ -410,8 +419,8 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 4:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeText(go, (Easing.EaseType)i);
@@ -430,8 +439,8 @@ public class EndUserTests : MonoBehaviour
                         break;
                         
                     case 5:
-                        for(int i = 0; i < panel.childCount; i++){
-                            GameObject go = panel.GetChild(i).gameObject;
+                        for(int i = 0; i < _activeTestPanel.childCount; i++){
+                            GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
                                     if(i==0) _fadeGraphic(go, (Easing.EaseType)i);
@@ -459,7 +468,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.play(target);
             else if(_id != String.Empty) Str8Tween.play(_id);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.play(_activeScenePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.play(_activeTestPanel.GetChild(i).gameObject);
         }
     }
 
@@ -469,7 +478,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.pause(target);
             else if(_id != String.Empty) Str8Tween.pause(_id);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.pause(_activeScenePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.pause(_activeTestPanel.GetChild(i).gameObject);
         }
     }
 
@@ -479,7 +488,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.stop(target);
             else if(_id != String.Empty) Str8Tween.stop(_id);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.stop(_activeScenePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.stop(_activeTestPanel.GetChild(i).gameObject);
         }
     }
 
@@ -489,7 +498,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.complete(target, _completionMode);
             else if(_id != String.Empty) Str8Tween.complete(_id, true, _completionMode);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.complete(_activeScenePanel.transform.GetChild(i).gameObject, true, _completionMode);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.complete(_activeTestPanel.GetChild(i).gameObject, true, _completionMode);
         }
     }
 
@@ -498,7 +507,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.reset(target);
             else if(_id != String.Empty) Str8Tween.reset(_id);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.reset(_activeScenePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.reset(_activeTestPanel.GetChild(i).gameObject);
         }
     }
     
@@ -508,7 +517,7 @@ public class EndUserTests : MonoBehaviour
         else{
             if(target != null) Str8Tween.kill(target);
             else if(_id != String.Empty) Str8Tween.kill(_id);
-            else for(int i = 0; i < _activeScenePanel.transform.childCount; i++) Str8Tween.kill(_activeScenePanel.transform.GetChild(i).gameObject);
+            else for(int i = 0; i < _activeTestPanel.childCount; i++) Str8Tween.kill(_activeTestPanel.GetChild(i).gameObject);
         }
     }
     #endregion
