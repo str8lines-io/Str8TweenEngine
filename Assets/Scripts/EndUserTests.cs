@@ -18,7 +18,7 @@ using Str8lines.Tweening;
 public class EndUserTests : MonoBehaviour 
 {
     #region Variables
-    
+    private const string ENABLED_SCENE = "UITests";
     public GameObject target;
     private bool _controlAll;
     private string _id;
@@ -93,6 +93,8 @@ public class EndUserTests : MonoBehaviour
         }
         sceneDropdown.value = s.buildIndex;
 
+        if(s.name != ENABLED_SCENE) return;
+        
         //Init other dropdowns
         effectDropdown.value = 0;
         for(int i = 0; i < _activeScenePanel.transform.childCount; i++){
@@ -228,6 +230,8 @@ public class EndUserTests : MonoBehaviour
     
     //Display appropriate panel according to selected effect
     public void ChangeEffect(Dropdown change){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         //Update effect panel
         _activeEffectPanel = _activeScenePanel.transform.GetChild(change.value);
         for(int i = 0; i < _activeScenePanel.transform.childCount; i++) _activeScenePanel.transform.GetChild(i).gameObject.SetActive((change.value == i));
@@ -249,6 +253,8 @@ public class EndUserTests : MonoBehaviour
 
     //Display appropriate panel according to selected ease category
     public void ChangeEaseCategory(Dropdown change){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+        
         Transform t = null;
         if(_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)) t = _activeEffectPanel;
         else t = _activeTargetPanel;
@@ -260,6 +266,8 @@ public class EndUserTests : MonoBehaviour
 
     //Display appropriate panel according to selected target
     public void ChangeTarget(Dropdown change){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_easeCategories.Contains(_activeEffectPanel.GetChild(0).gameObject.name)){
             change.value = _activeTargetPanel.GetSiblingIndex();
             return;
@@ -274,6 +282,8 @@ public class EndUserTests : MonoBehaviour
 
     //Instantiates panel's tweens
     public void StartTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+        
         int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
         switch(effectDropdown.value){
             case 0:
@@ -464,6 +474,8 @@ public class EndUserTests : MonoBehaviour
 
     //Calls tween's play() method
     public void PlayTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.play();
         else{
             if(target != null) Str8Tween.play(target);
@@ -474,6 +486,8 @@ public class EndUserTests : MonoBehaviour
 
     //Calls tween's pause() method
     public void PauseTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.pause();
         else{
             if(target != null) Str8Tween.pause(target);
@@ -484,6 +498,8 @@ public class EndUserTests : MonoBehaviour
 
     //Calls tween's stop() method
     public void StopTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.stop();
         else{
             if(target != null) Str8Tween.stop(target);
@@ -494,6 +510,8 @@ public class EndUserTests : MonoBehaviour
 
     //Calls tween's complete() method
     public void CompleteTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.complete(true, _completionMode);
         else{
             if(target != null) Str8Tween.complete(target, _completionMode);
@@ -503,6 +521,8 @@ public class EndUserTests : MonoBehaviour
     }
 
     public void ResetTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.reset();
         else{
             if(target != null) Str8Tween.reset(target);
@@ -513,6 +533,8 @@ public class EndUserTests : MonoBehaviour
     
     //Calls tween's kill() method
     public void KillTweens(){
+        if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
+
         if(_controlAll) Str8Tween.kill();
         else{
             if(target != null) Str8Tween.kill(target);
