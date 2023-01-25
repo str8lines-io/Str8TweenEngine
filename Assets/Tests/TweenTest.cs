@@ -34,7 +34,7 @@ public class TweenTest
     }
 #endregion
 
-#region constructors
+#region Constructors
     [Test]
     public void TweenRectTransformInvalidMethod()
     {
@@ -207,15 +207,6 @@ public class TweenTest
     }
 
     [Test]
-    public void TweenCanvasRendererFadeDefaultKill()
-    {
-        go.AddComponent<CanvasRenderer>();
-        CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
-
-    [Test]
     public void TweenCanvasRendererFadeKillOnEnd()
     {
         go.AddComponent<CanvasRenderer>();
@@ -272,15 +263,6 @@ public class TweenTest
         Assert.Throws<ArgumentException>(()=>{
             Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration);
         });
-    }
-    
-    [Test]
-    public void TweenSpriteRendererFadeDefaultKill()
-    {
-        go.AddComponent<SpriteRenderer>();
-        SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -341,15 +323,6 @@ public class TweenTest
             Tween t = new Tween(graphic, toFloatValue, easeType, duration);
         });
     }
-    
-    [Test]
-    public void TweenGraphicFadeDefaultKill()
-    {
-        go.AddComponent<Image>();
-        Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
-    }
 
     [Test]
     public void TweenGraphicFadeKillOnEnd()
@@ -400,7 +373,7 @@ public class TweenTest
     #endregion
 #endregion
 
-#region delay
+#region Delay
     // Delay affect every tween the same way
     // We don't need to test every combination of tween.
     [Test]
@@ -435,7 +408,7 @@ public class TweenTest
     }
     #endregion
 
-#region loops
+#region Loops
     // Loops affect every tween the same way
     // We don't need to test every combination of tween.
     [Test]
@@ -577,7 +550,7 @@ public class TweenTest
     }
     #endregion
 
-#region update
+#region Update
     // Update method needs to be tested for every type of tween.
     // We have to check if values are properly updated in the _setCalculatedValue() method.
     #region move
@@ -1250,7 +1223,7 @@ public class TweenTest
     #endregion
 #endregion
 
-#region events
+#region Events
     // Events are triggered regardless of the type of tween.
     // We don't need to test every combination of tween.
     [Test]
@@ -1316,7 +1289,7 @@ public class TweenTest
     }
 #endregion
 
-#region lifecycle
+#region Lifecycle
     #region pause
     [Test]
     public void TweenRectTransformMovePause()
@@ -1344,7 +1317,7 @@ public class TweenTest
 
     #region stop
     [Test]
-    public void TweenRectTransformMoveStopDefault()
+    public void TweenRectTransformMoveStopKillOnEnd()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -1367,19 +1340,6 @@ public class TweenTest
         bool isRunning = t.isRunning;
         t.stop();
         Assert.IsTrue(isAlive && isRunning && !isFinished && !t.isRunning && t.isFinished && t.isAlive);
-    }
-
-    [Test]
-    public void TweenRectTransformMoveStopKillOnEnd()
-    {
-        go.AddComponent<RectTransform>();
-        RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        bool isAlive = t.isAlive;
-        bool isFinished = t.isFinished;
-        bool isRunning = t.isRunning;
-        t.stop();
-        Assert.IsTrue(isAlive && isRunning && !isFinished && !t.isRunning && t.isFinished && !t.isAlive);
     }
     
     [Test]
@@ -1426,7 +1386,7 @@ public class TweenTest
     
     #region complete
     [Test]
-    public void TweenRectTransformMoveComplete()
+    public void TweenRectTransformMoveCompleteKillOnEnd()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -1435,7 +1395,7 @@ public class TweenTest
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
         t.complete();
-        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning);
     }
     
     [Test]
@@ -1452,16 +1412,157 @@ public class TweenTest
     }
     
     [Test]
-    public void TweenRectTransformMoveCompleteKillOnEnd()
+    public void TweenRectTransformMoveLoopsRestartCompleteStaticMode()
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        bool isAlive = t.isAlive;
-        bool isFinished = t.isFinished;
-        bool isRunning = t.isRunning;
-        t.complete();
-        Assert.IsTrue(isAlive && !t.isAlive && !isFinished && t.isFinished && isRunning && !t.isRunning && rect.anchoredPosition3D == toVectorValue);
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(-1).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.STATIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateOddCompleteStaticMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*0.5f);
+        t.complete(false, Tween.CompletionMode.STATIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateEvenCompleteStaticMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.STATIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsWithOffsetCompleteStaticMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(-1, Tween.LoopType.WithOffset).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.STATIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsRestartCompleteDynamicMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(-1).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateOddCompleteDynamicMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*0.5f);
+        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue && rect.anchoredPosition3D != initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateEvenCompleteDynamicMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        Debug.Log(toVectorValue);
+        Debug.Log(initialPosition);
+        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*1.5f);
+        Debug.Log(rect.anchoredPosition3D);
+        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        Debug.Log(rect.anchoredPosition3D);
+        Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsWithOffsetCompleteDynamicMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(-1, Tween.LoopType.WithOffset).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == (toVectorValue * 2));
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsRestartCompleteProjectedMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        t.loop(4).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.PROJECTED);
+        Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateOddCompleteProjectedMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(4, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*0.5f);
+        t.complete(false, Tween.CompletionMode.PROJECTED);
+        Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsOscillateEvenCompleteProjectedMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(4, Tween.LoopType.Oscillate).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.PROJECTED);
+        Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
+    }
+    
+    [Test]
+    public void TweenRectTransformMoveLoopsWithOffsetCompleteProjectedMode()
+    {
+        go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Vector3 initialPosition = rect.anchoredPosition3D;
+        t.loop(4, Tween.LoopType.WithOffset).update(0f);
+        t.update(duration*1.5f);
+        t.complete(false, Tween.CompletionMode.PROJECTED);
+        Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == (toVectorValue * 4));
     }
     
     [Test]
