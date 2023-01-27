@@ -19,6 +19,7 @@ public class EndUserTests : MonoBehaviour
 {
     #region Variables
     private const string ENABLED_SCENE = "UITests";
+    private readonly string[] SCENES = new string[]{"UITests", "ObjectsTests"};
     public GameObject target;
     private bool _controlAll;
     private string _id;
@@ -81,13 +82,11 @@ public class EndUserTests : MonoBehaviour
     {
         //Init Scenes dropdown
         Scene s = SceneManager.GetActiveScene();
-        for(int i = 0; i < EditorBuildSettings.scenes.Length; i++){
-            string[] path = EditorBuildSettings.scenes[i].path.Split('/');
-            string sceneName = path[path.Length-1].Split('.')[0];
-            sceneDropdown.options.Add(new Dropdown.OptionData(sceneName)); //Add option to dropdown
+        for(int i = 0; i < SCENES.Length; i++){
+            sceneDropdown.options.Add(new Dropdown.OptionData(SCENES[i])); //Add option to dropdown
 
-            bool isActiveScenePanel = (sceneName == s.name);
-            GameObject g = GameObject.Find(sceneName);
+            bool isActiveScenePanel = (SCENES[i] == s.name);
+            GameObject g = GameObject.Find(SCENES[i]);
             if(isActiveScenePanel) _activeScenePanel = g; //Defines active scene panel
             g.SetActive(isActiveScenePanel); //Activate panel related to the active scene and deactivate other scene related panels
         }
@@ -219,8 +218,7 @@ public class EndUserTests : MonoBehaviour
     #region Navigation and control
     //Load selected scene
     public void LoadScene(){
-        string[] path = EditorBuildSettings.scenes[sceneDropdown.value].path.Split('/');
-        SceneManager.LoadScene(path[path.Length-1].Split('.')[0]);
+        SceneManager.LoadScene(SCENES[sceneDropdown.value]);
     }
     
     //Close app
