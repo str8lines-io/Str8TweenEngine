@@ -2,7 +2,7 @@
 /* 
     Str8lines Tween Engine for Unity
     Version: 1.0
-    Author:	Str8lines (Geoffrey LESNE)
+    Author:	Geoffrey LESNE (Str8lines)
     Contact: contact@str8lines.io
 */
 #endregion
@@ -62,7 +62,7 @@ namespace Str8lines.Tweening
         private int _completedLoopsCount;
         /// <value>The number of loops completed since the <see cref="Tween">Tween</see> started.</value>
         public int completedLoopsCount => _completedLoopsCount;
-        /// <summary>Defines end values to use after <see cref="Tween.">Tween</see> completion.</summary>
+        /// <summary>Defines end values to use after <see cref="Tween">Tween</see> completion.</summary>
         /// <value><c>STATIC</c> will set end values to the initial toValue or toVector.</value>
         /// <value><c>DYNAMIC</c> works only for loops, this will set end values depending on the next value to reach.</value>
         /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the <see cref="Tween">Tween</see> ended normaly.</value>
@@ -802,7 +802,7 @@ namespace Str8lines.Tweening
             if(this.killOnEnd == true) kill();
         }
 
-        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets <see cref="this.isAlive">isAlive</see> to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets <see cref="Tween.isAlive">isAlive</see> to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to kill.
