@@ -13,15 +13,15 @@ namespace Str8lines.Tweening
     using UnityEngine;
     #endregion
 
+    /// <summary>Used to specify the rate of change over time. See <see href="https://easings.net/">easings.net</see> to visualize each easing function.</summary>
+    public enum EasingFunction
+    {
+        Linear, InSine, OutSine, InOutSine, InBack, OutBack, InOutBack, InCubic, OutCubic, InOutCubic, InQuad, OutQuad, InOutQuad, InQuart, OutQuart, InOutQuart, InQuint, OutQuint, InOutQuint, InExpo, OutExpo, InOutExpo, InCirc, OutCirc, InOutCirc, InElastic, OutElastic, InOutElastic, InBounce, OutBounce, InOutBounce
+    }
+
     /// <summary>Defines easing functions used internally and provides methods to calculate <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> and <c>float</c> values.</summary>
     public static class Easing
     {
-        /// <summary>Used to specify the rate of change over time. See <see href="https://easings.net/">easings.net</see> to visualize each easing function.</summary>
-        public enum EaseType
-        {
-            Linear, InSine, OutSine, InOutSine, InBack, OutBack, InOutBack, InCubic, OutCubic, InOutCubic, InQuad, OutQuad, InOutQuad, InQuart, OutQuart, InOutQuart, InQuint, OutQuint, InOutQuint, InExpo, OutExpo, InOutExpo, InCirc, OutCirc, InOutCirc, InElastic, OutElastic, InOutElastic, InBounce, OutBounce, InOutBounce
-        }
-        
         #region Private methods
         //t = current time value
         //b = begin value
@@ -203,7 +203,7 @@ namespace Str8lines.Tweening
 
         #region Public methods
         /// <summary>Calculates new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> according to elapsed time.</summary>
-        /// <param name="easeType">The <see cref="EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="t">Time elapsed (in seconds).</param>
         /// <param name="v">Initial <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</param>
         /// <param name="c"><see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value change.</param>
@@ -222,137 +222,137 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 vectorChange = new Vector3(0, 500, 0);
-        ///         vector = Easing.ease(EaseType.Linear, 2f, vector, vectorChange, 3f);
+        ///         vector = Easing.ease(EasingFunction.Linear, 2f, vector, vectorChange, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Vector3 ease(EaseType easeType, float t, Vector3 v, Vector3 c, float d)
+        public static Vector3 ease(EasingFunction easingFunction, float t, Vector3 v, Vector3 c, float d)
         {
             Vector3 newVector;
-            switch (easeType)
+            switch (easingFunction)
             {
-                case EaseType.Linear:
+                case EasingFunction.Linear:
                     newVector = new Vector3(_linear(t, v.x, c.x, d), _linear(t, v.y, c.y, d), _linear(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InSine:
+                case EasingFunction.InSine:
                     newVector = new Vector3(_inSine(t, v.x, c.x, d), _inSine(t, v.y, c.y, d), _inSine(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutSine:
+                case EasingFunction.OutSine:
                     newVector = new Vector3(_outSine(t, v.x, c.x, d), _outSine(t, v.y, c.y, d), _outSine(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutSine:
+                case EasingFunction.InOutSine:
                     newVector = new Vector3(_inOutSine(t, v.x, c.x, d), _inOutSine(t, v.y, c.y, d), _inOutSine(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InQuad:
+                case EasingFunction.InQuad:
                     newVector = new Vector3(_inQuad(t, v.x, c.x, d), _inQuad(t, v.y, c.y, d), _inQuad(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutQuad:
+                case EasingFunction.OutQuad:
                     newVector = new Vector3(_outQuad(t, v.x, c.x, d), _outQuad(t, v.y, c.y, d), _outQuad(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutQuad:
+                case EasingFunction.InOutQuad:
                     newVector = new Vector3(_inOutQuad(t, v.x, c.x, d), _inOutQuad(t, v.y, c.y, d), _inOutQuad(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InQuart:
+                case EasingFunction.InQuart:
                     newVector = new Vector3(_inQuart(t, v.x, c.x, d), _inQuart(t, v.y, c.y, d), _inQuart(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutQuart:
+                case EasingFunction.OutQuart:
                     newVector = new Vector3(_outQuart(t, v.x, c.x, d), _outQuart(t, v.y, c.y, d), _outQuart(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutQuart:
+                case EasingFunction.InOutQuart:
                     newVector = new Vector3(_inOutQuart(t, v.x, c.x, d), _inOutQuart(t, v.y, c.y, d), _inOutQuart(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InQuint:
+                case EasingFunction.InQuint:
                     newVector = new Vector3(_inQuint(t, v.x, c.x, d), _inQuint(t, v.y, c.y, d), _inQuint(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutQuint:
+                case EasingFunction.OutQuint:
                     newVector = new Vector3(_outQuint(t, v.x, c.x, d), _outQuint(t, v.y, c.y, d), _outQuint(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutQuint:
+                case EasingFunction.InOutQuint:
                     newVector = new Vector3(_inOutQuint(t, v.x, c.x, d), _inOutQuint(t, v.y, c.y, d), _inOutQuint(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InExpo:
+                case EasingFunction.InExpo:
                     newVector = new Vector3(_inExpo(t, v.x, c.x, d), _inExpo(t, v.y, c.y, d), _inExpo(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutExpo:
+                case EasingFunction.OutExpo:
                     newVector = new Vector3(_outExpo(t, v.x, c.x, d), _outExpo(t, v.y, c.y, d), _outExpo(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutExpo:
+                case EasingFunction.InOutExpo:
                     newVector = new Vector3(_inOutExpo(t, v.x, c.x, d), _inOutExpo(t, v.y, c.y, d), _inOutExpo(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InCubic:
+                case EasingFunction.InCubic:
                     newVector = new Vector3(_inCubic(t, v.x, c.x, d), _inCubic(t, v.y, c.y, d), _inCubic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutCubic:
+                case EasingFunction.OutCubic:
                     newVector = new Vector3(_outCubic(t, v.x, c.x, d), _outCubic(t, v.y, c.y, d), _outCubic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutCubic:
+                case EasingFunction.InOutCubic:
                     newVector = new Vector3(_inOutCubic(t, v.x, c.x, d), _inOutCubic(t, v.y, c.y, d), _inOutCubic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InCirc:
+                case EasingFunction.InCirc:
                     newVector = new Vector3(_inCirc(t, v.x, c.x, d), _inCirc(t, v.y, c.y, d), _inCirc(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutCirc:
+                case EasingFunction.OutCirc:
                     newVector = new Vector3(_outCirc(t, v.x, c.x, d), _outCirc(t, v.y, c.y, d), _outCirc(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutCirc:
+                case EasingFunction.InOutCirc:
                     newVector = new Vector3(_inOutCirc(t, v.x, c.x, d), _inOutCirc(t, v.y, c.y, d), _inOutCirc(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InBack:
+                case EasingFunction.InBack:
                     newVector = new Vector3(_inBack(t, v.x, c.x, d), _inBack(t, v.y, c.y, d), _inBack(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutBack:
+                case EasingFunction.OutBack:
                     newVector = new Vector3(_outBack(t, v.x, c.x, d), _outBack(t, v.y, c.y, d), _outBack(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutBack:
+                case EasingFunction.InOutBack:
                     newVector = new Vector3(_inOutBack(t, v.x, c.x, d), _inOutBack(t, v.y, c.y, d), _inOutBack(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InElastic:
+                case EasingFunction.InElastic:
                     newVector = new Vector3(_inElastic(t, v.x, c.x, d), _inElastic(t, v.y, c.y, d), _inElastic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutElastic:
+                case EasingFunction.OutElastic:
                     newVector = new Vector3(_outElastic(t, v.x, c.x, d), _outElastic(t, v.y, c.y, d), _outElastic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutElastic:
+                case EasingFunction.InOutElastic:
                     newVector = new Vector3(_inOutElastic(t, v.x, c.x, d), _inOutElastic(t, v.y, c.y, d), _inOutElastic(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InBounce:
+                case EasingFunction.InBounce:
                     newVector = new Vector3(_inBounce(t, v.x, c.x, d), _inBounce(t, v.y, c.y, d), _inBounce(t, v.z, c.z, d));
                     break;
 
-                case EaseType.OutBounce:
+                case EasingFunction.OutBounce:
                     newVector = new Vector3(_outBounce(t, v.x, c.x, d), _outBounce(t, v.y, c.y, d), _outBounce(t, v.z, c.z, d));
                     break;
 
-                case EaseType.InOutBounce:
+                case EasingFunction.InOutBounce:
                     newVector = new Vector3(_inOutBounce(t, v.x, c.x, d), _inOutBounce(t, v.y, c.y, d), _inOutBounce(t, v.z, c.z, d));
                     break;
 
@@ -364,7 +364,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Calculates new <c>float</c> value according to elapsed time.</summary>
-        /// <param name="easeType">The <see cref="EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="t">Time elapsed (in seconds).</param>
         /// <param name="f">Initial <c>float</c> value.</param>
         /// <param name="c"><c>float</c> value change.</param>
@@ -382,137 +382,137 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         val = Easing.ease(EaseType.Linear, 2f, val, 10f, 3f);
+        ///         val = Easing.ease(EasingFunction.Linear, 2f, val, 10f, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static float ease(EaseType easeType, float t, float f, float c, float d)
+        public static float ease(EasingFunction easingFunction, float t, float f, float c, float d)
         {
             float newValue;
-            switch (easeType)
+            switch (easingFunction)
             {
-                case EaseType.Linear:
+                case EasingFunction.Linear:
                     newValue = _linear(t, f, c, d);
                     break;
 
-                case EaseType.InSine:
+                case EasingFunction.InSine:
                     newValue = _inSine(t, f, c, d);
                     break;
 
-                case EaseType.OutSine:
+                case EasingFunction.OutSine:
                     newValue =_outSine(t, f, c, d);
                     break;
 
-                case EaseType.InOutSine:
+                case EasingFunction.InOutSine:
                     newValue = _inOutSine(t, f, c, d);
                     break;
 
-                case EaseType.InQuad:
+                case EasingFunction.InQuad:
                     newValue =_inQuad(t, f, c, d);
                     break;
 
-                case EaseType.OutQuad:
+                case EasingFunction.OutQuad:
                     newValue =_outQuad(t, f, c, d);
                     break;
 
-                case EaseType.InOutQuad:
+                case EasingFunction.InOutQuad:
                     newValue = _inOutQuad(t, f, c, d);
                     break;
 
-                case EaseType.InQuart:
+                case EasingFunction.InQuart:
                     newValue = _inQuart(t, f, c, d);
                     break;
 
-                case EaseType.OutQuart:
+                case EasingFunction.OutQuart:
                     newValue = _outQuart(t, f, c, d);
                     break;
 
-                case EaseType.InOutQuart:
+                case EasingFunction.InOutQuart:
                     newValue = _inOutQuart(t, f, c, d);
                     break;
 
-                case EaseType.InQuint:
+                case EasingFunction.InQuint:
                     newValue = _inQuint(t, f, c, d);
                     break;
 
-                case EaseType.OutQuint:
+                case EasingFunction.OutQuint:
                     newValue = _outQuint(t, f, c, d);
                     break;
 
-                case EaseType.InOutQuint:
+                case EasingFunction.InOutQuint:
                     newValue = _inOutQuint(t, f, c, d);
                     break;
 
-                case EaseType.InExpo:
+                case EasingFunction.InExpo:
                     newValue = _inExpo(t, f, c, d);
                     break;
 
-                case EaseType.OutExpo:
+                case EasingFunction.OutExpo:
                     newValue = _outExpo(t, f, c, d);
                     break;
 
-                case EaseType.InOutExpo:
+                case EasingFunction.InOutExpo:
                     newValue = _inOutExpo(t, f, c, d);
                     break;
 
-                case EaseType.InCubic:
+                case EasingFunction.InCubic:
                     newValue = _inCubic(t, f, c, d);
                     break;
 
-                case EaseType.OutCubic:
+                case EasingFunction.OutCubic:
                     newValue =_outCubic(t, f, c, d);
                     break;
 
-                case EaseType.InOutCubic:
+                case EasingFunction.InOutCubic:
                     newValue = _inOutCubic(t, f, c, d);
                     break;
 
-                case EaseType.InCirc:
+                case EasingFunction.InCirc:
                     newValue = _inCirc(t, f, c, d);
                     break;
 
-                case EaseType.OutCirc:
+                case EasingFunction.OutCirc:
                     newValue = _outCirc(t, f, c, d);
                     break;
 
-                case EaseType.InOutCirc:
+                case EasingFunction.InOutCirc:
                     newValue = _inOutCirc(t, f, c, d);
                     break;
 
-                case EaseType.InBack:
+                case EasingFunction.InBack:
                     newValue = _inBack(t, f, c, d);
                     break;
 
-                case EaseType.OutBack:
+                case EasingFunction.OutBack:
                     newValue = _outBack(t, f, c, d);
                     break;
 
-                case EaseType.InOutBack:
+                case EasingFunction.InOutBack:
                     newValue = _inOutBack(t, f, c, d);
                     break;
 
-                case EaseType.InElastic:
+                case EasingFunction.InElastic:
                     newValue = _inElastic(t, f, c, d);
                     break;
 
-                case EaseType.OutElastic:
+                case EasingFunction.OutElastic:
                     newValue = _outElastic(t, f, c, d);
                     break;
 
-                case EaseType.InOutElastic:
+                case EasingFunction.InOutElastic:
                     newValue = _inOutElastic(t, f, c, d);
                     break;
 
-                case EaseType.InBounce:
+                case EasingFunction.InBounce:
                     newValue = _inBounce(t, f, c, d);
                     break;
 
-                case EaseType.OutBounce:
+                case EasingFunction.OutBounce:
                     newValue = _outBounce(t, f, c, d);
                     break;
 
-                case EaseType.InOutBounce:
+                case EasingFunction.InOutBounce:
                     newValue = _inOutBounce(t, f, c, d);
                     break;
 

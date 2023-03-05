@@ -27,9 +27,9 @@ public class EndUserTests : MonoBehaviour
     private float _delay;
     private bool _killOnEnd;
     private bool _isLoop;
-    private Tween.LoopType _loopType;
+    private LoopStyle _loopStyle;
     private int _loopsCount;
-    private Tween.CompletionMode _completionMode;
+    private CompletionMode _completionMode;
     private float _moveX;
     private float _moveY;
     private float _moveZ;
@@ -56,7 +56,7 @@ public class EndUserTests : MonoBehaviour
     public InputField delay;
     public InputField loopsCount;
     public Dropdown completionMode;
-    public Dropdown loopType;
+    public Dropdown loopStyle;
     public InputField moveX;
     public InputField moveY;
     public InputField moveZ;
@@ -125,8 +125,8 @@ public class EndUserTests : MonoBehaviour
         duration.text = (_duration = 3).ToString();
         delay.text = (_delay = 0).ToString();
         loopsCount.text = (_loopsCount = -1).ToString();
-        completionMode.value = (int)(_completionMode = Tween.CompletionMode.STATIC);
-        loopType.value = (int)(_loopType = Tween.LoopType.Restart);
+        completionMode.value = (int)(_completionMode = CompletionMode.STATIC);
+        loopStyle.value = (int)(_loopStyle = LoopStyle.Restart);
         id.text = (_id = String.Empty);
         moveX.text = (_moveX = 225f).ToString();
         moveY.text = (_moveY = 0).ToString();
@@ -185,7 +185,7 @@ public class EndUserTests : MonoBehaviour
     
     //Logs when events are triggered with associated tween's id in console
     private void _logEvents(Tween t){
-        string logRoot = t.easeType.ToString() + " (" + t.id + ") ";
+        string logRoot = t.easingFunction.ToString() + " (" + t.id + ") ";
         t.onStart(() => _logAdd(logRoot + "Started")).onEnd(()=> _logAdd(logRoot + "Ended"));
         if(_isLoop) t.onLoop((loopsCount) => _logAdd(logRoot + "Loops = " + loopsCount));
     }
@@ -282,23 +282,23 @@ public class EndUserTests : MonoBehaviour
     public void StartTweens(){
         if(SceneManager.GetActiveScene().name != ENABLED_SCENE) return;
         
-        int easeTypesCount = Enum.GetValues(typeof(Easing.EaseType)).Length;
+        int easingFunctionsCount = Enum.GetValues(typeof(EasingFunction)).Length;
         switch(effectDropdown.value){
             case 0:
                 for(int i = 0; i < _activeTestPanel.childCount; i++){
                     GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
-                            if(i==0) _move(go, (Easing.EaseType)i);
-                            else _move(go, (Easing.EaseType)(3*i - 2));
+                            if(i==0) _move(go, (EasingFunction)i);
+                            else _move(go, (EasingFunction)(3*i - 2));
                             break;
                           
                         case 1:
-                            _move(go, (Easing.EaseType)(3*(i+1) - 1));
+                            _move(go, (EasingFunction)(3*(i+1) - 1));
                             break;
                             
                         case 2:
-                            _move(go, (Easing.EaseType)(3*(i+1)));
+                            _move(go, (EasingFunction)(3*(i+1)));
                             break;
                     }
                 }
@@ -309,16 +309,16 @@ public class EndUserTests : MonoBehaviour
                     GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
-                            if(i==0) _scale(go, (Easing.EaseType)i);
-                            else _scale(go, (Easing.EaseType)(3*i - 2));
+                            if(i==0) _scale(go, (EasingFunction)i);
+                            else _scale(go, (EasingFunction)(3*i - 2));
                             break;
                           
                         case 1:
-                            _scale(go, (Easing.EaseType)(3*(i+1) - 1));
+                            _scale(go, (EasingFunction)(3*(i+1) - 1));
                             break;
                             
                         case 2:
-                            _scale(go, (Easing.EaseType)(3*(i+1)));
+                            _scale(go, (EasingFunction)(3*(i+1)));
                             break;
                     }
                 }
@@ -329,16 +329,16 @@ public class EndUserTests : MonoBehaviour
                     GameObject go = _activeTestPanel.GetChild(i).gameObject;
                     switch(easeCategoryDropdown.value){
                         case 0:
-                            if(i==0) _rotate(go, (Easing.EaseType)i);
-                            else _rotate(go, (Easing.EaseType)(3*i - 2));
+                            if(i==0) _rotate(go, (EasingFunction)i);
+                            else _rotate(go, (EasingFunction)(3*i - 2));
                             break;
                           
                         case 1:
-                            _rotate(go, (Easing.EaseType)(3*(i+1) - 1));
+                            _rotate(go, (EasingFunction)(3*(i+1) - 1));
                             break;
                             
                         case 2:
-                            _rotate(go, (Easing.EaseType)(3*(i+1)));
+                            _rotate(go, (EasingFunction)(3*(i+1)));
                             break;
                     }
                 }
@@ -351,16 +351,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeCanvasRenderer(go, (Easing.EaseType)i);
-                                    else _fadeCanvasRenderer(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeCanvasRenderer(go, (EasingFunction)i);
+                                    else _fadeCanvasRenderer(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeCanvasRenderer(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeCanvasRenderer(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeCanvasRenderer(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeCanvasRenderer(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -371,16 +371,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeSpriteRenderer(go, (Easing.EaseType)i);
-                                    else _fadeSpriteRenderer(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeSpriteRenderer(go, (EasingFunction)i);
+                                    else _fadeSpriteRenderer(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeSpriteRenderer(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeSpriteRenderer(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeSpriteRenderer(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeSpriteRenderer(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -391,16 +391,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeImage(go, (Easing.EaseType)i);
-                                    else _fadeImage(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeImage(go, (EasingFunction)i);
+                                    else _fadeImage(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeImage(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeImage(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeImage(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeImage(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -411,16 +411,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeRawImage(go, (Easing.EaseType)i);
-                                    else _fadeRawImage(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeRawImage(go, (EasingFunction)i);
+                                    else _fadeRawImage(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeRawImage(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeRawImage(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeRawImage(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeRawImage(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -431,16 +431,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeText(go, (Easing.EaseType)i);
-                                    else _fadeText(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeText(go, (EasingFunction)i);
+                                    else _fadeText(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeText(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeText(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeText(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeText(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -451,16 +451,16 @@ public class EndUserTests : MonoBehaviour
                             GameObject go = _activeTestPanel.GetChild(i).gameObject;
                             switch(easeCategoryDropdown.value){
                                 case 0:
-                                    if(i==0) _fadeGraphic(go, (Easing.EaseType)i);
-                                    else _fadeGraphic(go, (Easing.EaseType)(3*i - 2));
+                                    if(i==0) _fadeGraphic(go, (EasingFunction)i);
+                                    else _fadeGraphic(go, (EasingFunction)(3*i - 2));
                                     break;
                                 
                                 case 1:
-                                    _fadeGraphic(go, (Easing.EaseType)(3*(i+1) - 1));
+                                    _fadeGraphic(go, (EasingFunction)(3*(i+1) - 1));
                                     break;
                                     
                                 case 2:
-                                    _fadeGraphic(go, (Easing.EaseType)(3*(i+1)));
+                                    _fadeGraphic(go, (EasingFunction)(3*(i+1)));
                                     break;
                             }
                         }
@@ -569,8 +569,8 @@ public class EndUserTests : MonoBehaviour
             _loopsCount = 0;
         }
     }
-    public void UpdateLoopType(Dropdown change){ _loopType = (Tween.LoopType)change.value; }
-    public void UpdateCompletionMode(Dropdown change){ _completionMode = (Tween.CompletionMode)change.value; }
+    public void UpdateLoopStyle(Dropdown change){ _loopStyle = (LoopStyle)change.value; }
+    public void UpdateCompletionMode(Dropdown change){ _completionMode = (CompletionMode)change.value; }
     public void UpdateMoveX(InputField change){ 
         try{
             _moveX = float.Parse(change.text);
@@ -645,97 +645,97 @@ public class EndUserTests : MonoBehaviour
 
     // Save or resets initial values and creates the tweens to check
     #region Instantiations
-    private void _move(GameObject go, Easing.EaseType easeType){
+    private void _move(GameObject go, EasingFunction easingFunction){
         RectTransform rect = go.GetComponent<RectTransform>();
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().anchoredPosition3D);
         else go.GetComponent<RectTransform>().anchoredPosition3D = _initialVectors3[go];
 
-        Tween t = Str8Tween.move(rect, new Vector3(rect.anchoredPosition3D.x + _moveX, rect.anchoredPosition3D.y + _moveY, rect.anchoredPosition3D.z + _moveZ), easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.move(rect, new Vector3(rect.anchoredPosition3D.x + _moveX, rect.anchoredPosition3D.y + _moveY, rect.anchoredPosition3D.z + _moveZ), easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _scale(GameObject go, Easing.EaseType easeType){
+    private void _scale(GameObject go, EasingFunction easingFunction){
         RectTransform rect = go.GetComponent<RectTransform>();
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localScale);
         else go.GetComponent<RectTransform>().localScale = _initialVectors3[go];
 
-        Tween t = Str8Tween.scale(rect, new Vector3(rect.localScale.x * _scaleX, rect.localScale.y * _scaleY, rect.localScale.z * _scaleZ), easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.scale(rect, new Vector3(rect.localScale.x * _scaleX, rect.localScale.y * _scaleY, rect.localScale.z * _scaleZ), easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _rotate(GameObject go, Easing.EaseType easeType){
+    private void _rotate(GameObject go, EasingFunction easingFunction){
         RectTransform rect = go.GetComponent<RectTransform>();
         if(!_initialVectors3.ContainsKey(go)) _initialVectors3.Add(go, go.GetComponent<RectTransform>().localEulerAngles);
         else go.GetComponent<RectTransform>().localEulerAngles = _initialVectors3[go];
 
-        Tween t = Str8Tween.rotate(rect, new Vector3(rect.localEulerAngles.x + _rotateX, rect.localEulerAngles.y + _rotateY, rect.localEulerAngles.z + _rotateZ), easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.rotate(rect, new Vector3(rect.localEulerAngles.x + _rotateX, rect.localEulerAngles.y + _rotateY, rect.localEulerAngles.z + _rotateZ), easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _fadeCanvasRenderer(GameObject go, Easing.EaseType easeType){
+    private void _fadeCanvasRenderer(GameObject go, EasingFunction easingFunction){
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, canvasRenderer.GetColor());
         else canvasRenderer.SetColor(_initialVectors4[go]);
 
-        Tween t = Str8Tween.fade(canvasRenderer, _alpha, easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.fade(canvasRenderer, _alpha, easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _fadeSpriteRenderer(GameObject go, Easing.EaseType easeType){
+    private void _fadeSpriteRenderer(GameObject go, EasingFunction easingFunction){
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, spriteRenderer.color);
         else spriteRenderer.color = _initialVectors4[go];
 
-        Tween t = Str8Tween.fade(spriteRenderer, _alpha, easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.fade(spriteRenderer, _alpha, easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _fadeRawImage(GameObject go, Easing.EaseType easeType){
+    private void _fadeRawImage(GameObject go, EasingFunction easingFunction){
         RawImage rawImage = go.GetComponent<RawImage>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, rawImage.color);
         else rawImage.color = _initialVectors4[go];
 
-        Tween t = Str8Tween.fade(rawImage, _alpha, easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.fade(rawImage, _alpha, easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _fadeImage(GameObject go, Easing.EaseType easeType){
+    private void _fadeImage(GameObject go, EasingFunction easingFunction){
         Image image = go.GetComponent<Image>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, image.color);
         else image.color = _initialVectors4[go];
         
-        Tween t = Str8Tween.fade(image, _alpha, easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.fade(image, _alpha, easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
-    private void _fadeText(GameObject go, Easing.EaseType easeType){
+    private void _fadeText(GameObject go, EasingFunction easingFunction){
         Text txt = go.GetComponent<Text>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, txt.color);
         else txt.color = _initialVectors4[go];
         
-        Tween t = Str8Tween.fade(txt, _alpha, easeType, _duration, _killOnEnd);
+        Tween t = Str8Tween.fade(txt, _alpha, easingFunction, _duration, _killOnEnd);
         t.delay(_delay);
-        if(_isLoop) t.loop(_loopsCount, _loopType);
+        if(_isLoop) t.loop(_loopsCount, _loopStyle);
         _logEvents(t);
-        txt.text = easeType.ToString() + "\n" + t.id;
+        txt.text = easingFunction.ToString() + "\n" + t.id;
     }
 
-    private void _fadeGraphic(GameObject go, Easing.EaseType easeType){
+    private void _fadeGraphic(GameObject go, EasingFunction easingFunction){
         Graphic graphic = go.GetComponent<Image>();
         if(!_initialVectors4.ContainsKey(go)) _initialVectors4.Add(go, graphic.color);
         else graphic.color = _initialVectors4[go];
         
-        Tween t = Str8Tween.fade(graphic, _alpha, easeType, _duration, _killOnEnd);
-        _handleTweenUpdates(go, t, easeType);
+        Tween t = Str8Tween.fade(graphic, _alpha, easingFunction, _duration, _killOnEnd);
+        _handleTweenUpdates(go, t, easingFunction);
     }
 
     //Updates delay and loop parameters of a tween and displays the ID of the tween created
-    private void _handleTweenUpdates(GameObject go, Tween t, Easing.EaseType easeType){
+    private void _handleTweenUpdates(GameObject go, Tween t, EasingFunction easingFunction){
         t.delay(_delay);
-        if(_isLoop) t.loop(_loopsCount, _loopType);
+        if(_isLoop) t.loop(_loopsCount, _loopStyle);
         _logEvents(t);
         Text text = go.transform.GetChild(0).gameObject.GetComponent<Text>();
-        text.text = easeType.ToString() + "\n" + t.id;
+        text.text = easingFunction.ToString() + "\n" + t.id;
     } 
     #endregion
 }

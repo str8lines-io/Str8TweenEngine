@@ -12,7 +12,7 @@ public class TweenTest
     GameObject go;
     Vector3 toVectorValue;
     float toFloatValue;
-    Easing.EaseType easeType;
+    EasingFunction easingFunction;
     float duration;
 #endregion
 
@@ -23,7 +23,7 @@ public class TweenTest
         go = new GameObject();
         toVectorValue = new Vector3(2f, 2f, 2f);
         toFloatValue = 0.5f;
-        easeType = Easing.EaseType.Linear;
+        easingFunction = EasingFunction.Linear;
         duration = 1f;
     }
 
@@ -41,7 +41,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, duration);
+            Tween t = new Tween(rect, toVectorValue, easingFunction, duration);
         });
     }
 
@@ -51,8 +51,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -60,8 +60,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -70,7 +70,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(null, toVectorValue, easeType, duration, true, "move");
+            Tween t = new Tween(null, toVectorValue, easingFunction, duration, true, "move");
         });
     }
     
@@ -80,7 +80,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, 0f, true, "move");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, 0f, true, "move");
         });
     }
 
@@ -90,7 +90,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, -1f, true, "move");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, -1f, true, "move");
         });
     }
     #endregion
@@ -101,8 +101,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -110,8 +110,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "scale");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "scale");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -120,7 +120,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(null, toVectorValue, easeType, duration, true, "scale");
+            Tween t = new Tween(null, toVectorValue, easingFunction, duration, true, "scale");
         });
     }
     
@@ -130,7 +130,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, 0f, true, "scale");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, 0f, true, "scale");
         });
     }
 
@@ -140,7 +140,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, -1f, true, "scale");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, -1f, true, "scale");
         });
     }
     #endregion
@@ -151,8 +151,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -160,8 +160,8 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "scale");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "scale");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -170,7 +170,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(null, toVectorValue, easeType, duration, true, "scale");
+            Tween t = new Tween(null, toVectorValue, easingFunction, duration, true, "scale");
         });
     }
     
@@ -180,7 +180,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, 0f, true, "scale");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, 0f, true, "scale");
         });
     }
 
@@ -190,7 +190,7 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(rect, toVectorValue, easeType, -1f, true, "scale");
+            Tween t = new Tween(rect, toVectorValue, easingFunction, -1f, true, "scale");
         });
     }
     #endregion
@@ -202,7 +202,7 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration);
+            Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration);
         });
     }
 
@@ -211,8 +211,8 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -220,8 +220,8 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, false, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, false, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -229,7 +229,7 @@ public class TweenTest
     {
         CanvasRenderer canvasRenderer = null;
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+            Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         });
     }
     
@@ -239,7 +239,7 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(canvasRenderer, toFloatValue, easeType, 0f, true, "fade");
+            Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, 0f, true, "fade");
         });
     }
 
@@ -249,7 +249,7 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(canvasRenderer, toFloatValue, easeType, -1f, true, "fade");
+            Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, -1f, true, "fade");
         });
     }
     #endregion
@@ -261,7 +261,7 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration);
+            Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration);
         });
     }
 
@@ -270,8 +270,8 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -279,8 +279,8 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, false, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, false, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -288,7 +288,7 @@ public class TweenTest
     {
         SpriteRenderer spriteRenderer = null;
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+            Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         });
     }
 
@@ -298,7 +298,7 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(spriteRenderer, toFloatValue, easeType, 0f, true, "fade");
+            Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, 0f, true, "fade");
         });
     }
 
@@ -308,7 +308,7 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(spriteRenderer, toFloatValue, easeType, -1f, true, "fade");
+            Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, -1f, true, "fade");
         });
     }
     #endregion
@@ -320,7 +320,7 @@ public class TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(graphic, toFloatValue, easeType, duration);
+            Tween t = new Tween(graphic, toFloatValue, easingFunction, duration);
         });
     }
 
@@ -329,8 +329,8 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
 
     [Test]
@@ -338,8 +338,8 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, false, "fade");
-        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easeType == easeType) && (t.duration == duration) && t.isAlive, "Properties not properly set");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, false, "fade");
+        Assert.IsTrue((t.id.Length == 36) && (t.target == go) && (t.easingFunction == easingFunction) && (t.duration == duration) && t.isAlive, "Properties not properly set");
     }
     
     [Test]
@@ -347,7 +347,7 @@ public class TweenTest
     {
         Graphic graphic = null;
         Assert.Throws<ArgumentNullException>(()=>{
-            Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+            Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         });
     }
 
@@ -357,7 +357,7 @@ public class TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(graphic, toFloatValue, easeType, 0f, true, "fade");
+            Tween t = new Tween(graphic, toFloatValue, easingFunction, 0f, true, "fade");
         });
     }
 
@@ -367,7 +367,7 @@ public class TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Tween t = new Tween(graphic, toFloatValue, easeType, -1f, true, "fade");
+            Tween t = new Tween(graphic, toFloatValue, easingFunction, -1f, true, "fade");
         });
     }
     #endregion
@@ -381,7 +381,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         float initialDelay = t.delay();
         t.delay(1f);
         Assert.IsTrue(initialDelay != t.delay() && t.delay() >= 0f);
@@ -392,7 +392,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.delay(0f);
         Assert.IsTrue(t.delay() == 0f);
     }
@@ -402,7 +402,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.delay(-1f);
         Assert.IsTrue(t.delay() == 0f);
     }
@@ -416,9 +416,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.loop();
-        Assert.IsTrue(t.loopsCount == -1 && t.loopType == Tween.LoopType.Restart);
+        Assert.IsTrue(t.loopsCount == -1 && t.loopStyle == LoopStyle.Restart);
     }
 
     [Test]
@@ -426,7 +426,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
             t.loop(-2);
         });
@@ -437,7 +437,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
             t.loop(0);
         });
@@ -448,9 +448,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.loop(10000);
-        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Restart);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopStyle == LoopStyle.Restart);
     }
 
     [Test]
@@ -458,9 +458,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(-2, Tween.LoopType.Restart);
+            t.loop(-2, LoopStyle.Restart);
         });
     }
 
@@ -469,9 +469,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(0, Tween.LoopType.Restart);
+            t.loop(0, LoopStyle.Restart);
         });
     }
 
@@ -480,9 +480,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        t.loop(10000, Tween.LoopType.Restart);
-        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Restart);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
+        t.loop(10000, LoopStyle.Restart);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopStyle == LoopStyle.Restart);
     }
     
     [Test]
@@ -490,9 +490,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(-2, Tween.LoopType.Oscillate);
+            t.loop(-2, LoopStyle.Oscillate);
         });
     }
 
@@ -501,9 +501,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(0, Tween.LoopType.Oscillate);
+            t.loop(0, LoopStyle.Oscillate);
         });
     }
 
@@ -512,9 +512,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        t.loop(10000, Tween.LoopType.Oscillate);
-        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.Oscillate);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
+        t.loop(10000, LoopStyle.Oscillate);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopStyle == LoopStyle.Oscillate);
     }
 
     [Test]
@@ -522,9 +522,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(-2, Tween.LoopType.WithOffset);
+            t.loop(-2, LoopStyle.WithOffset);
         });
     }
 
@@ -533,9 +533,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Assert.Throws<ArgumentException>(()=>{
-            t.loop(0, Tween.LoopType.WithOffset);
+            t.loop(0, LoopStyle.WithOffset);
         });
     }
 
@@ -544,9 +544,9 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
-        t.loop(10000, Tween.LoopType.WithOffset);
-        Assert.IsTrue(t.loopsCount == 10000 && t.loopType == Tween.LoopType.WithOffset);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
+        t.loop(10000, LoopStyle.WithOffset);
+        Assert.IsTrue(t.loopsCount == 10000 && t.loopStyle == LoopStyle.WithOffset);
     }
     #endregion
 
@@ -559,7 +559,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f);
         Assert.IsTrue(initialPosition == rect.anchoredPosition3D && t.isAlive && !t.isFinished && t.isRunning);
@@ -570,7 +570,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -582,7 +582,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -594,7 +594,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.update(0f); //First frame is not taken in count
         t.update(duration);
         Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isFinished && !t.isRunning);
@@ -605,7 +605,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.anchoredPosition3D && !t.isAlive && t.isFinished && !t.isRunning);
@@ -617,9 +617,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         Vector3 firstLoopEndValues = rect.anchoredPosition3D;
         t.update(duration * 0.000001f);
@@ -637,9 +637,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.anchoredPosition3D;
         t.update(duration);
@@ -653,9 +653,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.anchoredPosition3D;
         t.update(duration);
@@ -670,7 +670,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialScale = rect.localScale;
         t.update(0f);
         Assert.IsTrue(initialScale == rect.localScale && t.isAlive && !t.isFinished && t.isRunning);
@@ -681,7 +681,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialScale = rect.localScale;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -693,7 +693,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialScale = rect.localScale;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -705,7 +705,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         t.update(0f); //First frame is not taken in count
         t.update(duration);
         Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isFinished && !t.isRunning);
@@ -716,7 +716,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localScale && !t.isAlive && t.isFinished && !t.isRunning);
@@ -728,9 +728,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialPosition = rect.localScale;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         Vector3 firstLoopEndValues = rect.localScale;
         t.update(duration * 0.000001f);
@@ -748,9 +748,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialPosition = rect.localScale;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.localScale;
         t.update(duration);
@@ -764,9 +764,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialPosition = rect.localScale;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.localScale;
         t.update(duration);
@@ -781,7 +781,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f);
         Assert.IsTrue(initialRotation == rect.localEulerAngles && t.isAlive && !t.isFinished && t.isRunning);
@@ -792,7 +792,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -804,7 +804,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -816,7 +816,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         t.update(0f); //First frame is not taken in count
         t.update(duration);
         Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isFinished && !t.isRunning);
@@ -827,7 +827,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
         Assert.IsTrue(toVectorValue == rect.localEulerAngles && !t.isAlive && t.isFinished && !t.isRunning);
@@ -839,9 +839,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialPosition = rect.localEulerAngles;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         Vector3 firstLoopEndValues = rect.localEulerAngles;
         t.update(duration * 0.000001f);
@@ -859,9 +859,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialPosition = rect.localEulerAngles;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.localEulerAngles;
         t.update(duration);
@@ -875,9 +875,9 @@ public class TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialPosition = rect.localEulerAngles;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         Vector3 firstLoopEndValues = rect.localEulerAngles;
         t.update(duration);
@@ -892,7 +892,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f);
         Assert.IsTrue(initialAlpha == canvasRenderer.GetAlpha() && t.isAlive && !t.isFinished && t.isRunning);
@@ -903,7 +903,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -915,7 +915,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -927,7 +927,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration);
@@ -939,7 +939,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
@@ -952,9 +952,9 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         float firstLoopEndAlpha = canvasRenderer.GetAlpha();
         t.update(duration * 0.000001f);
@@ -972,9 +972,9 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = canvasRenderer.GetAlpha();
         t.update(duration);
@@ -988,9 +988,9 @@ public class TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = canvasRenderer.GetAlpha();
         t.update(duration);
@@ -1005,7 +1005,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f);
         Assert.IsTrue(initialAlpha == spriteRenderer.color.a && t.isAlive && !t.isFinished && t.isRunning);
@@ -1016,7 +1016,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -1028,7 +1028,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -1040,7 +1040,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1052,7 +1052,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
@@ -1065,9 +1065,9 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         float firstLoopEndAlpha = spriteRenderer.color.a;
         t.update(duration * 0.000001f);
@@ -1085,9 +1085,9 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = spriteRenderer.color.a;
         t.update(duration);
@@ -1101,9 +1101,9 @@ public class TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = spriteRenderer.color.a;
         t.update(duration);
@@ -1118,7 +1118,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f);
         Assert.IsTrue(initialAlpha == graphic.color.a && t.isAlive && !t.isFinished && t.isRunning);
@@ -1129,7 +1129,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(0f);
@@ -1141,7 +1141,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2f);
@@ -1153,7 +1153,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1165,7 +1165,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration + 0.5f);
@@ -1177,9 +1177,9 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
-        t.loop(3, Tween.LoopType.Restart).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Restart).update(0f); //First frame is not taken in count
         t.update(duration * 0.999999f);
         float firstLoopEndAlpha = graphic.color.a;
         t.update(duration * 0.000001f);
@@ -1196,9 +1196,9 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
-        t.loop(3, Tween.LoopType.WithOffset).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.WithOffset).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = graphic.color.a;
         t.update(duration);
@@ -1211,9 +1211,9 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
-        t.loop(3, Tween.LoopType.Oscillate).update(0f); //First frame is not taken in count
+        t.loop(3, LoopStyle.Oscillate).update(0f); //First frame is not taken in count
         t.update(duration);
         float firstLoopEndAlpha = graphic.color.a;
         t.update(duration);
@@ -1231,7 +1231,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool triggered = false;
         t.onStart(()=>{ triggered = true; }).update(0f);
         Assert.IsTrue(triggered);
@@ -1242,7 +1242,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         int triggered = 0;
         t.loop(1).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1254,7 +1254,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         int triggered = 0;
         t.loop(2).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1267,7 +1267,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         int triggered = 0;
         t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1281,7 +1281,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool triggered = false;
         t.onEnd(()=>{ triggered = true; }).update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1296,7 +1296,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isRunning = t.isRunning;
         t.pause();
         Assert.IsTrue(isRunning && !t.isRunning);
@@ -1307,7 +1307,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         t.pause();
         bool isRunning = t.isRunning;
         t.play();
@@ -1321,7 +1321,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1334,7 +1334,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1347,7 +1347,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1361,7 +1361,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1377,7 +1377,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         t.kill();
         Assert.IsTrue(isAlive && !t.isAlive);
@@ -1390,7 +1390,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1403,7 +1403,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1416,10 +1416,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         t.loop(-1).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.STATIC);
+        t.complete(false, CompletionMode.STATIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1428,10 +1428,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
-        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
+        t.loop(-1, LoopStyle.Oscillate).update(0f);
         t.update(duration*0.5f);
-        t.complete(false, Tween.CompletionMode.STATIC);
+        t.complete(false, CompletionMode.STATIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1440,10 +1440,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
-        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
+        t.loop(-1, LoopStyle.Oscillate).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.STATIC);
+        t.complete(false, CompletionMode.STATIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1452,10 +1452,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
-        t.loop(-1, Tween.LoopType.WithOffset).update(0f);
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
+        t.loop(-1, LoopStyle.WithOffset).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.STATIC);
+        t.complete(false, CompletionMode.STATIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1464,10 +1464,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         t.loop(-1).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        t.complete(false, CompletionMode.DYNAMIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1476,11 +1476,11 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.loop(-1, LoopStyle.Oscillate).update(0f);
         t.update(duration*0.5f);
-        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        t.complete(false, CompletionMode.DYNAMIC);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue && rect.anchoredPosition3D != initialPosition);
     }
     
@@ -1489,14 +1489,14 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         Debug.Log(toVectorValue);
         Debug.Log(initialPosition);
-        t.loop(-1, Tween.LoopType.Oscillate).update(0f);
+        t.loop(-1, LoopStyle.Oscillate).update(0f);
         t.update(duration*1.5f);
         Debug.Log(rect.anchoredPosition3D);
-        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        t.complete(false, CompletionMode.DYNAMIC);
         Debug.Log(rect.anchoredPosition3D);
         Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
     }
@@ -1506,11 +1506,11 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(-1, Tween.LoopType.WithOffset).update(0f);
+        t.loop(-1, LoopStyle.WithOffset).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.DYNAMIC);
+        t.complete(false, CompletionMode.DYNAMIC);
         Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == (toVectorValue * 2));
     }
     
@@ -1519,10 +1519,10 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         t.loop(4).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.PROJECTED);
+        t.complete(false, CompletionMode.PROJECTED);
         Assert.IsTrue(rect.anchoredPosition3D == toVectorValue);
     }
     
@@ -1531,11 +1531,11 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(4, Tween.LoopType.Oscillate).update(0f);
+        t.loop(4, LoopStyle.Oscillate).update(0f);
         t.update(duration*0.5f);
-        t.complete(false, Tween.CompletionMode.PROJECTED);
+        t.complete(false, CompletionMode.PROJECTED);
         Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
     }
     
@@ -1544,11 +1544,11 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(4, Tween.LoopType.Oscillate).update(0f);
+        t.loop(4, LoopStyle.Oscillate).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.PROJECTED);
+        t.complete(false, CompletionMode.PROJECTED);
         Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D == initialPosition);
     }
     
@@ -1557,11 +1557,11 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, false, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, false, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
-        t.loop(4, Tween.LoopType.WithOffset).update(0f);
+        t.loop(4, LoopStyle.WithOffset).update(0f);
         t.update(duration*1.5f);
-        t.complete(false, Tween.CompletionMode.PROJECTED);
+        t.complete(false, CompletionMode.PROJECTED);
         Assert.IsTrue(rect.anchoredPosition3D != toVectorValue && rect.anchoredPosition3D != initialPosition && rect.anchoredPosition3D == (toVectorValue * 4));
     }
     
@@ -1570,7 +1570,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool triggered = false;
         t.onEnd(()=>{ triggered = true; }).complete();
         Assert.IsTrue(triggered);
@@ -1581,7 +1581,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1595,7 +1595,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
         bool isRunning = t.isRunning;
@@ -1609,7 +1609,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         t.complete();
         Assert.AreEqual(rect.localScale, toVectorValue);
     }
@@ -1619,7 +1619,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         t.complete();
         Assert.AreEqual(rect.localEulerAngles, toVectorValue);
     }
@@ -1629,7 +1629,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         t.complete();
         Assert.AreEqual(canvasRenderer.GetAlpha(), toFloatValue);
     }
@@ -1639,7 +1639,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         t.complete();
         Assert.AreEqual(spriteRenderer.color.a, toFloatValue);
     }
@@ -1649,7 +1649,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         t.complete();
         Assert.AreEqual(graphic.color.a, toFloatValue);
     }
@@ -1661,7 +1661,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         Vector3 initialPosition = rect.anchoredPosition3D;
         bool isAlive = t.isAlive;
         bool isFinished = t.isFinished;
@@ -1679,7 +1679,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "move");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "move");
         int triggered = 0;
         t.loop(3).onLoop((loopsCompletedCount)=>{ triggered = loopsCompletedCount; }).update(0f); //First frame is not taken in count
         t.update(duration);
@@ -1696,7 +1696,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "scale");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "scale");
         Vector3 initialScale = rect.localScale;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);
@@ -1710,7 +1710,7 @@ public class TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = new Tween(rect, toVectorValue, easeType, duration, true, "rotate");
+        Tween t = new Tween(rect, toVectorValue, easingFunction, duration, true, "rotate");
         Vector3 initialRotation = rect.localEulerAngles;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);
@@ -1724,7 +1724,7 @@ public class TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Tween t = new Tween(canvasRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(canvasRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = canvasRenderer.GetAlpha();
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);
@@ -1738,7 +1738,7 @@ public class TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Tween t = new Tween(spriteRenderer, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(spriteRenderer, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = spriteRenderer.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);
@@ -1752,7 +1752,7 @@ public class TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Tween t = new Tween(graphic, toFloatValue, easeType, duration, true, "fade");
+        Tween t = new Tween(graphic, toFloatValue, easingFunction, duration, true, "fade");
         float initialAlpha = graphic.color.a;
         t.update(0f); //First frame is not taken in count
         t.update(duration/2);

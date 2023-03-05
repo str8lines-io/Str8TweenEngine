@@ -20,14 +20,14 @@ public class EasingTest
     [Test]
     public void EasingLinearFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.Linear, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.Linear, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingLinearVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.Linear, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.Linear, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -37,14 +37,14 @@ public class EasingTest
     [Test]
     public void EasingInSineFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InSine, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InSine, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInSineVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InSine, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InSine, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -52,14 +52,14 @@ public class EasingTest
     [Test]
     public void EasingOutSineFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutSine, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutSine, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutSineVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutSine, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutSine, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -67,14 +67,14 @@ public class EasingTest
     [Test]
     public void EasingInOutSineFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutSine, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutSine, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutSineVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutSine, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutSine, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -84,14 +84,14 @@ public class EasingTest
     [Test]
     public void EasingInBackFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InBack, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InBack, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInBackVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InBack, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InBack, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -99,14 +99,14 @@ public class EasingTest
     [Test]
     public void EasingOutBackFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutBack, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutBack, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutBackVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutBack, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutBack, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -114,14 +114,14 @@ public class EasingTest
     [Test]
     public void EasingInOutBackFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutBack, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutBack, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutBackVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutBack, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutBack, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -131,14 +131,14 @@ public class EasingTest
     [Test]
     public void EasingInCubicFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InCubic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InCubic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInCubicVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InCubic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InCubic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -146,14 +146,14 @@ public class EasingTest
     [Test]
     public void EasingOutCubicFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutCubic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutCubic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutCubicVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutCubic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutCubic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -161,14 +161,14 @@ public class EasingTest
     [Test]
     public void EasingInOutCubicFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutCubic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutCubic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutCubicVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutCubic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutCubic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -178,14 +178,14 @@ public class EasingTest
     [Test]
     public void EasingInQuadFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InQuad, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InQuad, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInQuadVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InQuad, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InQuad, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -193,14 +193,14 @@ public class EasingTest
     [Test]
     public void EasingOutQuadFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutQuad, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutQuad, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutQuadVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutQuad, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutQuad, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -208,14 +208,14 @@ public class EasingTest
     [Test]
     public void EasingInOutQuadFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutQuad, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutQuad, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutQuadVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutQuad, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutQuad, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -225,14 +225,14 @@ public class EasingTest
     [Test]
     public void EasingInQuartFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InQuart, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InQuart, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInQuartVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InQuart, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InQuart, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -240,14 +240,14 @@ public class EasingTest
     [Test]
     public void EasingOutQuartFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutQuart, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutQuart, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutQuartVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutQuart, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutQuart, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -255,14 +255,14 @@ public class EasingTest
     [Test]
     public void EasingInOutQuartFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutQuart, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutQuart, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutQuartVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutQuart, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutQuart, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -272,14 +272,14 @@ public class EasingTest
     [Test]
     public void EasingInQuintFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InQuint, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InQuint, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInQuintVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InQuint, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InQuint, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -287,14 +287,14 @@ public class EasingTest
     [Test]
     public void EasingOutQuintFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutQuint, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutQuint, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutQuintVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutQuint, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutQuint, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -302,14 +302,14 @@ public class EasingTest
     [Test]
     public void EasingInOutQuintFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutQuint, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutQuint, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutQuintVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutQuint, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutQuint, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -319,14 +319,14 @@ public class EasingTest
     [Test]
     public void EasingInExpoFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InExpo, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InExpo, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInExpoVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InExpo, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InExpo, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -334,14 +334,14 @@ public class EasingTest
     [Test]
     public void EasingOutExpoFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutExpo, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutExpo, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutExpoVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutExpo, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutExpo, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -349,14 +349,14 @@ public class EasingTest
     [Test]
     public void EasingInOutExpoFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutExpo, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutExpo, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutExpoVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutExpo, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutExpo, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -366,14 +366,14 @@ public class EasingTest
     [Test]
     public void EasingInCircFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InCirc, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InCirc, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInCircVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InCirc, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InCirc, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -381,14 +381,14 @@ public class EasingTest
     [Test]
     public void EasingOutCircFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutCirc, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutCirc, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutCircVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutCirc, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutCirc, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -396,14 +396,14 @@ public class EasingTest
     [Test]
     public void EasingInOutCircFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutCirc, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutCirc, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutCircVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutCirc, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutCirc, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -413,14 +413,14 @@ public class EasingTest
     [Test]
     public void EasingInElasticFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InElastic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InElastic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInElasticVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InElastic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InElastic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -428,14 +428,14 @@ public class EasingTest
     [Test]
     public void EasingOutElasticFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutElastic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutElastic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutElasticVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutElastic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutElastic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -443,14 +443,14 @@ public class EasingTest
     [Test]
     public void EasingInOutElasticFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutElastic, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutElastic, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutElasticVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutElastic, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutElastic, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion
@@ -460,14 +460,14 @@ public class EasingTest
     [Test]
     public void EasingInBounceFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InBounce, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InBounce, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInBounceVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InBounce, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InBounce, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -475,14 +475,14 @@ public class EasingTest
     [Test]
     public void EasingOutBounceFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.OutBounce, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.OutBounce, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingOutBounceVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.OutBounce, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.OutBounce, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 
@@ -490,14 +490,14 @@ public class EasingTest
     [Test]
     public void EasingInOutBounceFloatHandled()
     {
-        float resultStart = Easing.ease(Easing.EaseType.InOutBounce, elapsed, initialFloat, floatChange, duration);
+        float resultStart = Easing.ease(EasingFunction.InOutBounce, elapsed, initialFloat, floatChange, duration);
         Assert.AreNotEqual(resultStart, initialFloat);
     }
 
     [Test]
     public void EasingInOutBounceVectorHandled()
     {
-        Vector3 resultStart = Easing.ease(Easing.EaseType.InOutBounce, elapsed, initialVector, vectorChange, duration);
+        Vector3 resultStart = Easing.ease(EasingFunction.InOutBounce, elapsed, initialVector, vectorChange, duration);
         Assert.AreNotEqual(resultStart, initialVector);
     }
 #endregion

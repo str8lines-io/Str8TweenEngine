@@ -2114,7 +2114,7 @@ MonoBehaviour:
   delay: {fileID: 2078767031295294280}
   loopsCount: {fileID: 487313039810797596}
   completionMode: {fileID: 9110115987130915835}
-  loopType: {fileID: 7078546837893814825}
+  loopStyle: {fileID: 7078546837893814825}
   moveX: {fileID: 1180118564845973652}
   moveY: {fileID: 8322336420442995513}
   moveZ: {fileID: 1157819245669420837}
@@ -11938,7 +11938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3296584794928579905}
   m_Layer: 5
-  m_Name: LoopTypeWrapper
+  m_Name: LoopStyleWrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14872,7 +14872,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -18336,7 +18336,7 @@ GameObject:
   - component: {fileID: 6860364677892785326}
   - component: {fileID: 7078546837893814825}
   m_Layer: 5
-  m_Name: LoopType
+  m_Name: LoopStyle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18462,7 +18462,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6231484365927671361}
         m_TargetAssemblyTypeName: EndUserTests, Assembly-CSharp
-        m_MethodName: UpdateLoopType
+        m_MethodName: UpdateLoopStyle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 7078546837893814825}
@@ -42058,7 +42058,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6731192337987984232
 RectTransform:
   m_ObjectHideFlags: 0

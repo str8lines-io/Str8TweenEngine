@@ -64,7 +64,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 destination = new Vector3(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         TweensHandler.Instance.Add(t);
         ///     }
         /// }

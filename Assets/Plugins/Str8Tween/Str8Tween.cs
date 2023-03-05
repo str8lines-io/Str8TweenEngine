@@ -23,7 +23,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/RectTransform-anchoredPosition3D.html">anchoredPosition3D</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to move.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -40,16 +40,16 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 destination = new Vector3(0, 500);
-        ///         Str8Tween.move(rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.move(rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween move(RectTransform rectTransform, Vector3 toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween move(RectTransform rectTransform, Vector3 toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -57,7 +57,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/Transform-localScale.html">localScale</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> to scale.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final scale.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -74,16 +74,16 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 newScale = new Vector3(2, 2, 2);
-        ///         Str8Tween.scale(rectTransform, newScale, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.scale(rectTransform, newScale, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween scale(RectTransform rectTransform, Vector3 toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween scale(RectTransform rectTransform, Vector3 toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -91,7 +91,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes the <see href="https://docs.unity3d.com/ScriptReference/Transform-localEulerAngles.html">localEulerAngles</see> of the <paramref name="rectTransform"/>.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> that will rotate.</param>
         /// <param name="toValue">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final rotation.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -110,16 +110,16 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 newAngles = new Vector3(90, 180, 0);
-        ///         Str8Tween.rotate(rectTransform, newAngles, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.rotate(rectTransform, newAngles, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween rotate(RectTransform rectTransform, Vector3 toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween rotate(RectTransform rectTransform, Vector3 toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
-            Tween t = new Tween(rectTransform, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rectTransform, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -127,7 +127,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="canvasRenderer"/>'s alpha to a given value.</summary>
         /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -143,17 +143,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(canvasRenderer, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(canvasRenderer, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(CanvasRenderer canvasRenderer, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(canvasRenderer, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(canvasRenderer, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -161,7 +161,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="spriteRenderer"/>'s alpha to a given value.</summary>
         /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -177,17 +177,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(spriteRenderer, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(spriteRenderer, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(SpriteRenderer spriteRenderer, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(spriteRenderer, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(spriteRenderer, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -195,7 +195,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="rawImage"/>'s alpha to a given value.</summary>
         /// <param name="rawImage">The <see href="https://docs.unity3d.com/ScriptReference/RawImage.html">RawImage</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="rawImage"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -211,17 +211,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(rawImage, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(rawImage, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(RawImage rawImage, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(RawImage rawImage, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(rawImage == null) throw new ArgumentNullException("rawImage", "rawImage can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(rawImage, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(rawImage, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -229,7 +229,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="image"/>'s alpha to a given value.</summary>
         /// <param name="image">The <see href="https://docs.unity3d.com/ScriptReference/Image.html">Image</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="image"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -245,17 +245,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(image, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(image, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(Image image, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(Image image, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(image == null) throw new ArgumentNullException("image", "image can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(image, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(image, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -263,7 +263,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="text"/>'s alpha to a given value.</summary>
         /// <param name="text">The <see href="https://docs.unity3d.com/ScriptReference/Text.html">Text</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="text"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -279,17 +279,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(text, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(text, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(Text text, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(Text text, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(text == null) throw new ArgumentNullException("text", "text can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(text, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(text, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -297,7 +297,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiates a new <see cref="Tween">tween</see> which changes <paramref name="graphic"/>'s alpha to a given value.</summary>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> which will have its alpha changed.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha value.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total tween duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed on end.</param>
         /// <returns>The <see cref="Tween">tween</see> created.</returns>
@@ -313,17 +313,17 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Str8Tween.fade(graphic, 0f, Easing.EaseType.Linear, 3f);
+        ///         Str8Tween.fade(graphic, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public static Tween fade(Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true)
+        public static Tween fade(Graphic graphic, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true)
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
             if(toValue < 0f || toValue > 1f) throw new ArgumentException("toValue must be between 0 and 1", "toValue");
-            Tween t = new Tween(graphic, toValue, easeType, duration, killOnEnd);
+            Tween t = new Tween(graphic, toValue, easingFunction, duration, killOnEnd);
             TweensHandler.Instance.Add(t);
             return t;
         }
@@ -646,10 +646,10 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Completes the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.complete(bool, Tween.CompletionMode)"/>.</summary>
+        /// <summary>Completes the <see cref="Tween">tween</see> associated to the given uuid. See also <seealso cref="Tween.complete(bool, CompletionMode)"/>.</summary>
         /// <param name="id">The <see cref="Tween.id">id</see> of the <see cref="Tween">tween</see> to complete.</param>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
-        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
+        /// <param name="mode">(Optional) The <see cref="CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete a tween :
@@ -666,14 +666,14 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(string id, bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
+        public static void complete(string id, bool triggerOnEnd = true, CompletionMode mode = CompletionMode.STATIC)
         {
             get(id)?.complete(triggerOnEnd, mode);
         }
 
-        /// <summary>Completes every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete(bool, Tween.CompletionMode)"/>.</summary>
+        /// <summary>Completes every <see cref="Tween">tween</see> alive. See also <seealso cref="Tween.complete(bool, CompletionMode)"/>.</summary>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
-        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
+        /// <param name="mode">(Optional) The <see cref="CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete every tween :
@@ -690,7 +690,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
+        public static void complete(bool triggerOnEnd = true, CompletionMode mode = CompletionMode.STATIC)
         {
             if(TweensHandler.Instance.tweens.Count > 0){
                 foreach(Tween t in TweensHandler.Instance.tweens.Values) t.complete(triggerOnEnd, mode);
@@ -698,9 +698,9 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Completes every <see cref="Tween">tween</see> associated to the given <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</summary>
-        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.complete(bool, Tween.CompletionMode)">complete</see>.</param>
+        /// <param name="target">The <see cref="Tween.target">target</see> of the <see cref="Tween">tweens</see> to <see cref="Tween.complete(bool, CompletionMode)">complete</see>.</param>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
-        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
+        /// <param name="mode">(Optional) The <see cref="CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>STATIC</c></param>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to complete target's tweens :
@@ -719,7 +719,7 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public static void complete(GameObject target, bool triggerOnEnd = true, Tween.CompletionMode mode = Tween.CompletionMode.STATIC)
+        public static void complete(GameObject target, bool triggerOnEnd = true, CompletionMode mode = CompletionMode.STATIC)
         {
             if(target == null) throw new ArgumentNullException("target", "target can not be null");
             Tween[] tweensFound = get(target);

@@ -16,6 +16,15 @@ namespace Str8lines.Tweening
     using UnityEngine.UI;
     #endregion
     
+    /// <summary>Defines if values are reset on loop (Restart), if <see cref="Tween">Tween</see> is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
+    public enum LoopStyle { Restart, Oscillate, WithOffset }
+    
+    /// <summary>Defines end values to use after <see cref="Tween">Tween</see> completion.</summary>
+    /// <value><c>STATIC</c> will set end values to the initial toValue or toVector.</value>
+    /// <value><c>DYNAMIC</c> works only for loops, this will set end values depending on the next value to reach.</value>
+    /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the <see cref="Tween">Tween</see> ended normaly.</value>
+    public enum CompletionMode { STATIC, DYNAMIC, PROJECTED }
+    
     /// <summary>Representation of a <see cref="Tween">Tween</see>. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
     public class Tween
     {
@@ -27,9 +36,9 @@ namespace Str8lines.Tweening
         private GameObject _target;
         /// <value><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> on which the tween will be applied.</value>
         public GameObject target => _target;
-        private Easing.EaseType _easeType;
+        private EasingFunction _easingFunction;
         /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
-        public Easing.EaseType easeType => _easeType;
+        public EasingFunction easingFunction => _easingFunction;
         private float _duration;
         /// <value>Duration of a <see cref="Tween">Tween</see>'s loop (in seconds). If the <see cref="Tween">Tween</see> is not a loop then it's the duration of the <see cref="Tween">Tween</see> itself.</value>
         public float duration => _duration;
@@ -54,19 +63,12 @@ namespace Str8lines.Tweening
         private int _loopsCount;
         /// <value>The number of loops to do.</value>
         public int loopsCount => _loopsCount;
-        /// <summary>Defines if values are reset on loop (Restart), if <see cref="Tween">Tween</see> is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
-        public enum LoopType { Restart, Oscillate, WithOffset }
-        private LoopType _loopType;
-        /// <value>The <see cref="LoopType">type of loop</see> to use.</value>
-        public LoopType loopType => _loopType;
+        private LoopStyle _loopStyle;
+        /// <value>The <see cref="LoopStyle">type of loop</see> to use.</value>
+        public LoopStyle loopStyle => _loopStyle;
         private int _completedLoopsCount;
         /// <value>The number of loops completed since the <see cref="Tween">Tween</see> started.</value>
         public int completedLoopsCount => _completedLoopsCount;
-        /// <summary>Defines end values to use after <see cref="Tween">Tween</see> completion.</summary>
-        /// <value><c>STATIC</c> will set end values to the initial toValue or toVector.</value>
-        /// <value><c>DYNAMIC</c> works only for loops, this will set end values depending on the next value to reach.</value>
-        /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the <see cref="Tween">Tween</see> ended normaly.</value>
-        public enum CompletionMode { STATIC, DYNAMIC, PROJECTED }
         #endregion
 
         #region Private variables
@@ -98,7 +100,7 @@ namespace Str8lines.Tweening
         /// <summary>Delegate for start and complete events.</summary>
         public delegate void TweenDelegate();
         private TweenDelegate _callbackOnStart = () => {};
-        public event TweenDelegate started
+        private event TweenDelegate started
         {
             add { _callbackOnStart += value; }
             remove { _callbackOnStart -= value; }
@@ -127,7 +129,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> on which changes will be applied.</param>
         /// <param name="toVector">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position, scale or rotation.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
@@ -145,16 +147,16 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 destination = new Vector3(0, 500, 0);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween(RectTransform rectTransform, Vector3 toVector, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
+        public Tween(RectTransform rectTransform, Vector3 toVector, EasingFunction easingFunction, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(rectTransform == null) throw new ArgumentNullException("rectTransform", "rectTransform can not be null");
             _rectTransform = rectTransform;
-            _initCommon(rectTransform.gameObject, easeType, duration, killOnEnd);
+            _initCommon(rectTransform.gameObject, easingFunction, duration, killOnEnd);
 
             switch(methodName)
             {
@@ -182,7 +184,7 @@ namespace Str8lines.Tweening
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
         /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
@@ -199,23 +201,23 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Tween t = new Tween("fade", canvasRenderer, 0f, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("fade", canvasRenderer, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween(CanvasRenderer canvasRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
+        public Tween(CanvasRenderer canvasRenderer, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(canvasRenderer == null) throw new ArgumentNullException("canvasRenderer", "canvasRenderer can not be null");
             _canvasRenderer = canvasRenderer;
-            _initCommon(canvasRenderer.gameObject, easeType, duration, killOnEnd);
+            _initCommon(canvasRenderer.gameObject, easingFunction, duration, killOnEnd);
             _initFloatTweening(methodName, toValue, _canvasRenderer.GetAlpha());
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
         /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
@@ -232,23 +234,23 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Tween t = new Tween("fade", spriteRenderer, 0f, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("fade", spriteRenderer, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween(SpriteRenderer spriteRenderer, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
+        public Tween(SpriteRenderer spriteRenderer, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(spriteRenderer == null) throw new ArgumentNullException("spriteRenderer", "spriteRenderer can not be null");
             _spriteRenderer = spriteRenderer;
-            _initCommon(spriteRenderer.gameObject, easeType, duration, killOnEnd);
+            _initCommon(spriteRenderer.gameObject, easingFunction, duration, killOnEnd);
             _initFloatTweening(methodName, toValue, _spriteRenderer.color.a);
         }
 
         /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha.</param>
-        /// <param name="easeType">The <see cref="Easing.EaseType">ease type</see> represents the type of easing.</param>
+        /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
         /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
         /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
@@ -265,16 +267,16 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Tween t = new Tween("fade", graphic, 0f, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("fade", graphic, 0f, EasingFunction.Linear, 3f);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween(Graphic graphic, float toValue, Easing.EaseType easeType, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
+        public Tween(Graphic graphic, float toValue, EasingFunction easingFunction, float duration, bool killOnEnd = true, [CallerMemberName]string methodName = "")
         {
             if(graphic == null) throw new ArgumentNullException("graphic", "graphic can not be null");
             _graphic = graphic;
-            _initCommon(graphic.gameObject, easeType, duration, killOnEnd);
+            _initCommon(graphic.gameObject, easingFunction, duration, killOnEnd);
             _initFloatTweening(methodName, toValue, _graphic.color.a);
         }
 
@@ -294,7 +296,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.delay(2f);
         ///     }
         /// }
@@ -320,7 +322,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         Debug.Log(t.delay());
         ///     }
         /// }
@@ -330,7 +332,7 @@ namespace Str8lines.Tweening
 
         /// <summary>Makes the <see cref="Tween">tween</see> loop.</summary>
         /// <param name="loopsCount">(Optional) Number of loops to do. Default value is -1.</param>
-        /// <param name="loopType">(Optional) <see cref="LoopType">Type of loop</see>. Default value is <see cref="LoopType.Restart">LoopType.Restart</see>.</param>
+        /// <param name="loopStyle">(Optional) <see cref="LoopStyle">Type of loop</see>. Default value is <see cref="LoopStyle.Restart">LoopStyle.Restart</see>.</param>
         /// <returns>The <see cref="Tween">tween</see> which loops.</returns>
         /// <remarks>Default <paramref name="loopsCount"/>'s value is -1 which is equivalent to infinite loops.</remarks>
         /// <example>
@@ -346,20 +348,20 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.loop(5, LoopType.Oscillate);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
+        ///         t.loop(5, LoopStyle.Oscillate);
         ///     }
         /// }
         /// </code>
         /// </example>
-        public Tween loop(int loopsCount = -1, LoopType loopType = LoopType.Restart)
+        public Tween loop(int loopsCount = -1, LoopStyle loopStyle = LoopStyle.Restart)
         {
             if(loopsCount == 0 || loopsCount < -1){
                 this.kill();
                 throw new ArgumentException("loopsCount can not be equal to zero or inferior to minus one", "loopsCount");
             }
             _isLoop = true;
-            _loopType = loopType;
+            _loopStyle = loopStyle;
             _loopsCount = loopsCount;
             _lifeTime = this.duration * this.loopsCount;
             return this;
@@ -381,7 +383,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.onStart(_onStart);
         ///     }
         ///
@@ -414,8 +416,8 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
-        ///         t.loop(5, LoopType.Oscillate).onLoop(_onLoop);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
+        ///         t.loop(5, LoopStyle.Oscillate).onLoop(_onLoop);
         ///     }
         ///
         ///     private void _onLoop(int loopsCount)
@@ -447,7 +449,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         Tween t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.onEnd(_onEnd);
         ///     }
         ///
@@ -483,7 +485,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector3 destination = new Vector3(0, 500, 0);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -515,20 +517,20 @@ namespace Str8lines.Tweening
 
             bool isTotalDurationOver = (_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime);
             bool revertIncrementation= false; //Used to tag the need to revert incrementation
-            if(_isLoop) //Handle changes according to the loop type
+            if(_isLoop) //Handle changes according to the loop style
             {
-                switch(this.loopType)
+                switch(this.loopStyle)
                 {
-                    case LoopType.Restart :
-                    case LoopType.WithOffset :
-                        _loopTime += t; //These two loop types are always played forward
+                    case LoopStyle.Restart :
+                    case LoopStyle.WithOffset :
+                        _loopTime += t; //These two loop styles are always played forward
                         if(_loopTime >= this.duration || isTotalDurationOver){
                             _loopTime = 0;
                             _completeLoop();
                         }
                         break;
 
-                    case LoopType.Oscillate :
+                    case LoopStyle.Oscillate :
                         if(_isIncrementing){
                             _loopTime += t; //Plays the tween forward
                             if(_loopTime >= this.duration || isTotalDurationOver){
@@ -573,7 +575,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -616,7 +618,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -648,7 +650,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -665,7 +667,7 @@ namespace Str8lines.Tweening
 
         /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
         /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
-        /// <param name="mode">(Optional) The <see cref="Tween.CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>PROJECTED</c></param>
+        /// <param name="mode">(Optional) The <see cref="CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>PROJECTED</c></param>
         /// <returns><c>void</c></returns>
         /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
         /// <example>
@@ -682,7 +684,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -701,7 +703,7 @@ namespace Str8lines.Tweening
                     break;
 
                 case CompletionMode.DYNAMIC:
-                    if(_isLoop && this.loopType == LoopType.WithOffset) _setCurrentToValue();
+                    if(_isLoop && this.loopStyle == LoopStyle.WithOffset) _setCurrentToValue();
                     else _setInitialValue(_isIncrementing);
                     break;
 
@@ -711,17 +713,17 @@ namespace Str8lines.Tweening
                         return;
                     }
 
-                    switch(this.loopType){
-                        case LoopType.Restart:
+                    switch(this.loopStyle){
+                        case LoopStyle.Restart:
                             _setInitialValue(true);
                             break;
 
-                        case LoopType.Oscillate:
+                        case LoopStyle.Oscillate:
                             bool useToValues = (this.loopsCount < 0) ? _isIncrementing : !(this.loopsCount%2 == 0);
                             _setInitialValue(useToValues);
                             break;
 
-                        case LoopType.WithOffset:
+                        case LoopStyle.WithOffset:
                             if(this.loopsCount < 0){
                                 _setCurrentToValue();
                                 return;
@@ -783,7 +785,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -818,7 +820,7 @@ namespace Str8lines.Tweening
         ///     private void Start()
         ///     {
         ///         Vector2 destination = new Vector2(0, 500);
-        ///         t = new Tween("move", rectTransform, destination, Easing.EaseType.Linear, 3f);
+        ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
         ///     private void Update()
@@ -839,20 +841,20 @@ namespace Str8lines.Tweening
 
     #region Private methods
         //Handles common values initialization and common checks.
-        private void _initCommon(GameObject target, Easing.EaseType easeType, float duration, bool killOnEnd)
+        private void _initCommon(GameObject target, EasingFunction easingFunction, float duration, bool killOnEnd)
         {
             if(duration <= 0f) throw new ArgumentException("duration must be positive and superior to zero", "duration");
 
             _id = Guid.NewGuid().ToString();
             _target = target;
-            _easeType = easeType;
+            _easingFunction = easingFunction;
             _duration = duration;
             _isAlive = true;
             _isFinished = false;
             _isRunning = true;
             _loopsCount = 0;
             _completedLoopsCount = 0;
-            _loopType = LoopType.Restart;
+            _loopStyle = LoopStyle.Restart;
             _elapsedTotal = 0f;
             _elapsedSinceDelay = 0f;
             _killOnEnd = killOnEnd;
@@ -883,25 +885,25 @@ namespace Str8lines.Tweening
             switch(_methodName)
             {
                 case "move":
-                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
+                    if(_rectTransform != null) _rectTransform.anchoredPosition3D = Easing.ease(this.easingFunction, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "scale":
-                    if(_rectTransform != null) _rectTransform.localScale = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
+                    if(_rectTransform != null) _rectTransform.localScale = Easing.ease(this.easingFunction, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "rotate":
-                    if(_rectTransform != null) _rectTransform.localEulerAngles = Easing.ease(this.easeType, playtime, _fromVector, _vectorChange, this.duration);
+                    if(_rectTransform != null) _rectTransform.localEulerAngles = Easing.ease(this.easingFunction, playtime, _fromVector, _vectorChange, this.duration);
                     break;
 
                 case "fade":
-                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                    if(_canvasRenderer != null) _canvasRenderer.SetAlpha(Easing.ease(this.easingFunction, playtime, _fromValue, _valueChange, this.duration));
                     if(_spriteRenderer != null){
-                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                        Color newSpriteRendererColor = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, Easing.ease(this.easingFunction, playtime, _fromValue, _valueChange, this.duration));
                         _spriteRenderer.color = newSpriteRendererColor;
                     }
                     if(_graphic != null){
-                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easeType, playtime, _fromValue, _valueChange, this.duration));
+                        Color newGraphicColor = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, Easing.ease(this.easingFunction, playtime, _fromValue, _valueChange, this.duration));
                         _graphic.color = newGraphicColor;
                     }
                     break;
@@ -911,7 +913,7 @@ namespace Str8lines.Tweening
         //Handles values update for loops with offset, updates loops count and triggers onLoop event.
         private void _completeLoop()
         {
-            if(this.loopType == LoopType.WithOffset)
+            if(this.loopStyle == LoopStyle.WithOffset)
             {
                 _fromVector = _toVector;
                 _toVector += _vectorChange;

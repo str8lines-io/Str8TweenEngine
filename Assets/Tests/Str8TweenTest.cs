@@ -14,7 +14,7 @@ public class Str8TweenTest
     GameObject go;
     Vector3 toVectorValue;
     float toFloatValue;
-    Easing.EaseType easeType;
+    EasingFunction easingFunction;
     float duration;
 #endregion
 
@@ -25,7 +25,7 @@ public class Str8TweenTest
         go = new GameObject();
         toVectorValue = new Vector2(2f, 2f);
         toFloatValue = 0.5f;
-        easeType = Easing.EaseType.Linear;
+        easingFunction = EasingFunction.Linear;
         duration = 1f;
     }
 
@@ -42,7 +42,7 @@ public class Str8TweenTest
     public void MoveRectTransformNullException()
     {
         Assert.Throws<ArgumentNullException>(()=>{
-            Str8Tween.move(null, toVectorValue, easeType, duration);
+            Str8Tween.move(null, toVectorValue, easingFunction, duration);
         });
     }
 
@@ -52,7 +52,7 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.move(rect, toVectorValue, easeType, 0f);
+            Str8Tween.move(rect, toVectorValue, easingFunction, 0f);
         });
     }
     
@@ -61,7 +61,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -71,7 +71,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Assert.AreNotEqual(Str8Tween.move(rect, toVectorValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.move(rect, toVectorValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -80,7 +80,7 @@ public class Str8TweenTest
     public void ScaleRectTransformNullException()
     {
         Assert.Throws<ArgumentNullException>(()=>{
-            Str8Tween.scale(null, toVectorValue, easeType, duration);
+            Str8Tween.scale(null, toVectorValue, easingFunction, duration);
         });
     }
 
@@ -90,7 +90,7 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.scale(rect, toVectorValue, easeType, 0f);
+            Str8Tween.scale(rect, toVectorValue, easingFunction, 0f);
         });
     }
     
@@ -99,7 +99,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Str8Tween.scale(rect, toVectorValue, easeType, duration);
+        Str8Tween.scale(rect, toVectorValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -109,7 +109,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Assert.AreNotEqual(Str8Tween.scale(rect, toVectorValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.scale(rect, toVectorValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -118,7 +118,7 @@ public class Str8TweenTest
     public void RotateRectTransformNullException()
     {
         Assert.Throws<ArgumentNullException>(()=>{
-            Str8Tween.rotate(null, toVectorValue, easeType, duration);
+            Str8Tween.rotate(null, toVectorValue, easingFunction, duration);
         });
     }
 
@@ -128,7 +128,7 @@ public class Str8TweenTest
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.rotate(rect, toVectorValue, easeType, 0f);
+            Str8Tween.rotate(rect, toVectorValue, easingFunction, 0f);
         });
     }
     
@@ -137,7 +137,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Str8Tween.rotate(rect, toVectorValue, easeType, duration);
+        Str8Tween.rotate(rect, toVectorValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -147,7 +147,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Assert.AreNotEqual(Str8Tween.rotate(rect, toVectorValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.rotate(rect, toVectorValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -158,7 +158,7 @@ public class Str8TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(canvasRenderer, toFloatValue, easeType, 0f);
+            Str8Tween.fade(canvasRenderer, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -168,7 +168,7 @@ public class Str8TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(canvasRenderer, -0.1f, easeType, duration);
+            Str8Tween.fade(canvasRenderer, -0.1f, easingFunction, duration);
         });
     }
 
@@ -178,7 +178,7 @@ public class Str8TweenTest
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(canvasRenderer, 1.1f, easeType, duration);
+            Str8Tween.fade(canvasRenderer, 1.1f, easingFunction, duration);
         });
     }
     
@@ -187,7 +187,7 @@ public class Str8TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Str8Tween.fade(canvasRenderer, toFloatValue, easeType, duration);
+        Str8Tween.fade(canvasRenderer, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -197,7 +197,7 @@ public class Str8TweenTest
     {
         go.AddComponent<CanvasRenderer>();
         CanvasRenderer canvasRenderer = go.GetComponent<CanvasRenderer>();
-        Assert.AreNotEqual(Str8Tween.fade(canvasRenderer, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(canvasRenderer, toFloatValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -208,7 +208,7 @@ public class Str8TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(spriteRenderer, toFloatValue, easeType, 0f);
+            Str8Tween.fade(spriteRenderer, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -218,7 +218,7 @@ public class Str8TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(spriteRenderer, -0.1f, easeType, duration);
+            Str8Tween.fade(spriteRenderer, -0.1f, easingFunction, duration);
         });
     }
 
@@ -228,7 +228,7 @@ public class Str8TweenTest
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(spriteRenderer, 1.1f, easeType, duration);
+            Str8Tween.fade(spriteRenderer, 1.1f, easingFunction, duration);
         });
     }
     
@@ -237,7 +237,7 @@ public class Str8TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Str8Tween.fade(spriteRenderer, toFloatValue, easeType, duration);
+        Str8Tween.fade(spriteRenderer, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -247,7 +247,7 @@ public class Str8TweenTest
     {
         go.AddComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
-        Assert.AreNotEqual(Str8Tween.fade(spriteRenderer, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(spriteRenderer, toFloatValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -258,7 +258,7 @@ public class Str8TweenTest
         go.AddComponent<RawImage>();
         RawImage rawImage = go.GetComponent<RawImage>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(rawImage, toFloatValue, easeType, 0f);
+            Str8Tween.fade(rawImage, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -268,7 +268,7 @@ public class Str8TweenTest
         go.AddComponent<RawImage>();
         RawImage rawImage = go.GetComponent<RawImage>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(rawImage, -0.1f, easeType, duration);
+            Str8Tween.fade(rawImage, -0.1f, easingFunction, duration);
         });
     }
 
@@ -278,7 +278,7 @@ public class Str8TweenTest
         go.AddComponent<RawImage>();
         RawImage rawImage = go.GetComponent<RawImage>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(rawImage, 1.1f, easeType, duration);
+            Str8Tween.fade(rawImage, 1.1f, easingFunction, duration);
         });
     }
     
@@ -287,7 +287,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RawImage>();
         RawImage rawImage = go.GetComponent<RawImage>();
-        Str8Tween.fade(rawImage, toFloatValue, easeType, duration);
+        Str8Tween.fade(rawImage, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -297,7 +297,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RawImage>();
         RawImage rawImage = go.GetComponent<RawImage>();
-        Assert.AreNotEqual(Str8Tween.fade(rawImage, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(rawImage, toFloatValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -308,7 +308,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Image image = go.GetComponent<Image>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(image, toFloatValue, easeType, 0f);
+            Str8Tween.fade(image, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -318,7 +318,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Image image = go.GetComponent<Image>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(image, -0.1f, easeType, duration);
+            Str8Tween.fade(image, -0.1f, easingFunction, duration);
         });
     }
 
@@ -328,7 +328,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Image image = go.GetComponent<Image>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(image, 1.1f, easeType, duration);
+            Str8Tween.fade(image, 1.1f, easingFunction, duration);
         });
     }
     
@@ -337,7 +337,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Image>();
         Image image = go.GetComponent<Image>();
-        Str8Tween.fade(image, toFloatValue, easeType, duration);
+        Str8Tween.fade(image, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -347,7 +347,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Image>();
         Image image = go.GetComponent<Image>();
-        Assert.AreNotEqual(Str8Tween.fade(image, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(image, toFloatValue, easingFunction, duration), null);
     }
     #endregion
     
@@ -358,7 +358,7 @@ public class Str8TweenTest
         go.AddComponent<Text>();
         Text text = go.GetComponent<Text>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(text, toFloatValue, easeType, 0f);
+            Str8Tween.fade(text, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -368,7 +368,7 @@ public class Str8TweenTest
         go.AddComponent<Text>();
         Text text = go.GetComponent<Text>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(text, -0.1f, easeType, duration);
+            Str8Tween.fade(text, -0.1f, easingFunction, duration);
         });
     }
 
@@ -378,7 +378,7 @@ public class Str8TweenTest
         go.AddComponent<Text>();
         Text text = go.GetComponent<Text>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(text, 1.1f, easeType, duration);
+            Str8Tween.fade(text, 1.1f, easingFunction, duration);
         });
     }
     
@@ -387,7 +387,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Text>();
         Text text = go.GetComponent<Text>();
-        Str8Tween.fade(text, toFloatValue, easeType, duration);
+        Str8Tween.fade(text, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -397,7 +397,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Text>();
         Text text = go.GetComponent<Text>();
-        Assert.AreNotEqual(Str8Tween.fade(text, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(text, toFloatValue, easingFunction, duration), null);
     }
     #endregion
 
@@ -408,7 +408,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(graphic, toFloatValue, easeType, 0f);
+            Str8Tween.fade(graphic, toFloatValue, easingFunction, 0f);
         });
     }
 
@@ -418,7 +418,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(graphic, -0.1f, easeType, duration);
+            Str8Tween.fade(graphic, -0.1f, easingFunction, duration);
         });
     }
 
@@ -428,7 +428,7 @@ public class Str8TweenTest
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
         Assert.Throws<ArgumentException>(()=>{
-            Str8Tween.fade(graphic, 1.1f, easeType, duration);
+            Str8Tween.fade(graphic, 1.1f, easingFunction, duration);
         });
     }
     
@@ -437,7 +437,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Str8Tween.fade(graphic, toFloatValue, easeType, duration);
+        Str8Tween.fade(graphic, toFloatValue, easingFunction, duration);
         GameObject engine = GameObject.Find("Str8Tween");
         Assert.AreNotEqual(engine.GetComponent<TweensHandler>(), null);
     }
@@ -447,7 +447,7 @@ public class Str8TweenTest
     {
         go.AddComponent<Image>();
         Graphic graphic = go.GetComponent<Graphic>();
-        Assert.AreNotEqual(Str8Tween.fade(graphic, toFloatValue, easeType, duration), null);
+        Assert.AreNotEqual(Str8Tween.fade(graphic, toFloatValue, easingFunction, duration), null);
     }
     #endregion
 #endregion
@@ -459,7 +459,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Tween result = Str8Tween.get(t.id);
         Assert.IsTrue(result != null && result == t);
     }
@@ -475,7 +475,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Tween[] result = Str8Tween.get();
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
@@ -494,7 +494,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Tween[] result = Str8Tween.get(go);
         Assert.IsTrue(result.Length > 0 && Array.Exists(result, element => element.id == t.id));
     }
@@ -506,7 +506,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isRunning = t.isRunning;
         Str8Tween.pause(t.id);
         Assert.AreNotEqual(isRunning, t.isRunning);
@@ -517,7 +517,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isRunning = t.isRunning;
         Str8Tween.pause(String.Empty);
         Assert.AreEqual(isRunning, t.isRunning);
@@ -537,8 +537,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Running = t1.isRunning;
         bool isT2Running = t2.isRunning;
         Str8Tween.pause(go);
@@ -550,8 +550,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Running = t1.isRunning;
         bool isT2Running = t2.isRunning;
         Str8Tween.pause();
@@ -565,7 +565,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Str8Tween.pause(t.id);
         bool isRunning = t.isRunning;
         Str8Tween.play(t.id);
@@ -577,7 +577,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Str8Tween.pause(t.id);
         bool isRunning = t.isRunning;
         Str8Tween.play(String.Empty);
@@ -598,8 +598,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Str8Tween.pause(go);
         bool isT1Running = t1.isRunning;
         bool isT2Running = t2.isRunning;
@@ -612,8 +612,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         Str8Tween.pause();
         bool isT1Running = t1.isRunning;
         bool isT2Running = t2.isRunning;
@@ -628,7 +628,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         yield return new WaitForSeconds(duration/2f);
         float elapsedSinceDelay = t.elapsedSinceDelay;
         Str8Tween.reset(t.id);
@@ -640,7 +640,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         float elapsedSinceDelay = t.elapsedSinceDelay;
         yield return new WaitForSeconds(duration/2f);
         Str8Tween.reset(String.Empty);
@@ -661,8 +661,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         yield return new WaitForSeconds(duration/2f);
         float t1ElapsedSinceDelay = t1.elapsedSinceDelay;
         float t2ElapsedSinceDelay = t2.elapsedSinceDelay;
@@ -675,8 +675,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         yield return new WaitForSeconds(duration/2f);
         float t1ElapsedSinceDelay = t1.elapsedSinceDelay;
         float t2ElapsedSinceDelay = t2.elapsedSinceDelay;
@@ -691,7 +691,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isFinished = t.isFinished;
         Str8Tween.stop(t.id);
         Assert.AreNotEqual(isFinished, t.isFinished);
@@ -702,7 +702,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isFinished = t.isFinished;
         Str8Tween.stop(String.Empty);
         Assert.AreEqual(isFinished, t.isFinished);
@@ -722,8 +722,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Finished = t1.isFinished;
         bool isT2Finished = t2.isFinished;
         Str8Tween.stop(go);
@@ -735,8 +735,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Finished = t1.isFinished;
         bool isT2Finished = t2.isFinished;
         Str8Tween.stop();
@@ -750,7 +750,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isFinished = t.isFinished;
         Str8Tween.complete(t.id);
         Assert.AreNotEqual(isFinished, t.isFinished);
@@ -761,7 +761,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isFinished = t.isFinished;
         Str8Tween.complete(String.Empty);
         Assert.AreEqual(isFinished, t.isFinished);
@@ -781,8 +781,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Finished = t1.isFinished;
         bool isT2Finished = t2.isFinished;
         Str8Tween.complete(go);
@@ -794,8 +794,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Finished = t1.isFinished;
         bool isT2Finished = t2.isFinished;
         Str8Tween.complete();
@@ -809,7 +809,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isAlive = t.isAlive;
         Str8Tween.kill(t.id);
         Assert.AreNotEqual(isAlive, t.isAlive);
@@ -820,7 +820,7 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isAlive = t.isAlive;
         Str8Tween.kill(String.Empty);
         Assert.AreEqual(isAlive, t.isAlive);
@@ -840,8 +840,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Alive = t1.isAlive;
         bool isT2Alive = t2.isAlive;
         Str8Tween.kill(go);
@@ -853,8 +853,8 @@ public class Str8TweenTest
     {
         go.AddComponent<RectTransform>();
         RectTransform rect = go.GetComponent<RectTransform>();
-        Tween t1 = Str8Tween.move(rect, toVectorValue, easeType, duration);
-        Tween t2 = Str8Tween.move(rect, toVectorValue, easeType, duration);
+        Tween t1 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
+        Tween t2 = Str8Tween.move(rect, toVectorValue, easingFunction, duration);
         bool isT1Alive = t1.isAlive;
         bool isT2Alive = t2.isAlive;
         Str8Tween.kill();
