@@ -14,8 +14,22 @@
 * Who will use this repo or project?
 * What is the goal of this project?
 
-- What is Midas?
-- How does Midas work?
-- Who uses Midas?
-- What is Midas’ goal?
-- How can your organization benefit from using Midas?
+- What is Str8Tween?
+- How does Str8Tween work?
+- Who uses Str8Tween?
+- What is Str8Tween’s goal?
+- How can your organization benefit from using Str8Tween?
+
+* corriger le contenu des pages de l'api dans la doc finale
+* ajouter les illustrations
+* ajouter le logo
+* ajouter l'icone
+* update le footer
+
+* ! {names} dans les credits
+* update la date de mise en ligne (blog)
+* update les liens de dons paypal
+* virer les liens github dans le code
+
+* faire le pdf clean
+* build les zip et unitypackage à dl

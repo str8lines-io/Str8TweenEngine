@@ -20,7 +20,7 @@ namespace Str8lines.Tweening
     {
         #region Variables
         private static TweensHandler _instance;
-        /// <value>Returns the instance of the singleton <see cref="TweensHandler"/>.</value>
+        /// <value>Returns the instance of the TweensHandler singleton.</value>
         public static TweensHandler Instance => _instance ?? (_instance = new GameObject("Str8Tween").AddComponent<TweensHandler>());
         private Dictionary<string, Tween> _tweens = new Dictionary<string, Tween>();
         /// <value>Returns the <see cref="Tween">tweens</see> stored in the class. The key is the <see cref="Tween">tweens</see>'s <see cref="Tween.id">UUID</see> and the value is the <see cref="Tween"/> itself.</value>

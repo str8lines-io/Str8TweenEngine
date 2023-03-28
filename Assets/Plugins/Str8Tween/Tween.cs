@@ -16,16 +16,16 @@ namespace Str8lines.Tweening
     using UnityEngine.UI;
     #endregion
     
-    /// <summary>Defines if values are reset on loop (Restart), if <see cref="Tween">Tween</see> is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
+    /// <summary>Defines if values are reset on loop (Restart), if the tween is played forward then backward (Oscillate) or if tweening restarts from end values (WithOffset).</summary>
     public enum LoopStyle { Restart, Oscillate, WithOffset }
     
-    /// <summary>Defines end values to use after <see cref="Tween">Tween</see> completion.</summary>
+    /// <summary>Defines end values to use after the tween completion.</summary>
     /// <value><c>STATIC</c> will set end values to the initial toValue or toVector.</value>
     /// <value><c>DYNAMIC</c> works only for loops, this will set end values depending on the next value to reach.</value>
-    /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the <see cref="Tween">Tween</see> ended normaly.</value>
+    /// <value><c>PROJECTED</c> is useful only for loops with offset, it will set end values to the values that would have been reached if the tween ended normaly.</value>
     public enum CompletionMode { STATIC, DYNAMIC, PROJECTED }
     
-    /// <summary>Representation of a <see cref="Tween">Tween</see>. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
+    /// <summary>Representation of a tween. A uuid is attributed to the tween on creation. Each instances can be manipulated with a variety of methods.</summary>
     public class Tween
     {
     #region Variables
@@ -40,19 +40,19 @@ namespace Str8lines.Tweening
         /// <value>Defines easing functions used internally and provides methods to calculate new values.</value>
         public EasingFunction easingFunction => _easingFunction;
         private float _duration;
-        /// <value>Duration of a <see cref="Tween">Tween</see>'s loop (in seconds). If the <see cref="Tween">Tween</see> is not a loop then it's the duration of the <see cref="Tween">Tween</see> itself.</value>
+        /// <value>Duration of a tween's loop (in seconds). If the tween is not a loop then it's the duration of the tween itself.</value>
         public float duration => _duration;
         private bool _isAlive;
-        /// <value>While <c>true</c> the <see cref="Tween">Tween</see> is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
+        /// <value>While <c>true</c> the tween is referenced in <see cref="Str8Tween">Str8Tween</see> and can be controlled.</value>
         public bool isAlive => _isAlive;
         private bool _isRunning;
-        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> is currently playing.</value>
+        /// <value>If <c>true</c> the tween is currently playing.</value>
         public bool isRunning => _isRunning;
         private bool _isFinished;
-        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> finished playing.</value>
+        /// <value>If <c>true</c> the tween finished playing.</value>
         public bool isFinished => _isFinished;
         private bool _killOnEnd;
-        /// <value>If <c>true</c> the <see cref="Tween">Tween</see> will be killed after playing.</value>
+        /// <value>If <c>true</c> the tween will be killed after playing.</value>
         public bool killOnEnd => _killOnEnd;
         private float _elapsedTotal;
         /// <value>Time elapsed in seconds (delay included).</value>
@@ -67,7 +67,7 @@ namespace Str8lines.Tweening
         /// <value>The <see cref="LoopStyle">type of loop</see> to use.</value>
         public LoopStyle loopStyle => _loopStyle;
         private int _completedLoopsCount;
-        /// <value>The number of loops completed since the <see cref="Tween">Tween</see> started.</value>
+        /// <value>The number of loops completed since the tween started.</value>
         public int completedLoopsCount => _completedLoopsCount;
         #endregion
 
@@ -126,14 +126,14 @@ namespace Str8lines.Tweening
     #endregion
 
     #region Constructors
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
+        /// <summary>Instantiate a new tween, initialize it and give it a UUID.</summary>
         /// <param name="rectTransform">The <see href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</see> on which changes will be applied.</param>
         /// <param name="toVector">A <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> that represents <paramref name="rectTransform"/>'s final position, scale or rotation.</param>
         /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="duration">Total tween duration (in seconds).</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the tween will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
+        /// <returns>The tween instantiated.</returns>
         /// <example>
         /// Create new tween that changes target's position :
         /// <code>
@@ -181,14 +181,14 @@ namespace Str8lines.Tweening
             _vectorChange = _toVector - _fromVector;
         }
         
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
+        /// <summary>Instantiate a new tween, initialize it and give it a UUID.</summary>
         /// <param name="canvasRenderer">The <see href="https://docs.unity3d.com/ScriptReference/CanvasRenderer.html">CanvasRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="canvasRenderer"/>'s final alpha.</param>
         /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="duration">Total tween duration (in seconds).</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the tween will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
+        /// <returns>The tween instantiated.</returns>
         /// <example>
         /// Create new tween that changes CanvasRenderer's alpha :
         /// <code>
@@ -214,14 +214,14 @@ namespace Str8lines.Tweening
             _initFloatTweening(methodName, toValue, _canvasRenderer.GetAlpha());
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
+        /// <summary>Instantiate a new tween, initialize it and give it a UUID.</summary>
         /// <param name="spriteRenderer">The <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="spriteRenderer"/>'s final alpha.</param>
         /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="duration">Total tween duration (in seconds).</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the tween will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
+        /// <returns>The tween instantiated.</returns>
         /// <example>
         /// Create new tween that changes SpriteRenderer's alpha :
         /// <code>
@@ -247,14 +247,14 @@ namespace Str8lines.Tweening
             _initFloatTweening(methodName, toValue, _spriteRenderer.color.a);
         }
 
-        /// <summary>Instantiate a new <see cref="Tween">tween</see>, initialize it and give it a UUID.</summary>
+        /// <summary>Instantiate a new tween, initialize it and give it a UUID.</summary>
         /// <param name="graphic">The <see href="https://docs.unity3d.com/ScriptReference/Graphic.html">Graphic</see> on which changes will be applied.</param>
         /// <param name="toValue">A <c>float</c> that represents <paramref name="graphic"/>'s final alpha.</param>
         /// <param name="easingFunction">The <see cref="EasingFunction">easing function</see> represents the type of easing.</param>
-        /// <param name="duration">Total <see cref="Tween">tween</see> duration (in seconds).</param>
-        /// <param name="killOnEnd">(Optional) If <c>true</c>, the <see cref="Tween">tween</see> will be destroyed once completed. Default value is <c>true</c></param>
+        /// <param name="duration">Total tween duration (in seconds).</param>
+        /// <param name="killOnEnd">(Optional) If <c>true</c>, the tween will be destroyed once completed. Default value is <c>true</c></param>
         /// <param name="methodName">Name of the method which called this constructor.</param>
-        /// <returns>The <see cref="Tween">Tween</see> instantiated.</returns>
+        /// <returns>The tween instantiated.</returns>
         /// <example>
         /// Create new tween that changes graphic's alpha :
         /// <code>
@@ -280,9 +280,9 @@ namespace Str8lines.Tweening
             _initFloatTweening(methodName, toValue, _graphic.color.a);
         }
 
-        /// <summary>Add delay to the <see cref="Tween">tween</see> before it starts playing.</summary>
+        /// <summary>Add delay to the tween before it starts playing.</summary>
         /// <param name="delay">Time before the tween start (in seconds).</param>
-        /// <returns>The <see cref="Tween">tween</see> delayed.</returns>
+        /// <returns>The tween delayed.</returns>
         /// <example>
         /// Add 2 seconds of delay before the tween starts.
         /// <code>
@@ -295,7 +295,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.delay(2f);
         ///     }
@@ -309,7 +309,7 @@ namespace Str8lines.Tweening
             return this;
         }
 
-        /// <returns>The delay before the <see cref="Tween">tween</see> starts (in seconds).</returns>
+        /// <returns>The delay before the tween starts (in seconds).</returns>
         /// <example>
         /// <code>
         /// using UnityEngine;
@@ -321,7 +321,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         Debug.Log(t.delay());
         ///     }
@@ -330,10 +330,10 @@ namespace Str8lines.Tweening
         /// </example>
         public float delay() { return _delay; }
 
-        /// <summary>Makes the <see cref="Tween">tween</see> loop.</summary>
+        /// <summary>Makes the tween loop.</summary>
         /// <param name="loopsCount">(Optional) Number of loops to do. Default value is -1.</param>
         /// <param name="loopStyle">(Optional) <see cref="LoopStyle">Type of loop</see>. Default value is <see cref="LoopStyle.Restart">LoopStyle.Restart</see>.</param>
-        /// <returns>The <see cref="Tween">tween</see> which loops.</returns>
+        /// <returns>The tween which loops.</returns>
         /// <remarks>Default <paramref name="loopsCount"/>'s value is -1 which is equivalent to infinite loops.</remarks>
         /// <example>
         /// Realizes five oscillating loops of a move tween.
@@ -347,7 +347,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.loop(5, LoopStyle.Oscillate);
         ///     }
@@ -367,9 +367,9 @@ namespace Str8lines.Tweening
             return this;
         }
 
-        /// <summary>Registers to <see cref="Tween">tween</see>'s start event.</summary>
+        /// <summary>Adds a callback to the tween's start event.</summary>
         /// <param name="onStart">Callback function to trigger.</param>
-        /// <returns>The <see cref="Tween">tween</see> which will rise the start event.</returns>
+        /// <returns>The tween which will rise the start event.</returns>
         /// <example>
         /// Displays a message in console when the move tween starts.
         /// <code>
@@ -382,7 +382,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.onStart(_onStart);
         ///     }
@@ -400,9 +400,9 @@ namespace Str8lines.Tweening
             return this;
         }
 
-        /// <summary>Registers to <see cref="Tween">tween</see>'s loop event.</summary>
+        /// <summary>Adds a callback to the tween's loop event.</summary>
         /// <param name="onLoop">Callback function to trigger.</param>
-        /// <returns>The <see cref="Tween">tween</see> which will rise the loop event.</returns>
+        /// <returns>The tween which will rise the loop event.</returns>
         /// <example>
         /// Displays the number of loops accomplished in console when the move tween loops.
         /// <code>
@@ -415,7 +415,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.loop(5, LoopStyle.Oscillate).onLoop(_onLoop);
         ///     }
@@ -433,9 +433,9 @@ namespace Str8lines.Tweening
             return this;
         }
 
-        /// <summary>Registers to <see cref="Tween">tween</see>'s end event.</summary>
+        /// <summary>Adds a callback to the tween's end event.</summary>
         /// <param name="onEnd">Callback function to trigger.</param>
-        /// <returns>The <see cref="Tween">tween</see> which will rise the end event.</returns>
+        /// <returns>The tween which will rise the end event.</returns>
         /// <example>
         /// Displays a message in console when the move tween ends.
         /// <code>
@@ -448,7 +448,7 @@ namespace Str8lines.Tweening
         /// 
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         Tween t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///         t.onEnd(_onEnd);
         ///     }
@@ -559,7 +559,7 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Resets the <see cref="Tween">tween</see> values.</summary>
+        /// <summary>Resets the tween values.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to reset.
@@ -574,7 +574,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
@@ -602,7 +602,7 @@ namespace Str8lines.Tweening
             _setInitialValue();
         }
 
-        /// <summary>Plays the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Plays the tween.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to play.
@@ -617,7 +617,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
@@ -634,7 +634,7 @@ namespace Str8lines.Tweening
             _isRunning = true;
         }
 
-        /// <summary>Pauses the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Pauses the tween.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to pause.
@@ -649,7 +649,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
@@ -665,11 +665,11 @@ namespace Str8lines.Tweening
             _isRunning = false;
         }
 
-        /// <summary>Completes the <see cref="Tween">tween</see>.</summary>
-        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <summary>Completes the tween.</summary>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers the tween's end event. Default value is <c>true</c></param>
         /// <param name="mode">(Optional) The <see cref="CompletionMode">completion mode</see> defines the end values to apply. Default value is <c>PROJECTED</c></param>
         /// <returns><c>void</c></returns>
-        /// <remarks>Completing a <see cref="Tween">tween</see> sends the target to its final values.</remarks>
+        /// <remarks>Completing a tween sends the target to its final values.</remarks>
         /// <example>
         /// Press space to complete.
         /// <code>
@@ -683,7 +683,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
@@ -767,10 +767,10 @@ namespace Str8lines.Tweening
             }
         }
 
-        /// <summary>Stops the <see cref="Tween">tween</see>.</summary>
-        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers <see cref="Tween">tween</see>'s end event. Default value is <c>true</c></param>
+        /// <summary>Stops the tween.</summary>
+        /// <param name="triggerOnEnd">(Optional) If <c>true</c>, triggers the tween's end event. Default value is <c>true</c></param>
         /// <returns><c>void</c></returns>
-        /// <remarks>Stopping a <see cref="Tween">tween</see> does not change the target's current values.</remarks>
+        /// <remarks>Stopping a tween does not change the target's current values.</remarks>
         /// <example>
         /// Press space to stop.
         /// <code>
@@ -784,7 +784,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
@@ -804,7 +804,7 @@ namespace Str8lines.Tweening
             if(this.killOnEnd == true) kill();
         }
 
-        /// <summary>Kills the <see cref="Tween">tween</see>. This unregisters the <see cref="Tween">tween</see>'s events and sets <see cref="Tween.isAlive">isAlive</see> to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the <see cref="Tween">tween</see>.</summary>
+        /// <summary>Kills the tween. This removes the tween's callbacks and sets <see cref="Tween.isAlive">isAlive</see> to <c>false</c>. <see cref="Str8Tween">Str8Tween</see> class will remove every reference to the tween.</summary>
         /// <returns><c>void</c></returns>
         /// <example>
         /// Press space to kill.
@@ -819,7 +819,7 @@ namespace Str8lines.Tweening
         ///
         ///     private void Start()
         ///     {
-        ///         Vector2 destination = new Vector2(0, 500);
+        ///         Vector3 destination = new Vector3(0, 500, 0);
         ///         t = new Tween("move", rectTransform, destination, EasingFunction.Linear, 3f);
         ///     }
         ///
