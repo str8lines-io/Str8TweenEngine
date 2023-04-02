@@ -22,13 +22,14 @@
 
 * corriger le contenu des pages de l'api dans la doc finale
 * ajouter les illustrations
-* checker les structures pour le css
+* tout mettre en responsive (font-size par ex)
+* essayer de tout passer de px à em
+* refaire la homepage
+* tester le fonctionnement du form
 * ajouter le logo
 * ajouter l'icone
-* update le footer
 
 * update la date de mise en ligne (blog)
 * update les liens de dons paypal
-
 * faire le pdf clean
 * build les zip et unitypackage à dl

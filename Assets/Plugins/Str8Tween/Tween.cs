@@ -368,7 +368,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Adds a callback to the tween's start event.</summary>
-        /// <param name="onStart">Callback function to trigger.</param>
+        /// <param name="callback">Callback function to trigger.</param>
         /// <returns>The tween which will rise the start event.</returns>
         /// <example>
         /// Displays a message in console when the move tween starts.
@@ -401,7 +401,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Adds a callback to the tween's loop event.</summary>
-        /// <param name="onLoop">Callback function to trigger.</param>
+        /// <param name="callback">Callback function to trigger.</param>
         /// <returns>The tween which will rise the loop event.</returns>
         /// <example>
         /// Displays the number of loops accomplished in console when the move tween loops.
@@ -434,7 +434,7 @@ namespace Str8lines.Tweening
         }
 
         /// <summary>Adds a callback to the tween's end event.</summary>
-        /// <param name="onEnd">Callback function to trigger.</param>
+        /// <param name="callback">Callback function to trigger.</param>
         /// <returns>The tween which will rise the end event.</returns>
         /// <example>
         /// Displays a message in console when the move tween ends.
