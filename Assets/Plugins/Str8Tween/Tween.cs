@@ -78,7 +78,6 @@ namespace Str8lines.Tweening
         private bool _isLoop;
         private float _loopTime;
         private bool _isDelayOver;
-        private bool _isFirstUpdate;
         private bool _isIncrementing;
         private Vector3 _initialFromVector;
         private Vector3 _fromVector;
@@ -498,13 +497,9 @@ namespace Str8lines.Tweening
         public void update(float t)
         {
             if(!this.isAlive || this.target == null || this.isFinished || !this.isRunning) return;
-
-            if(_isFirstUpdate) _isFirstUpdate = false; //At first update the time elapsed is 0
-            else _elapsedTotal += t;
+            _elapsedTotal += t;
 
             if(this.elapsedTotal < _delay) return; //Delay is not over, the tween can not start
-            
-            float time = 0f; //Time used for calculations
             if(!_isDelayOver){
                 //The first frame when the tween plays is the starting frame
                 _isDelayOver = true;
@@ -513,7 +508,7 @@ namespace Str8lines.Tweening
             }
             
             _elapsedSinceDelay += t;
-            time = this.elapsedSinceDelay;
+            float time = this.elapsedSinceDelay; //Time used for calculations
 
             bool isTotalDurationOver = (_lifeTime > 0 && this.elapsedSinceDelay >= _lifeTime);
             bool revertIncrementation= false; //Used to tag the need to revert incrementation
@@ -588,7 +583,6 @@ namespace Str8lines.Tweening
         public void reset()
         {
             _isDelayOver = false;
-            _isFirstUpdate = true;
             _isIncrementing = true;
             _loopTime = 0f;
             _completedLoopsCount = 0;
@@ -864,7 +858,6 @@ namespace Str8lines.Tweening
             _isLoop = false;
             _loopTime = 0f;
             _isDelayOver = false;
-            _isFirstUpdate = true;
             _isIncrementing = true;
         }
 

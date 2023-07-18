@@ -26,6 +26,7 @@ namespace Str8lines.Tweening
         /// <value>Returns the <see cref="Tween">tweens</see> stored in the class. The key is the <see cref="Tween">tweens</see>'s <see cref="Tween.id">UUID</see> and the value is the <see cref="Tween"/> itself.</value>
         public Dictionary<string, Tween> tweens => _tweens;
         private List<string> _deadTweenIDs = new List<string>();
+        private List<string> _newTweenIDs = new List<string>();
         #endregion
 
         private void Awake()
@@ -41,8 +42,13 @@ namespace Str8lines.Tweening
             for(int i = 0; i < _tweens.Count; i++) //Working with foreach loops to iterate through a dictionnary while manipulating it triggers errors
             {
                 KeyValuePair<string, Tween> entry = _tweens.ElementAt(i);
-                if(entry.Value.target != null && entry.Value.isAlive) entry.Value.update(Time.deltaTime);
-                else _deadTweenIDs.Add(entry.Key);
+                if(entry.Value.target != null && entry.Value.isAlive){
+                    if(_newTweenIDs.Contains(entry.Value.id)){
+                        //It's the tween first frame we don't update it
+                        _newTweenIDs.Remove(entry.Value.id);
+                        _newTweenIDs.TrimExcess();
+                    }else entry.Value.update(Time.deltaTime); //Tween exist at least for two frames we can update with elapsed time
+                }else _deadTweenIDs.Add(entry.Key);
             }
 
             foreach(string id in _deadTweenIDs) _tweens.Remove(id);
@@ -70,6 +76,11 @@ namespace Str8lines.Tweening
         /// }
         /// </code>
         /// </example>
-        public void Add(Tween t){ if(t != null) _tweens.Add(t.id, t); }
+        public void Add(Tween t){ 
+            if(t != null){
+                _newTweenIDs.Add(t.id);
+                _tweens.Add(t.id, t);
+            }
+        }
     }
 }
